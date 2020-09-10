@@ -1,7 +1,18 @@
 const mongoose = require('mongoose')
-const dbConfig = require('config').get('dbConfig')
-const mongoURI = `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.dbName}?retryWrites=true&w=majority`
+const config = require('config')
+const dbConfig = config.get('dbConfig')
 const { success, error } = require('consola')
+
+let mongoURI = ''
+
+if (
+  config.has('dbConfig.user') &&
+  config.has('dbConfig.password') &&
+  config.has('dbConfig.host') &&
+  config.has('dbConfig.dbName')
+) {
+  mongoURI = `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/${dbConfig.dbName}?retryWrites=true&w=majority`
+}
 
 class Database {
   constructor() {
