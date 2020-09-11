@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 
@@ -23,5 +24,9 @@ const UserSchema = new Schema({
     default: Date.now()
   }
 })
+
+UserSchema.methods.comparePassword = function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password)
+}
 
 module.exports = model('User', UserSchema)
