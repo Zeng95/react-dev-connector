@@ -3,9 +3,11 @@ const router = express.Router()
 
 /**
  * @route    GET api/auth
- * @desc     Test route
+ * @desc     Register user
  * @access   Public
  */
-router.get('/', (req, res) => res.send('Auth route'))
+router.post('/register', (req, res) => {
+  res.send('Auth route')
+})
 
 module.exports = router

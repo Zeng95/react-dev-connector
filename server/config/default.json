@@ -3,6 +3,6 @@
     "user": "leo123",
     "password": "leo19950723+",
     "host": "devconnector.qxzen.mongodb.net",
-    "dbName": "admin"
+    "dbName": "test"
   }
 }

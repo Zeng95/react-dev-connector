@@ -22,6 +22,7 @@ class Database {
   async _connect() {
     try {
       await mongoose.connect(mongoURI, {
+        useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false
