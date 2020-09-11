@@ -1,7 +1,13 @@
+const { success, error } = require('consola')
 const mongoose = require('mongoose')
 const config = require('config')
 const dbConfig = config.get('dbConfig')
-const { success, error } = require('consola')
+const dbOptions = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+}
 
 let mongoURI = ''
 
@@ -19,14 +25,10 @@ class Database {
     this._connect()
   }
 
+  // 连接数据库
   async _connect() {
     try {
-      await mongoose.connect(mongoURI, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false
-      })
+      await mongoose.connect(mongoURI, dbOptions)
 
       success({ message: 'Database connection successful', badge: true })
     } catch (err) {

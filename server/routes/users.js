@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router()
 const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
-const { check, validationResult } = require('express-validator')
+const jwt = require('jsonwebtoken')
+const config = require('config')
 const UserModel = require('../models/User')
+const { check, validationResult } = require('express-validator')
 
 /**
  * @route    GET api/users/register
@@ -35,14 +37,14 @@ router.post(
 
     check('password')
       .isLength({ min: 6 })
-      .withMessage('must be at least 5 chars long')
+      .withMessage('must be at least 6 chars long')
       .matches(/\d/)
       .withMessage('must contain a number')
   ],
   async (req, res) => {
+    const { email, username, password } = req.body
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req)
-    const { email, username, password } = req.body
 
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
@@ -57,16 +59,26 @@ router.post(
 
     const user = new UserModel({ email, username, password, avatar })
     const salt = bcrypt.genSaltSync(10)
-
-    // Encrypt password \ 加密密码
     user.password = bcrypt.hashSync(password, salt)
 
     try {
-      const doc = await user.save()
-      console.log(doc)
-      res.send('User registered')
+      await user.save()
+
+      const payload = { userId: user['_id'] }
+
+      // Generate a signed JSON web token with the contents of user object and return it in the response
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: '1h' },
+        (err, token) => {
+          if (err) throw err
+
+          return res.status(200).json({ token })
+        }
+      )
     } catch (err) {
-      console.error(err)
+      res.status(500).send('Server error')
     }
   }
 )
