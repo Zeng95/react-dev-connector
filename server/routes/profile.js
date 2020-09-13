@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { verifyToken } = require('../middlewares/auth')
+const { check } = require('express-validator')
 
 const ProfileModel = require('../models/Profile')
 
@@ -30,5 +31,20 @@ router.get('/me', verifyToken, async (req, res) => {
       .json({ success: false, msg: `Server error: ${err.message}` })
   }
 })
+
+/**
+ * @route    POST api/profile/me
+ * @desc     Create or update user profile
+ * @access   Private
+ */
+router.post(
+  '/',
+  [
+    verifyToken,
+    check('status').notEmpty().trim().withMessage('Status is required'),
+    check('skills').notEmpty().withMessage('Skills are required')
+  ],
+  async (req, res) => {}
+)
 
 module.exports = router
