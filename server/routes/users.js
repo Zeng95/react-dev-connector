@@ -3,9 +3,10 @@ const router = express.Router()
 const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const config = require('config')
-const UserModel = require('../models/User')
 const { check, validationResult } = require('express-validator')
+const config = require('config')
+
+const UserModel = require('../models/User')
 
 /**
  * @route    POST api/users/register
@@ -47,9 +48,7 @@ router.post(
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array()
-      })
+      res.status(400).json({ success: false, errors: errors.array() })
     }
 
     // Get user gravatr
@@ -77,18 +76,15 @@ router.post(
         (err, token) => {
           if (err) throw err
 
-          return res.status(200).json({
-            success: true,
-            msg: 'User registered successfully',
-            token
-          })
+          res
+            .status(200)
+            .json({ success: true, msg: 'User registered successfully', token })
         }
       )
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        msg: `Server error: ${err.message}`
-      })
+      res
+        .status(500)
+        .json({ success: false, msg: `Server error: ${err.message}` })
     }
   }
 )
@@ -115,27 +111,22 @@ router.post(
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array()
-      })
+      res.status(400).json({ success: false, errors: errors.array() })
     }
 
     try {
       const user = await UserModel.findOne({ email })
 
+      // 如果邮箱不匹配则返回 404
       if (!user) {
-        return res.status(404).json({
-          errors: [{ msg: 'Invalid Credentials' }]
-        })
+        res.status(404).json({ success: false, msg: 'Invalid credentials' })
       }
 
       const isMatch = await user.comparePassword(password)
 
       // 如果密码不匹配则返回 403
       if (!isMatch) {
-        return res.status(403).json({
-          errors: [{ msg: 'Invalid Credentials' }]
-        })
+        res.status(403).json({ success: false, msg: 'Invalid credentials' })
       }
 
       const payload = { userId: user['_id'] }
@@ -148,18 +139,15 @@ router.post(
         (err, token) => {
           if (err) throw err
 
-          return res.status(200).json({
-            success: true,
-            msg: 'User logged in successfully',
-            token
-          })
+          res
+            .status(200)
+            .json({ success: true, msg: 'User logged in successfully', token })
         }
       )
     } catch (err) {
-      res.status(500).json({
-        success: false,
-        msg: `Server error: ${err.message}`
-      })
+      res
+        .status(500)
+        .json({ success: false, msg: `Server error: ${err.message}` })
     }
   }
 )

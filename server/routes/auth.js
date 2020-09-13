@@ -12,16 +12,13 @@ router.get('/', verifyToken, async (req, res) => {
   try {
     const user = await UserModell.findById(req.userId).select('-password')
 
-    return res.status(200).json({
-      success: true,
-      msg: 'Authentication successful',
-      user
-    })
+    res
+      .status(200)
+      .json({ success: true, msg: 'Authentication successful', user })
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      msg: `Server error: ${err.message}`
-    })
+    res
+      .status(500)
+      .json({ success: false, msg: `Server error: ${err.message}` })
   }
 })
 
