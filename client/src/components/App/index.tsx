@@ -1,15 +1,13 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import AppNavbar from './AppNavbar'
+import Landing from 'views/Landing'
 
 const App = () => {
-  const title = 'React'
-
   return (
-    <div>
+    <Fragment>
       <AppNavbar />
-      <h1>Hello {title}</h1>
-      <a href="https://www.google.com/">This is a link</a>
-    </div>
+      <Landing />
+    </Fragment>
   )
 }
 
