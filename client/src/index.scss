@@ -1,5 +1,11 @@
 @import 'assets/styles/colors';
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -11,12 +17,6 @@ body {
   line-height: 1.6;
   background-color: #fff;
   color: #333;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
 }
 
 a {
