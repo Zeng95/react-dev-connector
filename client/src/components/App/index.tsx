@@ -1,14 +1,7 @@
-import React, { Fragment } from 'react'
-import AppNavbar from './AppNavbar'
-import Landing from 'views/Landing'
+import React from 'react'
+import AppLayout from './AppLayout'
 
-const App = () => {
-  return (
-    <Fragment>
-      <AppNavbar />
-      <Landing />
-    </Fragment>
-  )
-}
+// Arrow function
+const App = () => <AppLayout />
 
 export default App

@@ -1,56 +1,66 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Code } from '@styled-icons/fa-solid'
+import { Link } from 'react-router-dom'
+import tw from 'twin.macro'
 
 const AppHeader = styled.header.attrs({
-  className: 'fixed inset-0 bottom-auto w-full bg-black text-white z-10'
+  className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
 })`
   opacity: 0.9;
+  border-bottom: solid 1px white;
+  a {
+    color: white;
+    padding: 0.45rem;
+    margin: 0 0.25rem;
+    transition: color 0.3s;
+    &:hover {
+      color: #17a2b8;
+    }
+  }
 `
 const NavBarStyled = styled.nav.attrs({
   className: 'flex justify-between items-center'
 })`
-  padding: 0.7rem 2rem;
+  padding: 1rem 2rem;
+`
+const Logo = styled.h1.attrs({
+  className: 'font-bold'
+})`
+  font-size: 1.5em;
+  a {
+    ${tw`flex items-center`}
+  }
 `
 const Menu = styled.ul.attrs({
   className: 'flex'
 })``
-const MenuItem = styled.li.attrs({})`
-  & {
-    a {
-      color: #fff;
-      padding: 0.45rem;
-      margin: 0 0.25rem;
-    }
-  }
-`
+const MenuItem = styled.li``
 
-const AppNavbar = () => {
-  return (
-    <AppHeader>
-      <NavBarStyled>
-        <h1>
-          <a href="index.html" className={'flex text-white'}>
-            <Code size="24" />
-            &nbsp;
-            <span>DevConnector</span>
-          </a>
-        </h1>
+const AppNavbar = () => (
+  <AppHeader>
+    <NavBarStyled>
+      <Logo>
+        <Link to="/">
+          <Code size="24" />
+          &nbsp;
+          <span>DevConnector</span>
+        </Link>
+      </Logo>
 
-        <Menu>
-          <MenuItem>
-            <a href="profiles.html">Developers</a>
-          </MenuItem>
-          <MenuItem>
-            <a href="register.html">Register</a>
-          </MenuItem>
-          <MenuItem>
-            <a href="login.html">Login</a>
-          </MenuItem>
-        </Menu>
-      </NavBarStyled>
-    </AppHeader>
-  )
-}
+      <Menu>
+        <MenuItem>
+          <Link to="/profiles">Developers</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link to="/register">Register</Link>
+        </MenuItem>
+        <MenuItem>
+          <Link to="/login">Login</Link>
+        </MenuItem>
+      </Menu>
+    </NavBarStyled>
+  </AppHeader>
+)
 
 export default AppNavbar

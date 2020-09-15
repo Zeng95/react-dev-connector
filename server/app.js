@@ -6,7 +6,7 @@ const logger = require('morgan')
 
 const authRouter = require('./routes/auth')
 const postsRouter = require('./routes/posts')
-const profileRouter = require('./routes/profile')
+const profilesRouter = require('./routes/profiles')
 const usersRouter = require('./routes/users')
 
 const app = express()
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/api/auth', authRouter)
 app.use('/api/posts', postsRouter)
-app.use('/api/profile', profileRouter)
+app.use('/api/profiles', profilesRouter)
 app.use('/api/users', usersRouter)
 
 // catch 404 and forward to error handler
