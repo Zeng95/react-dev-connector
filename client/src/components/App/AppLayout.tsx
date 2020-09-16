@@ -1,11 +1,11 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import AppNavbar from './AppNavbar'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import styled from 'styled-components'
 import Landing from 'views/Landing'
-import Register from 'views/Register'
 import Login from 'views/Login'
 import NoMatch from 'views/NoMatch'
-import styled from 'styled-components'
+import Register from 'views/Register'
+import AppNavbar from './AppNavbar'
 
 const AppMainStyled = styled.main``
 

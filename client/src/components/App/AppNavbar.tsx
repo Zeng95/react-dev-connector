@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
 import { Code } from '@styled-icons/fa-solid'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 import tw from 'twin.macro'
 
 const AppHeader = styled.header.attrs({
