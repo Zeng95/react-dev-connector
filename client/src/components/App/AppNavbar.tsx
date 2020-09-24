@@ -7,7 +7,7 @@ import tw from 'twin.macro'
 const AppHeader = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
 })`
-  border-bottom: solid 1px white;
+  border-bottom: solid 1px #17a2b8;
   opacity: 0.9;
 
   a {
@@ -24,7 +24,7 @@ const AppHeader = styled.header.attrs({
 const NavBarStyled = styled.nav.attrs({
   className: 'flex justify-between items-center'
 })`
-  padding: 1rem 2rem;
+  padding: 0.7rem 2rem;
 `
 const Logo = styled.h1.attrs({
   className: 'font-bold leading-normal'

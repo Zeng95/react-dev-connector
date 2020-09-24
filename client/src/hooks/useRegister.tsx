@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface IUser {
   email: string
@@ -15,8 +15,8 @@ function RegisterPage() {
     confirmPassword: ''
   })
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [event.target.name]: event.target.value })
+  const onChange = (formValue: any) => {
+    setUser(formValue)
   }
 
   const handleSubmit = () => {

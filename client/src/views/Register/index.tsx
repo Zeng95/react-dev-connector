@@ -1,4 +1,5 @@
 import { User } from '@styled-icons/fa-solid'
+import { RegisterPage } from 'hooks/useRegister'
 import React, { FunctionComponent } from 'react'
 import {
   Button,
@@ -12,16 +13,15 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 const RegisterStyled = styled.div.attrs({
-  className: 'mx-auto mt-24'
+  className: 'mx-auto mt-24 px-8'
 })`
   max-width: 1100px;
 `
 const Title = styled.h1.attrs({
-  className: 'text-primary'
+  className: 'mb-4 text-primary'
 })`
   font-size: 3rem;
   line-height: 1.2;
-  margin-bottom: 1rem;
 `
 const Description = styled.p.attrs({
   className: 'flex items-center mb-4 text-2xl'
@@ -31,58 +31,61 @@ const Description = styled.p.attrs({
   }
 `
 
-const Register: FunctionComponent = () => (
-  <RegisterStyled>
-    <Title>Sign Up</Title>
+const Register: FunctionComponent = () => {
+  const register = RegisterPage()
 
-    <Description>
-      <User size="24" title="User" />
-      <span>Create Your Account</span>
-    </Description>
+  return (
+    <RegisterStyled>
+      <Title>Sign Up</Title>
 
-    <Form fluid>
-      <FormGroup className="flex">
-        <FormControl name="name" placeholder="Name" />
-        <HelpBlock tooltip>Required</HelpBlock>
-      </FormGroup>
+      <Description>
+        <User size="24" title="User" />
+        <span>Create Your Account</span>
+      </Description>
 
-      <FormGroup className="flex">
-        <FormControl name="email" type="email" placeholder="Email Address" />
-        <HelpBlock tooltip>Required</HelpBlock>
-      </FormGroup>
+      <Form
+        fluid
+        autoComplete="off"
+        formValue={register.user}
+        onChange={formValue => register.onChange(formValue)}
+      >
+        <FormGroup>
+          <FormControl name="username" placeholder="Username" />
+        </FormGroup>
 
-      <FormGroup className="flex">
-        <FormControl
-          name="password"
-          type="password"
-          placeholder="Password"
-          minLength={6}
-        />
-        <HelpBlock tooltip>Required</HelpBlock>
-      </FormGroup>
+        <FormGroup>
+          <FormControl name="email" type="email" placeholder="Email Address" />
+          <HelpBlock>
+            This site uses Gravatar so if you want a profile image, use a
+            Gravatar email
+          </HelpBlock>
+        </FormGroup>
 
-      <FormGroup className="flex">
-        <FormControl
-          name="confirmPassword"
-          type="password"
-          placeholder="Confirm Password"
-          minLength={6}
-        />
-        <HelpBlock tooltip>Required</HelpBlock>
-      </FormGroup>
+        <FormGroup>
+          <FormControl name="password" type="password" placeholder="Password" />
+        </FormGroup>
 
-      <FormGroup>
-        <ButtonToolbar>
-          <Button appearance="primary">Register</Button>
-          <Button appearance="default">Cancel</Button>
-        </ButtonToolbar>
-      </FormGroup>
-    </Form>
+        <FormGroup>
+          <FormControl
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+          />
+        </FormGroup>
 
-    <p className="my-1">
-      Already have an account? <a href="login.html">Sign In</a>
-    </p>
-  </RegisterStyled>
-)
+        <FormGroup>
+          <ButtonToolbar>
+            <Button appearance="primary">Register</Button>
+            <Button appearance="default">Cancel</Button>
+          </ButtonToolbar>
+        </FormGroup>
+      </Form>
+
+      <p className="my-4">
+        Already have an account? <a href="login.html">Sign In</a>
+      </p>
+    </RegisterStyled>
+  )
+}
 
 export { Register }
