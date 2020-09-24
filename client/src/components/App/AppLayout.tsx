@@ -1,11 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
-import Landing from 'views/Landing'
-import Login from 'views/Login'
-import NoMatch from 'views/NoMatch'
-import Register from 'views/Register'
-import AppNavbar from './AppNavbar'
+import { Landing } from 'views/Landing'
+import { Login } from 'views/Login'
+import { NoMatch } from 'views/NoMatch'
+import { Register } from 'views/Register'
+import { AppNavbar } from './AppNavbar'
 
 const AppMainStyled = styled.main``
 
@@ -29,4 +29,4 @@ const AppLayout = () => (
   </Router>
 )
 
-export default AppLayout
+export { AppLayout }

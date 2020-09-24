@@ -9,9 +9,9 @@ const config = require('config')
 const UserModel = require('../models/User')
 
 /**
- * @route    POST api/users/register
- * @desc     Register user
- * @access   Public
+ * @route   POST api/users/register
+ * @desc    Register user
+ * @access  Public
  */
 router.post(
   '/register',
@@ -90,9 +90,9 @@ router.post(
 )
 
 /**
- * @route    POST api/users/login
- * @desc     Authenticate user & get token
- * @access   Public
+ * @route   POST api/users/login
+ * @desc    Authenticate user & get token
+ * @access  Public
  */
 router.post(
   '/login',

@@ -1,12 +1,8 @@
 module.exports = {
-  extends: 'stylelint-config-sass-guidelines',
-  plugins: ['stylelint-scss', 'stylelint-order'],
+  extends: 'stylelint-config-standard',
+  plugins: 'stylelint-order',
   rules: {
-    'scss/at-rule-no-unknown': [
-      true,
-      {
-        ignoreAtRules: ['tailwind']
-      }
-    ]
+    'at-rule-no-unknown': [true, { ignoreAtRules: ['tailwind'] }],
+    'no-empty-source': null
   }
 }

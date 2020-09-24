@@ -2,8 +2,9 @@ const mongoose = require('mongoose')
 const { Schema, model } = mongoose
 const SchemaObjectId = Schema.Types.ObjectId
 
+// Every profile should be associated with the user.
 // A person can have multiple education entries like Bachelor, Postgraduate, Doctorate, and maybe a bunch of small courses. Same with every job experience you've got.
-const ProfileSchema = new Schema({
+const profileSchema = new Schema({
   user: {
     type: SchemaObjectId,
     ref: 'User'
@@ -22,7 +23,7 @@ const ProfileSchema = new Schema({
     required: true
   },
   skills: {
-    type: [String],
+    type: [String], // An array of strings
     required: true
   },
   bio: {
@@ -122,4 +123,4 @@ const ProfileSchema = new Schema({
   }
 })
 
-module.exports = model('Profile', ProfileSchema)
+module.exports = model('Profile', profileSchema)

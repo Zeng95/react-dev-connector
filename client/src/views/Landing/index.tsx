@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-interface ButtonProps {
+type ButtonProps = {
   readonly btnName: string
 }
 
@@ -13,7 +13,7 @@ const LandingStyled = styled.section.attrs({
     center/cover;
 `
 const OverLay = styled.div.attrs({
-  className: 'absolute top-0 left-0 right-0 w-full h-full z-10'
+  className: 'absolute top-0 right-0 left-0 w-full h-full z-10'
 })`
   background-color: rgba(0, 0, 0, 0.7);
 `
@@ -30,13 +30,18 @@ const Description = styled.p.attrs({
   className: 'my-4 text-base'
 })``
 const BasicButton = styled.button.attrs({
-  className: 'inline-block bg-light text-base outline-none'
+  className: 'inline-block rounded-sm bg-light text-base outline-none'
 })<ButtonProps>`
+  width: 100px;
   color: #333;
   margin-right: 0.5rem;
-  border: none;
-  padding: 0.4rem 1.3rem;
+  padding: 0.4rem 0;
   transition: opacity 0.3s ease-in;
+
+  a {
+    color: inherit;
+  }
+
   &:hover {
     opacity: 0.8;
   }
@@ -51,28 +56,25 @@ const BasicButton = styled.button.attrs({
   ${props =>
     props.btnName === 'login' &&
     css`
+      margin-right: 0;
       background: #f4f4f4;
     `}
-
-  a {
-    color: inherit;
-  }
 `
 
-const Landing = () => (
+const Landing: FunctionComponent = () => (
   <LandingStyled>
     <OverLay>
       <Content>
         <Title>Developer Connector</Title>
 
         <Description>
-          Create a developer profile/portfolio, share posts and get help
-          fromother developers
+          Create a developer profile/portfolio, share posts and get help from
+          other developers
         </Description>
 
         <div className="actions">
           <BasicButton btnName="register">
-            <Link to="register">Sign Up</Link>
+            <Link to="register">Register</Link>
           </BasicButton>
 
           <BasicButton btnName="login">
@@ -84,4 +86,4 @@ const Landing = () => (
   </LandingStyled>
 )
 
-export default Landing
+export { Landing }
