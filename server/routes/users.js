@@ -48,7 +48,7 @@ router.post(
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      res.status(400).json({ success: false, errors: errors.array() })
+      return res.status(400).json({ success: false, errors: errors.array() })
     }
 
     // Get user gravatr
@@ -111,7 +111,7 @@ router.post(
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
-      res.status(400).json({ success: false, errors: errors.array() })
+      return res.status(400).json({ success: false, errors: errors.array() })
     }
 
     try {
@@ -119,14 +119,14 @@ router.post(
 
       // 如果邮箱不匹配则返回 404
       if (!user) {
-        res.status(404).json({ success: false, msg: 'Invalid credentials' })
+        return res.status(404).json({ success: false, msg: 'Invalid credentials' })
       }
 
       const isMatch = await user.comparePassword(password)
 
       // 如果密码不匹配则返回 403
       if (!isMatch) {
-        res.status(403).json({ success: false, msg: 'Invalid credentials' })
+        return res.status(403).json({ success: false, msg: 'Invalid credentials' })
       }
 
       const payload = { userId: user['_id'] }
