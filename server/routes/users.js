@@ -5,8 +5,39 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 const config = require('config')
+const { verifyToken } = require('../middlewares/auth')
 
 const UserModel = require('../models/User')
+
+/**
+ * @route    GET api/users
+ * @desc     Get current user
+ * @access   Public
+ */
+router.get('/', verifyToken, async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId).select('-password')
+
+    if (!user) {
+      res.status(404).json({ success: true, msg: 'Authentication failure' })
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: 'Authentication successful',
+      user: {
+        id: user['_id'],
+        avatar: user.avatar,
+        email: user.email,
+        username: user.username
+      }
+    })
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, msg: `Server error: ${err.message}` })
+  }
+})
 
 /**
  * @route   POST api/users/register
@@ -16,57 +47,61 @@ const UserModel = require('../models/User')
 router.post(
   '/register',
   [
-    check('email')
+    check('email', 'Please include a valid email')
       .isEmail()
       .normalizeEmail()
-      .withMessage('Please include a valid email')
-      // Check if email is in use
-      .custom(value => {
-        return UserModel.findOne({ email: value }).then(user => {
-          if (user) {
-            return Promise.reject('Email already in use')
-          }
+      .custom(email => {
+        return UserModel.findOne({ email }).then(user => {
+          if (user) return Promise.reject('This email is already in use')
         })
       }),
 
-    check('username')
+    check('username', 'The username is required')
       .not()
       .isEmpty()
       .trim()
       .escape()
-      .withMessage('Username is required'),
+      .custom(username => {
+        return UserModel.findOne({ username }).then(user => {
+          if (user) return Promise.reject('This username is already in use')
+        })
+      }),
 
-    check('password')
+    check('password', 'The password must be 6 chars long and contain a number')
+      .trim()
       .isLength({ min: 6 })
-      .withMessage('Must be at least 6 chars long')
       .matches(/\d/)
-      .withMessage('Must contain a number')
+      .not()
+      .isIn(['123456'])
+      .withMessage('Do not use a common word as the password')
   ],
   async (req, res) => {
-    const { email, username, password } = req.body
-    // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() })
-    }
-
-    // Get user gravatr
-    const avatar = gravatar.url(email, {
-      protocol: 'https',
-      s: '200',
-      d: 'retro'
-    })
-
-    const user = new UserModel({ email, username, password, avatar })
-    const salt = bcrypt.genSaltSync(10)
-    // 加密密码
-    user.password = bcrypt.hashSync(password, salt)
-
     try {
-      await user.save()
+      const { email, username, password } = req.body
+      // Finds the validation errors in this request and wraps them in an object with handy functions
+      const errors = validationResult(req)
 
-      const payload = { userId: user['_id'] }
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, errors: errors.array() })
+      }
+
+      // Get user default gravatr
+      const avatar = gravatar.url(email, {
+        protocol: 'https',
+        s: '200',
+        d: 'retro'
+      })
+
+      const salt = await bcrypt.genSalt(10)
+      const hashedPassword = await bcrypt.hash(password, salt)
+      const newUser = new UserModel({
+        avatar,
+        email,
+        username,
+        password: hashedPassword
+      })
+      const savedUser = await newUser.save()
+      const payload = { userId: savedUser['_id'] }
 
       // Generate a signed JSON web token with the contents of user object and return it in the response
       jwt.sign(
@@ -76,9 +111,17 @@ router.post(
         (err, token) => {
           if (err) throw err
 
-          res
-            .status(200)
-            .json({ success: true, msg: 'User registered successfully', token })
+          res.status(200).json({
+            success: true,
+            msg: 'User registered successfully',
+            user: {
+              id: savedUser['_id'],
+              avatar: savedUser.avatar,
+              email: savedUser.email,
+              username: savedUser.username
+            },
+            token
+          })
         }
       )
     } catch (err) {
@@ -97,36 +140,38 @@ router.post(
 router.post(
   '/login',
   [
-    check('email')
+    check('email', 'Please include a valid email')
       .trim()
       .isEmail()
       .normalizeEmail()
-      .withMessage('Please include a valid email'),
+      .custom(email => {
+        return UserModel.findOne({ email }).then(user => {
+          if (!user) return Promise.reject('Invalid credentials')
+        })
+      }),
 
-    check('password').trim().notEmpty().withMessage('Password is required')
+    check('password', 'The password must be 6 chars long')
+      .trim()
+      .isLength({ min: 6 })
   ],
   async (req, res) => {
-    const { email, password } = req.body
-    // Finds the validation errors in this request and wraps them in an object with handy functions
-    const errors = validationResult(req)
-
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() })
-    }
-
     try {
-      const user = await UserModel.findOne({ email })
+      const { email, password } = req.body
+      // Finds the validation errors in this request and wraps them in an object with handy functions
+      const errors = validationResult(req)
 
-      // 如果邮箱不匹配则返回 404
-      if (!user) {
-        return res.status(404).json({ success: false, msg: 'Invalid credentials' })
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, errors: errors.array() })
       }
 
+      const user = await UserModel.findOne({ email })
       const isMatch = await user.comparePassword(password)
 
       // 如果密码不匹配则返回 403
       if (!isMatch) {
-        return res.status(403).json({ success: false, msg: 'Invalid credentials' })
+        return res
+          .status(403)
+          .json({ success: false, msg: 'Invalid credentials' })
       }
 
       const payload = { userId: user['_id'] }
@@ -139,9 +184,17 @@ router.post(
         (err, token) => {
           if (err) throw err
 
-          res
-            .status(200)
-            .json({ success: true, msg: 'User logged in successfully', token })
+          res.status(200).json({
+            success: true,
+            msg: 'User logged in successfully',
+            user: {
+              id: user['_id'],
+              avatar: user.avatar,
+              email: user.email,
+              username: user.username
+            },
+            token
+          })
         }
       )
     } catch (err) {

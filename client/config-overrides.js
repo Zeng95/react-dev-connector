@@ -6,6 +6,7 @@ module.exports = override(
     lessOptions: {
       javascriptEnabled: true,
       modifyVars: {
+        '@base-color': '#17a2b8',
         '@text-color': '#333',
         '@font-family-base':
           'Raleway, sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Helvetica Neue, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji, PingFang SC, Hiragino Sans GB, Microsoft YaHei, STXihei',

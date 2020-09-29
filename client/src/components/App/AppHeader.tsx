@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
-const AppHeader = styled.header.attrs({
+const AppHeaderStyled = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
 })`
   border-bottom: solid 1px #17a2b8;
@@ -21,7 +21,7 @@ const AppHeader = styled.header.attrs({
     }
   }
 `
-const NavBarStyled = styled.nav.attrs({
+const NavBar = styled.nav.attrs({
   className: 'flex justify-between items-center'
 })`
   padding: 0.7rem 2rem;
@@ -40,9 +40,9 @@ const Menu = styled.ul.attrs({
 })``
 const MenuItem = styled.li``
 
-const AppNavbar = () => (
-  <AppHeader>
-    <NavBarStyled>
+const AppHeader = () => (
+  <AppHeaderStyled>
+    <NavBar>
       <Logo>
         <Link to="/">
           <Globe size="24" title="Logo" />
@@ -65,8 +65,8 @@ const AppNavbar = () => (
           <Link to="/login">Login</Link>
         </MenuItem>
       </Menu>
-    </NavBarStyled>
-  </AppHeader>
+    </NavBar>
+  </AppHeaderStyled>
 )
 
-export { AppNavbar }
+export { AppHeader }

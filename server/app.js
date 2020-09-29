@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
 
-const authRouter = require('./routes/auth')
 const postsRouter = require('./routes/posts')
 const profilesRouter = require('./routes/profiles')
 const usersRouter = require('./routes/users')
@@ -13,10 +12,6 @@ const usersRouter = require('./routes/users')
 const app = express()
 
 require('./config/database')
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'jade')
 
 // init middleware | 初始化中间件
 app.use(logger('dev'))
@@ -26,7 +21,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
 
-app.use('/api/auth', authRouter)
 app.use('/api/posts', postsRouter)
 app.use('/api/profiles', profilesRouter)
 app.use('/api/users', usersRouter)
@@ -44,7 +38,7 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500)
-  res.render('error')
+  res.json('error')
 })
 
 module.exports = app

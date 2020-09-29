@@ -1,32 +1,35 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 import { Landing } from 'views/Landing'
-import { Login } from 'views/Login'
+import { Login } from 'views/Auth/Login'
 import { NoMatch } from 'views/NoMatch'
-import { Register } from 'views/Register'
-import { AppNavbar } from './AppNavbar'
+import { Register } from 'views/Auth/Register'
+import { AppHeader } from './AppHeader'
+import { AuthContextProvider } from 'context/AuthContext'
 
-const AppMainStyled = styled.main``
+const AppContentStyled = styled.main``
 
 // Arrow function
-const AppMain = () => (
-  <AppMainStyled>
+const AppContent = () => (
+  <AppContentStyled>
     <Switch>
       <Route exact path="/" component={Landing} />
-      <Route path="/register" component={Register} />
       <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
       <Route path="*" component={NoMatch} />
     </Switch>
-  </AppMainStyled>
+  </AppContentStyled>
 )
 
 // Arrow function
 const AppLayout = () => (
-  <Router>
-    <AppNavbar />
-    <AppMain />
-  </Router>
+  <BrowserRouter>
+    <AuthContextProvider>
+      <AppHeader />
+      <AppContent />
+    </AuthContextProvider>
+  </BrowserRouter>
 )
 
 export { AppLayout }

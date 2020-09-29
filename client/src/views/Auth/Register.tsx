@@ -1,6 +1,7 @@
 import { User } from '@styled-icons/fa-solid'
 import { RegisterPage } from 'hooks/useRegister'
 import React, { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   ButtonToolbar,
@@ -46,7 +47,9 @@ const Register: FunctionComponent = () => {
       <Form
         fluid
         autoComplete="off"
+        checkTrigger="blur"
         formValue={register.user}
+        model={register.userModel}
         onChange={formValue => register.onChange(formValue)}
       >
         <FormGroup>
@@ -62,7 +65,12 @@ const Register: FunctionComponent = () => {
         </FormGroup>
 
         <FormGroup>
-          <FormControl name="password" type="password" placeholder="Password" />
+          <FormControl
+            name="password"
+            type="password"
+            placeholder="Password"
+            autoComplete="on"
+          />
         </FormGroup>
 
         <FormGroup>
@@ -70,19 +78,34 @@ const Register: FunctionComponent = () => {
             name="confirmPassword"
             type="password"
             placeholder="Confirm Password"
+            autoComplete="on"
           />
         </FormGroup>
 
         <FormGroup>
           <ButtonToolbar>
-            <Button appearance="primary">Register</Button>
-            <Button appearance="default">Cancel</Button>
+            <Button
+              appearance="primary"
+              type="submit"
+              size="lg"
+              onClick={register.handleRegister}
+            >
+              Submit
+            </Button>
+            <Button
+              appearance="default"
+              type="reset"
+              size="lg"
+              onClick={register.onReset}
+            >
+              Delete
+            </Button>
           </ButtonToolbar>
         </FormGroup>
       </Form>
 
       <p className="my-4">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to="/Login">Sign In</Link>
       </p>
     </RegisterStyled>
   )

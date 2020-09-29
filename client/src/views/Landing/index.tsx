@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
+import tw from 'twin.macro'
 
 type ButtonProps = {
   readonly btnName: string
@@ -35,10 +36,12 @@ const BasicButton = styled.button.attrs({
   width: 100px;
   color: #333;
   margin-right: 0.5rem;
-  padding: 0.4rem 0;
   transition: opacity 0.3s ease-in;
 
   a {
+    ${tw`block`}
+
+    padding: 0.4rem 0;
     color: inherit;
   }
 

@@ -1,25 +1,48 @@
-import { useState } from 'react'
+import { login } from 'api/users'
+import { AuthContext } from 'context/AuthContext'
+import { useContext, useState } from 'react'
+import { Schema } from 'rsuite'
 
-type IFormData = {
+type IUser = {
   email: string
-  username: string
   password: string
-  confirmPassword: string
 }
 
-function useRegister() {
-  const [registerData, setRegisterData] = useState<IFormData>({
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: ''
+function LoginPage() {
+  const { dispatch } = useContext(AuthContext)
+  const [user, setUser] = useState<IUser>({ email: '', password: '' })
+
+  const { StringType } = Schema.Types
+  const userModel = Schema.Model({
+    email: StringType()
+      .isEmail('Please enter a valid email address.')
+      .isRequired('This field is required.'),
+    password: StringType()
+      .minLength(6, 'Minimum 6 characters required')
+      .isRequired('This field is required.')
   })
 
-  const handleLogin = (formData: IFormData) => {
-    setRegisterData(formData)
+  const onChange = (formValue: any) => {
+    setUser(formValue)
   }
 
-  return { registerData, handleLogin }
+  const onReset = () => {
+    setUser({ email: '', password: '' })
+  }
+
+  const handleLogin = async () => {
+    try {
+      const { email, password } = user
+      const newUser = { email, password }
+      const response = await login(newUser)
+
+      dispatch({ type: 'LOGIN', payload: response.data })
+    } catch (err) {
+      console.error(`Error: ${err.message}`)
+    }
+  }
+
+  return { user, userModel, onChange, onReset, handleLogin }
 }
 
-export { useRegister }
+export { LoginPage }
