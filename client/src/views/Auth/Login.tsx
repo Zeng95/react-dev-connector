@@ -1,8 +1,16 @@
-import { User } from '@styled-icons/fa-solid'
 import { LoginPage } from 'hooks/useLogin'
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, ButtonToolbar, Form, FormControl, FormGroup } from 'rsuite'
+import {
+  Button,
+  ButtonToolbar,
+  Form,
+  FormControl,
+  FormGroup,
+  Icon,
+  InputGroup,
+  Schema
+} from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
@@ -25,15 +33,22 @@ const Description = styled.p.attrs({
   }
 `
 
-const Login: FunctionComponent = () => {
+const Login: React.FC = () => {
   const login = LoginPage()
+  const { StringType } = Schema.Types
+  const model = Schema.Model({
+    email: StringType()
+      .isEmail('Please enter a valid email address.')
+      .isRequired('This field is required.'),
+    password: StringType().isRequired('This field is required.')
+  })
 
   return (
     <LoginStyled>
       <Title>Sign In</Title>
 
       <Description>
-        <User size="24" title="User" />
+        <Icon icon="globe" size="2x" />
         <span>Sign into Your Account</span>
       </Description>
 
@@ -42,25 +57,42 @@ const Login: FunctionComponent = () => {
         autoComplete="off"
         checkTrigger="blur"
         formValue={login.user}
-        model={login.userModel}
+        model={model}
+        ref={login.form}
         onChange={formValue => login.onChange(formValue)}
       >
         <FormGroup>
-          <FormControl name="email" type="email" placeholder="Email Address" />
+          <InputGroup inside style={{ width: '100%' }}>
+            <FormControl
+              name="email"
+              type="email"
+              placeholder="Email Address"
+            />
+            <InputGroup.Addon>
+              <Icon icon="envelope" />
+            </InputGroup.Addon>
+          </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <FormControl
-            name="password"
-            type="password"
-            placeholder="Password"
-            autoComplete="on"
-          />
+          <InputGroup inside style={{ width: '100%' }}>
+            <FormControl
+              name="password"
+              type="password"
+              placeholder="Password"
+              autoComplete="on"
+            />
+            <InputGroup.Addon>
+              <Icon icon="key" />
+            </InputGroup.Addon>
+          </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ButtonToolbar>
             <Button
+              disabled={login.user.isSubmitting}
+              loading={login.user.isSubmitting}
               appearance="primary"
               type="submit"
               size="lg"
@@ -69,12 +101,13 @@ const Login: FunctionComponent = () => {
               Submit
             </Button>
             <Button
+              disabled={login.user.isSubmitting}
               appearance="default"
               type="reset"
               size="lg"
               onClick={login.onReset}
             >
-              Delete
+              Remove
             </Button>
           </ButtonToolbar>
         </FormGroup>

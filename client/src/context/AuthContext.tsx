@@ -1,9 +1,16 @@
-import React, { createContext, useReducer, FunctionComponent } from 'react'
+import React, { createContext, useReducer } from 'react'
 
 type InitialStateType = {
   user: null
   isAuthenticated: boolean
 }
+
+type payloadType = {}
+
+type ACTIONTYPE =
+  | { type: 'LOGIN'; payload: null }
+  | { type: 'REGISTER'; payload: null }
+  | { type: 'LOGOUT'; payload: null }
 
 const initialState = {
   user: null,
@@ -15,14 +22,16 @@ const AuthContext = createContext<{
   dispatch: React.Dispatch<any>
 }>({ state: initialState, dispatch: () => null })
 
-const reducer = (state: any, action: any) => {
-  switch (action.type) {
+const authReducer = (state: InitialStateType, action: any) => {
+  const { type, payload } = action
+
+  switch (type) {
     case 'LOGIN':
-      localStorage.setItem('auth-token', JSON.stringify(action.payload.token))
-      return { ...state, isAuthenticated: true, user: action.payload.user }
+      localStorage.setItem('auth-token', JSON.stringify(payload.token))
+      return { ...state, isAuthenticated: true, user: payload.user }
     case 'REGISTER':
-      localStorage.setItem('auth-token', JSON.stringify(action.payload.token))
-      return { ...state, isAuthenticated: true, user: action.payload.user }
+      localStorage.setItem('auth-token', JSON.stringify(payload.token))
+      return { ...state, isAuthenticated: true, user: payload.user }
     case 'LOGOUT':
       localStorage.clear()
       return { ...state, isAuthenticated: false, user: null }
@@ -31,8 +40,8 @@ const reducer = (state: any, action: any) => {
   }
 }
 
-const AuthContextProvider: FunctionComponent = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+const AuthContextProvider: React.FC<{ children: any }> = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState)
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

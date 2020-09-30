@@ -1,63 +1,62 @@
 import { register } from 'api/users'
 import { AuthContext } from 'context/AuthContext'
-import { useContext, useState } from 'react'
-import { Schema } from 'rsuite'
+import { useContext, useRef, useState } from 'react'
 
 type IUser = {
   email: string
   username: string
   password: string
   confirmPassword: string
+  isSubmitting: boolean
 }
 
 function RegisterPage() {
-  const { dispatch } = useContext(AuthContext)
   const [user, setUser] = useState<IUser>({
     email: '',
     username: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    isSubmitting: false
   })
-
-  const { StringType } = Schema.Types
-  const userModel = Schema.Model({
-    email: StringType()
-      .isEmail('Please enter a valid email address.')
-      .isRequired('This field is required.'),
-    username: StringType().isRequired('This field is required.'),
-    password: StringType()
-      .minLength(6, 'Minimum 6 characters required')
-      .isRequired('This field is required.'),
-    confirmPassword: StringType()
-      .addRule((value, data) => {
-        if (value !== data.password) return false
-
-        return true
-      }, 'The two passwords do not match')
-      .isRequired('This field is required.')
-  })
+  const { dispatch } = useContext(AuthContext)
+  const form = useRef<HTMLFormElement>(null)
 
   const onChange = (formValue: any) => {
     setUser(formValue)
   }
 
   const onReset = () => {
-    setUser({ email: '', username: '', password: '', confirmPassword: '' })
+    if (form.current !== null) form.current.cleanErrors()
+
+    setUser({
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      isSubmitting: false
+    })
   }
 
   const handleRegister = async () => {
     try {
+      if (form.current !== null && !form.current.check()) return false
+
+      setUser({ ...user, isSubmitting: true })
+
       const { email, username, password } = user
       const newUser = { email, username, password }
       const response = await register(newUser)
 
       dispatch({ type: 'REGISTER', payload: response.data })
+      onReset()
     } catch (err) {
       console.error(`Error: ${err.message}`)
+    } finally {
+      setUser({ ...user, isSubmitting: false })
     }
   }
 
-  return { user, userModel, onChange, onReset, handleRegister }
+  return { form, user, onChange, onReset, handleRegister }
 }
 
 export { RegisterPage }
