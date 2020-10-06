@@ -1,3 +1,4 @@
+import { Feather } from '@styled-icons/fa-solid'
 import { RegisterPage } from 'hooks/useRegister'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -16,7 +17,7 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 const RegisterStyled = styled.div.attrs({
-  className: 'mx-auto mt-24 px-8'
+  className: 'mx-auto px-8'
 })`
   max-width: 1100px;
 `
@@ -59,7 +60,7 @@ const Register: React.FC = () => {
       <Title>Sign Up</Title>
 
       <Description>
-        <Icon icon="globe" size="2x" />
+        <Feather size="24" />
         <span>Create Your Account</span>
       </Description>
 
@@ -69,7 +70,7 @@ const Register: React.FC = () => {
         checkTrigger="blur"
         formValue={register.user}
         model={model}
-        ref={register.form}
+        ref={register.formEl}
         onChange={formValue => register.onChange(formValue)}
       >
         <FormGroup>
@@ -132,16 +133,14 @@ const Register: React.FC = () => {
               disabled={register.user.isSubmitting}
               loading={register.user.isSubmitting}
               appearance="primary"
-              type="submit"
               size="lg"
-              onClick={register.handleRegister}
+              onClick={register.onRegister}
             >
               Submit
             </Button>
             <Button
               disabled={register.user.isSubmitting}
               appearance="default"
-              type="reset"
               size="lg"
               onClick={register.onReset}
             >

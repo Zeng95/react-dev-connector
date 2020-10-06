@@ -1,5 +1,6 @@
-import { Globe } from '@styled-icons/fa-solid'
-import React from 'react'
+import { Globe, SignOutAlt } from '@styled-icons/fa-solid'
+import { AuthContext } from 'context/AuthContext'
+import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import tw from 'twin.macro'
@@ -38,35 +39,61 @@ const Logo = styled.h1.attrs({
 const Menu = styled.ul.attrs({
   className: 'flex mb-0'
 })``
-const MenuItem = styled.li``
+const MenuItem = styled.li`
+  a {
+    ${tw`flex items-center`}
+  }
+`
+const Logout = styled(SignOutAlt).attrs({
+  className: 'mr-1'
+})``
 
-const AppHeader = () => (
-  <AppHeaderStyled>
-    <NavBar>
-      <Logo>
-        <Link to="/">
-          <Globe size="24" title="Logo" />
-          &nbsp;
-          <span>DevConnector</span>
-        </Link>
-      </Logo>
+const AppHeader: React.FC = () => {
+  const { state } = useContext(AuthContext)
 
-      <Menu>
-        <MenuItem>
-          <Link to="/profiles">中文</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/profiles">Developers</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/register">Register</Link>
-        </MenuItem>
-        <MenuItem>
-          <Link to="/login">Login</Link>
-        </MenuItem>
-      </Menu>
-    </NavBar>
-  </AppHeaderStyled>
-)
+  const authLinks = (
+    <MenuItem>
+      <Link to="/logout">
+        <Logout size="16" title="Logout account" />
+        <span>Logout</span>
+      </Link>
+    </MenuItem>
+  )
+
+  const guestLinks = (
+    <Fragment>
+      <MenuItem>
+        <Link to="/register">Register</Link>
+      </MenuItem>
+      <MenuItem>
+        <Link to="/login">Login</Link>
+      </MenuItem>
+    </Fragment>
+  )
+
+  return (
+    <AppHeaderStyled>
+      <NavBar>
+        <Logo>
+          <Link to="/">
+            <Globe size="24" title="Logo" />
+            &nbsp;
+            <span>DevConnector</span>
+          </Link>
+        </Logo>
+
+        <Menu>
+          <MenuItem>
+            <Link to="/profiles">中文</Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/profiles">Developers</Link>
+          </MenuItem>
+          {state.isAuthenticated ? authLinks : guestLinks}
+        </Menu>
+      </NavBar>
+    </AppHeaderStyled>
+  )
+}
 
 export { AppHeader }

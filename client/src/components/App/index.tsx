@@ -1,6 +1,11 @@
 import React from 'react'
 import { AppLayout } from './AppLayout'
+import { AuthContextProvider } from 'context/AuthContext'
 
-const App = () => <AppLayout />
+const App: React.FC = () => (
+  <AuthContextProvider>
+    <AppLayout />
+  </AuthContextProvider>
+)
 
 export default App

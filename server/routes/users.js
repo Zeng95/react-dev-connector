@@ -10,11 +10,11 @@ const { verifyToken } = require('../middlewares/auth')
 const UserModel = require('../models/User')
 
 /**
- * @route    GET api/users
- * @desc     Get current user
+ * @route    GET api/users/me
+ * @desc     Get the authenticated user
  * @access   Public
  */
-router.get('/', verifyToken, async (req, res) => {
+router.get('/me', verifyToken, async (req, res) => {
   try {
     const user = await UserModel.findById(req.userId).select('-password')
 
@@ -33,9 +33,10 @@ router.get('/', verifyToken, async (req, res) => {
       }
     })
   } catch (err) {
-    res
-      .status(500)
-      .json({ success: false, msg: `Server error: ${err.message}` })
+    res.status(500).json({
+      success: false,
+      msg: `Server error: ${err.message}`
+    })
   }
 })
 
@@ -52,7 +53,7 @@ router.post(
       .normalizeEmail()
       .custom(email => {
         return UserModel.findOne({ email }).then(user => {
-          if (user) return Promise.reject('This email is already in use')
+          if (user) return Promise.reject('The email is already in use')
         })
       }),
 
@@ -63,7 +64,7 @@ router.post(
       .escape()
       .custom(username => {
         return UserModel.findOne({ username }).then(user => {
-          if (user) return Promise.reject('This username is already in use')
+          if (user) return Promise.reject('The username is already in use')
         })
       }),
 
@@ -125,9 +126,10 @@ router.post(
         }
       )
     } catch (err) {
-      res
-        .status(500)
-        .json({ success: false, msg: `Server error: ${err.message}` })
+      res.status(500).json({
+        success: false,
+        msg: `Server error: ${err.message}`
+      })
     }
   }
 )
@@ -169,9 +171,10 @@ router.post(
 
       // 如果密码不匹配则返回 403
       if (!isMatch) {
-        return res
-          .status(403)
-          .json({ success: false, msg: 'Invalid credentials' })
+        return res.status(403).json({
+          success: false,
+          msg: 'Invalid credentials'
+        })
       }
 
       const payload = { userId: user['_id'] }
@@ -198,9 +201,10 @@ router.post(
         }
       )
     } catch (err) {
-      res
-        .status(500)
-        .json({ success: false, msg: `Server error: ${err.message}` })
+      res.status(500).json({
+        success: false,
+        msg: `Server error: ${err.message}`
+      })
     }
   }
 )

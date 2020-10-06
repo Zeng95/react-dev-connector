@@ -1,6 +1,8 @@
 import { register } from 'api/users'
 import { AuthContext } from 'context/AuthContext'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Alert } from 'rsuite'
 
 type IUser = {
   email: string
@@ -11,6 +13,7 @@ type IUser = {
 }
 
 function RegisterPage() {
+  const history = useHistory()
   const [user, setUser] = useState<IUser>({
     email: '',
     username: '',
@@ -18,15 +21,15 @@ function RegisterPage() {
     confirmPassword: '',
     isSubmitting: false
   })
-  const { dispatch } = useContext(AuthContext)
-  const form = useRef<HTMLFormElement>(null)
+  const { state, dispatch } = useContext(AuthContext)
+  const formEl = useRef<HTMLFormElement>(null)
 
   const onChange = (formValue: any) => {
     setUser(formValue)
   }
 
   const onReset = () => {
-    if (form.current !== null) form.current.cleanErrors()
+    if (formEl.current !== null) formEl.current.cleanErrors()
 
     setUser({
       email: '',
@@ -37,26 +40,47 @@ function RegisterPage() {
     })
   }
 
-  const handleRegister = async () => {
+  const onRegister = async () => {
     try {
-      if (form.current !== null && !form.current.check()) return false
+      if (formEl.current !== null && !formEl.current.check()) return false
 
       setUser({ ...user, isSubmitting: true })
 
       const { email, username, password } = user
-      const newUser = { email, username, password }
-      const response = await register(newUser)
+      const response = await register({ email, username, password })
+      const { token, msg } = response.data
 
-      dispatch({ type: 'REGISTER', payload: response.data })
-      onReset()
+      dispatch({ type: 'REGISTER', payload: { token } })
+
+      Alert.success(msg)
     } catch (err) {
-      console.error(`Error: ${err.message}`)
+      const { response, message } = err
+
+      if (response) {
+        const { errors, msg } = err.response.data
+
+        if (errors) {
+          errors.forEach((error: any) => Alert.error(error.msg))
+        } else {
+          Alert.error(msg)
+        }
+      } else {
+        Alert.error(message)
+      }
     } finally {
       setUser({ ...user, isSubmitting: false })
     }
   }
 
-  return { form, user, onChange, onReset, handleRegister }
+  useEffect(() => {
+    const { isAuthenticated, token } = state
+
+    if (isAuthenticated || token) {
+      history.push('/dashboard')
+    }
+  }, [state, history])
+
+  return { formEl, user, onChange, onReset, onRegister }
 }
 
 export { RegisterPage }

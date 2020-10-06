@@ -1,19 +1,26 @@
 import React, { createContext, useReducer } from 'react'
 
 type InitialStateType = {
-  user: null
+  user: object | null
+  token: string | null
   isAuthenticated: boolean
 }
 
-type payloadType = {}
+type payloadType = {
+  user: object
+  token: string
+}
 
-type ACTIONTYPE =
-  | { type: 'LOGIN'; payload: null }
-  | { type: 'REGISTER'; payload: null }
-  | { type: 'LOGOUT'; payload: null }
+type ActionType =
+  | { type: 'REGISTER'; payload: payloadType }
+  | { type: 'LOGIN'; payload: payloadType }
+  | { type: 'LOGOUT'; payload: payloadType }
+  | { type: 'USER_LOADED'; payload: payloadType }
+  | { type: 'AUTH_ERROR'; payload: payloadType }
 
 const initialState = {
   user: null,
+  token: localStorage.getItem('auth-token'),
   isAuthenticated: false
 }
 
@@ -22,19 +29,20 @@ const AuthContext = createContext<{
   dispatch: React.Dispatch<any>
 }>({ state: initialState, dispatch: () => null })
 
-const authReducer = (state: InitialStateType, action: any) => {
+const authReducer = (state: InitialStateType, action: ActionType) => {
   const { type, payload } = action
 
   switch (type) {
-    case 'LOGIN':
-      localStorage.setItem('auth-token', JSON.stringify(payload.token))
-      return { ...state, isAuthenticated: true, user: payload.user }
+    case 'USER_LOADED':
+      return { ...state, ...payload, isAuthenticated: true }
     case 'REGISTER':
-      localStorage.setItem('auth-token', JSON.stringify(payload.token))
-      return { ...state, isAuthenticated: true, user: payload.user }
+    case 'LOGIN':
+      localStorage.setItem('auth-token', payload.token)
+      return { ...state, ...payload, isAuthenticated: true }
+    case 'AUTH_ERROR':
     case 'LOGOUT':
-      localStorage.clear()
-      return { ...state, isAuthenticated: false, user: null }
+      localStorage.removeItem('auth-token')
+      return { user: null, token: null, isAuthenticated: false }
     default:
       return state
   }

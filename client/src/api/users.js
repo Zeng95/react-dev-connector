@@ -4,7 +4,7 @@ import { setAuthToken } from 'utils'
 const END_POINT = '/users'
 
 const getCurrentUser = () => {
-  return httpClient.get(`${END_POINT}`, { headers: setAuthToken() })
+  return httpClient.get(`${END_POINT}/me`, { headers: setAuthToken() })
 }
 
 const login = formData => {

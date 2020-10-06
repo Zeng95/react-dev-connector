@@ -1,3 +1,4 @@
+import { Feather } from '@styled-icons/fa-solid'
 import { LoginPage } from 'hooks/useLogin'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -15,7 +16,7 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 const LoginStyled = styled.div.attrs({
-  className: 'mx-auto mt-24 px-8'
+  className: 'mx-auto px-8'
 })`
   max-width: 1100px;
 `
@@ -48,7 +49,7 @@ const Login: React.FC = () => {
       <Title>Sign In</Title>
 
       <Description>
-        <Icon icon="globe" size="2x" />
+        <Feather size="24" />
         <span>Sign into Your Account</span>
       </Description>
 
@@ -58,7 +59,7 @@ const Login: React.FC = () => {
         checkTrigger="blur"
         formValue={login.user}
         model={model}
-        ref={login.form}
+        ref={login.formEl}
         onChange={formValue => login.onChange(formValue)}
       >
         <FormGroup>
@@ -94,16 +95,14 @@ const Login: React.FC = () => {
               disabled={login.user.isSubmitting}
               loading={login.user.isSubmitting}
               appearance="primary"
-              type="submit"
               size="lg"
-              onClick={login.handleLogin}
+              onClick={login.onLogin}
             >
               Submit
             </Button>
             <Button
               disabled={login.user.isSubmitting}
               appearance="default"
-              type="reset"
               size="lg"
               onClick={login.onReset}
             >

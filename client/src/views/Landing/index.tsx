@@ -8,10 +8,10 @@ type ButtonProps = {
 }
 
 const LandingStyled = styled.section.attrs({
-  className: 'relative h-screen'
+  className: 'absolute top-0 left-0 w-full h-full'
 })`
-  background: url(${require('assets/images/showcase.jpg')}) no-repeat center
-    center/cover;
+  background: url(${require('assets/images/showcase.jpg')}) no-repeat center;
+  background-size: cover;
 `
 const OverLay = styled.div.attrs({
   className: 'absolute top-0 right-0 left-0 w-full h-full z-10'
