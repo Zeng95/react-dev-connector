@@ -1,8 +1,8 @@
 import { User } from '@styled-icons/fa-solid'
-// import { AuthContext } from 'context/AuthContext'
+import { AuthContext } from 'context/AuthContext'
 // import { ProfileContext } from 'context/ProfileContext'
 // import { DashboardPage } from 'hooks/useProfiles'
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
@@ -26,8 +26,6 @@ const Description = styled.p.attrs({
 `
 
 const Dashboard: React.FC = () => {
-  // const dashboard = DashboardPage()
-
   return (
     <Container>
       <Title>Dashboard</Title>

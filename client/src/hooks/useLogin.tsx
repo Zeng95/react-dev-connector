@@ -1,7 +1,6 @@
 import { login } from 'api/users'
 import { AuthContext } from 'context/AuthContext'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 
 type IUser = {
@@ -11,13 +10,13 @@ type IUser = {
 }
 
 function LoginPage() {
-  const history = useHistory()
   const [user, setUser] = useState<IUser>({
     email: '',
     password: '',
     isSubmitting: false
   })
-  const { state, dispatch } = useContext(AuthContext)
+  const auth = useContext(AuthContext)
+  const { dispatch } = auth
   const formEl = useRef<HTMLFormElement>(null)
 
   const onLogin = async () => {
@@ -67,14 +66,6 @@ function LoginPage() {
 
     setUser({ email: '', password: '', isSubmitting: false })
   }
-
-  useEffect(() => {
-    const { isAuthenticated, token } = state
-
-    if (isAuthenticated || token) {
-      history.push('/dashboard')
-    }
-  }, [state, history])
 
   return { formEl, user, onChange, onKeyUp, onReset, onLogin }
 }

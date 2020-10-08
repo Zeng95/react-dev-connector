@@ -1,14 +1,14 @@
 import React from 'react'
 import { AppLayout } from './AppLayout'
 import { AuthProvider } from 'context/AuthContext'
-import { BrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from 'context/ThemeContext'
 
 const App: React.FC = () => (
-  <AuthProvider>
-    <BrowserRouter>
+  <ThemeProvider>
+    <AuthProvider>
       <AppLayout />
-    </BrowserRouter>
-  </AuthProvider>
+    </AuthProvider>
+  </ThemeProvider>
 )
 
 export default App

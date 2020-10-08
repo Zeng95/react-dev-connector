@@ -12,7 +12,7 @@ const UserModel = require('../models/User')
 /**
  * @route    GET api/users/me
  * @desc     Get the authenticated user
- * @access   Public
+ * @access   Private
  */
 router.get('/me', verifyToken, async (req, res) => {
   try {
@@ -108,13 +108,13 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: '1h' },
+        { expiresIn: '3h' },
         (err, token) => {
           if (err) throw err
 
           res.status(200).json({
             success: true,
-            msg: 'User registered successfully',
+            msg: 'You have successfully created your account',
             user: {
               id: savedUser['_id'],
               avatar: savedUser.avatar,
@@ -183,7 +183,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: '1h' },
+        { expiresIn: '3h' },
         (err, token) => {
           if (err) throw err
 

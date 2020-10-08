@@ -2,10 +2,11 @@ import { getCurrentUser } from 'api/users'
 import { AuthContext } from 'context/AuthContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Alert } from 'rsuite'
-import AppRouter from './AppRouter'
+import { routes } from 'routes'
 
 const AppLayout: React.FC = () => {
-  const { state, dispatch } = useContext(AuthContext)
+  const auth = useContext(AuthContext)
+  const { state, dispatch } = auth
 
   const loadUser = useCallback(async () => {
     try {
@@ -29,7 +30,7 @@ const AppLayout: React.FC = () => {
     }
   }, [state, loadUser])
 
-  return <AppRouter />
+  return routes
 }
 
 export { AppLayout }

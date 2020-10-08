@@ -1,7 +1,6 @@
 import { register } from 'api/users'
 import { AuthContext } from 'context/AuthContext'
-import { useContext, useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 
 type IUser = {
@@ -13,7 +12,6 @@ type IUser = {
 }
 
 function RegisterPage() {
-  const history = useHistory()
   const [user, setUser] = useState<IUser>({
     email: '',
     username: '',
@@ -21,7 +19,7 @@ function RegisterPage() {
     confirmPassword: '',
     isSubmitting: false
   })
-  const { state, dispatch } = useContext(AuthContext)
+  const { dispatch } = useContext(AuthContext)
   const formEl = useRef<HTMLFormElement>(null)
 
   const onRegister = async () => {
@@ -77,14 +75,6 @@ function RegisterPage() {
       isSubmitting: false
     })
   }
-
-  useEffect(() => {
-    const { isAuthenticated, token } = state
-
-    if (isAuthenticated || token) {
-      history.push('/dashboard')
-    }
-  }, [state, history])
 
   return { formEl, user, onChange, onKeyUp, onReset, onRegister }
 }
