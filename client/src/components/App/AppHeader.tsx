@@ -1,4 +1,4 @@
-import { Globe, SignOutAlt } from '@styled-icons/fa-solid'
+import { Globe, SignOutAlt, TachometerAlt } from '@styled-icons/fa-solid'
 import { AuthContext } from 'context/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -44,20 +44,33 @@ const MenuItem = styled.li`
     ${tw`flex items-center`}
   }
 `
-const Logout = styled(SignOutAlt).attrs({
-  className: 'mr-1'
+const IconStyleWrapper = styled.span.attrs({
+  className: 'inline-flex mr-1'
 })``
 
 const AppHeader: React.FC = () => {
   const { state } = useContext(AuthContext)
+  const { isAuthenticated, token } = state
 
   const authLinks = (
-    <MenuItem>
-      <Link to="/logout">
-        <Logout size="16" title="Logout account" />
-        <span>Logout</span>
-      </Link>
-    </MenuItem>
+    <Fragment>
+      <MenuItem>
+        <Link to="/dashboard">
+          <IconStyleWrapper>
+            <TachometerAlt size="16" title="Dashboard" />
+          </IconStyleWrapper>
+          <span>Dashboard</span>
+        </Link>
+      </MenuItem>
+      <MenuItem>
+        <Link to="/logout">
+          <IconStyleWrapper>
+            <SignOutAlt size="16" title="Logout account" />
+          </IconStyleWrapper>
+          <span>Logout</span>
+        </Link>
+      </MenuItem>
+    </Fragment>
   )
 
   const guestLinks = (
@@ -84,12 +97,9 @@ const AppHeader: React.FC = () => {
 
         <Menu>
           <MenuItem>
-            <Link to="/profiles">中文</Link>
+            <Link to="/developers">Developers</Link>
           </MenuItem>
-          <MenuItem>
-            <Link to="/profiles">Developers</Link>
-          </MenuItem>
-          {state.isAuthenticated ? authLinks : guestLinks}
+          {isAuthenticated || token ? authLinks : guestLinks}
         </Menu>
       </NavBar>
     </AppHeaderStyled>

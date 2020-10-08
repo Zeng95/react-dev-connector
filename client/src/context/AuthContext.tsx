@@ -1,22 +1,22 @@
 import React, { createContext, useReducer } from 'react'
 
 type InitialStateType = {
-  user: object | null
+  user: null
   token: string | null
   isAuthenticated: boolean
 }
 
-type payloadType = {
-  user: object
+type PayloadType = {
+  user: null
   token: string
 }
 
 type ActionType =
-  | { type: 'REGISTER'; payload: payloadType }
-  | { type: 'LOGIN'; payload: payloadType }
-  | { type: 'LOGOUT'; payload: payloadType }
-  | { type: 'USER_LOADED'; payload: payloadType }
-  | { type: 'AUTH_ERROR'; payload: payloadType }
+  | { type: 'REGISTER'; payload: PayloadType }
+  | { type: 'LOGIN'; payload: PayloadType }
+  | { type: 'LOGOUT'; payload: PayloadType }
+  | { type: 'USER_LOADED'; payload: PayloadType }
+  | { type: 'AUTH_ERROR'; payload: PayloadType }
 
 const initialState = {
   user: null,
@@ -48,7 +48,7 @@ const authReducer = (state: InitialStateType, action: ActionType) => {
   }
 }
 
-const AuthContextProvider: React.FC<{ children: any }> = ({ children }) => {
+const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
   return (
@@ -58,4 +58,4 @@ const AuthContextProvider: React.FC<{ children: any }> = ({ children }) => {
   )
 }
 
-export { AuthContext, AuthContextProvider }
+export { AuthContext, AuthProvider }

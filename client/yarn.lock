@@ -1436,10 +1436,18 @@
   resolved "https://registry.npm.taobao.org/@sheerun/mutationobserver-shim/download/@sheerun/mutationobserver-shim-0.3.3.tgz#5405ee8e444ed212db44e79351f0c70a582aae25"
   integrity sha1-VAXujkRO0hLbROeTUfDHClgqriU=
 
-"@styled-icons/fa-solid@^10.18.0":
-  version "10.18.0"
-  resolved "https://registry.npm.taobao.org/@styled-icons/fa-solid/download/@styled-icons/fa-solid-10.18.0.tgz#058900161ac0148e0ff389ac3424cd32e35abca5"
-  integrity sha1-BYkAFhrAFI4P84msNCTNMuNavKU=
+"@styled-icons/fa-brands@^10.22.0":
+  version "10.22.0"
+  resolved "https://registry.npm.taobao.org/@styled-icons/fa-brands/download/@styled-icons/fa-brands-10.22.0.tgz#e2edccacc63c54fe229ecb0042628a7c0f2b4c2b"
+  integrity sha1-4u3MrMY8VP4inssAQmKKfA8rTCs=
+  dependencies:
+    "@babel/runtime" "^7.10.5"
+    "@styled-icons/styled-icon" "^10.6.0"
+
+"@styled-icons/fa-solid@^10.22.0":
+  version "10.22.0"
+  resolved "https://registry.npm.taobao.org/@styled-icons/fa-solid/download/@styled-icons/fa-solid-10.22.0.tgz#ebe087d955ebfa5c0f7a46467a3e857eca1004c6"
+  integrity sha1-6+CH2VXr+lwPekZGej6FfsoQBMY=
   dependencies:
     "@babel/runtime" "^7.10.5"
     "@styled-icons/styled-icon" "^10.6.0"
@@ -8012,6 +8020,11 @@ npm-run-path@^2.0.0:
   integrity sha1-NakjLfo11wZ7TLLd8jV7GHFTbF8=
   dependencies:
     path-key "^2.0.0"
+
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npm.taobao.org/nprogress/download/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha1-y480xTIT2JVyP8urkH6UIq28r7E=
 
 nth-check@^1.0.2, nth-check@~1.0.1:
   version "1.0.2"

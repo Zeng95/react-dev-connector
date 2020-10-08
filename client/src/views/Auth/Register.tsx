@@ -1,4 +1,5 @@
-import { Feather } from '@styled-icons/fa-solid'
+import { ReactLogo } from '@styled-icons/fa-brands'
+import { Envelope, Lock, UserCircle } from '@styled-icons/fa-solid'
 import { RegisterPage } from 'hooks/useRegister'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -9,14 +10,13 @@ import {
   FormControl,
   FormGroup,
   HelpBlock,
-  Icon,
   InputGroup,
   Schema
 } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
-const RegisterStyled = styled.div.attrs({
+const RegisterPageStyled = styled.section.attrs({
   className: 'mx-auto px-8'
 })`
   max-width: 1100px;
@@ -56,11 +56,11 @@ const Register: React.FC = () => {
   })
 
   return (
-    <RegisterStyled>
-      <Title>Sign Up</Title>
+    <RegisterPageStyled>
+      <Title>Register</Title>
 
       <Description>
-        <Feather size="24" />
+        <ReactLogo size="24" />
         <span>Create Your Account</span>
       </Description>
 
@@ -75,9 +75,13 @@ const Register: React.FC = () => {
       >
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="username" placeholder="Username" />
+            <FormControl
+              name="username"
+              placeholder="Username"
+              onKeyPress={register.onKeyUp}
+            />
             <InputGroup.Addon>
-              <Icon icon="user" />
+              <UserCircle size="16" title="Username" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -88,9 +92,10 @@ const Register: React.FC = () => {
               name="email"
               type="email"
               placeholder="Email Address"
+              onKeyPress={register.onKeyUp}
             />
             <InputGroup.Addon>
-              <Icon icon="envelope" />
+              <Envelope size="16" title="Email Address" />
             </InputGroup.Addon>
           </InputGroup>
           <HelpBlock>
@@ -106,9 +111,10 @@ const Register: React.FC = () => {
               type="password"
               placeholder="Password"
               autoComplete="on"
+              onKeyPress={register.onKeyUp}
             />
             <InputGroup.Addon>
-              <Icon icon="key" />
+              <Lock size="16" title="Password" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -120,9 +126,10 @@ const Register: React.FC = () => {
               type="password"
               placeholder="Confirm Password"
               autoComplete="on"
+              onKeyPress={register.onKeyUp}
             />
             <InputGroup.Addon>
-              <Icon icon="key" />
+              <Lock size="16" title="Confirm Password" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -151,9 +158,12 @@ const Register: React.FC = () => {
       </Form>
 
       <p className="my-4">
-        Already have an account? <Link to="/Login">Sign In</Link>
+        Already have an account?{' '}
+        <strong>
+          <Link to="/login">Log in</Link>
+        </strong>
       </p>
-    </RegisterStyled>
+    </RegisterPageStyled>
   )
 }
 

@@ -1,4 +1,5 @@
-import { Feather } from '@styled-icons/fa-solid'
+import { ReactLogo } from '@styled-icons/fa-brands'
+import { Envelope, Lock } from '@styled-icons/fa-solid'
 import { LoginPage } from 'hooks/useLogin'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -8,14 +9,13 @@ import {
   Form,
   FormControl,
   FormGroup,
-  Icon,
   InputGroup,
   Schema
 } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
-const LoginStyled = styled.div.attrs({
+const LoginPageStyled = styled.section.attrs({
   className: 'mx-auto px-8'
 })`
   max-width: 1100px;
@@ -45,12 +45,12 @@ const Login: React.FC = () => {
   })
 
   return (
-    <LoginStyled>
-      <Title>Sign In</Title>
+    <LoginPageStyled>
+      <Title>Log In</Title>
 
       <Description>
-        <Feather size="24" />
-        <span>Sign into Your Account</span>
+        <ReactLogo size="24" />
+        <span>Log into Your Account</span>
       </Description>
 
       <Form
@@ -68,9 +68,10 @@ const Login: React.FC = () => {
               name="email"
               type="email"
               placeholder="Email Address"
+              onKeyPress={login.onKeyUp}
             />
             <InputGroup.Addon>
-              <Icon icon="envelope" />
+              <Envelope size="16" title="Email Address" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -82,9 +83,10 @@ const Login: React.FC = () => {
               type="password"
               placeholder="Password"
               autoComplete="on"
+              onKeyPress={login.onKeyUp}
             />
             <InputGroup.Addon>
-              <Icon icon="key" />
+              <Lock size="16" title="Password" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -113,9 +115,12 @@ const Login: React.FC = () => {
       </Form>
 
       <p className="my-4">
-        Don't have an account? <Link to="/Register">Sign Up</Link>
+        Don't have an account?{' '}
+        <strong>
+          <Link to="/register">Register now</Link>
+        </strong>
       </p>
-    </LoginStyled>
+    </LoginPageStyled>
   )
 }
 

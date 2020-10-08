@@ -24,22 +24,6 @@ function RegisterPage() {
   const { state, dispatch } = useContext(AuthContext)
   const formEl = useRef<HTMLFormElement>(null)
 
-  const onChange = (formValue: any) => {
-    setUser(formValue)
-  }
-
-  const onReset = () => {
-    if (formEl.current !== null) formEl.current.cleanErrors()
-
-    setUser({
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
-      isSubmitting: false
-    })
-  }
-
   const onRegister = async () => {
     try {
       if (formEl.current !== null && !formEl.current.check()) return false
@@ -72,6 +56,28 @@ function RegisterPage() {
     }
   }
 
+  const onChange = (formValue: any) => {
+    setUser(formValue)
+  }
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onRegister()
+    }
+  }
+
+  const onReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setUser({
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      isSubmitting: false
+    })
+  }
+
   useEffect(() => {
     const { isAuthenticated, token } = state
 
@@ -80,7 +86,7 @@ function RegisterPage() {
     }
   }, [state, history])
 
-  return { formEl, user, onChange, onReset, onRegister }
+  return { formEl, user, onChange, onKeyUp, onReset, onRegister }
 }
 
 export { RegisterPage }

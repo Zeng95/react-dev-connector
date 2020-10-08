@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { AuthContext } from 'context/AuthContext'
+import React, { useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
 
@@ -8,7 +9,7 @@ type ButtonProps = {
 }
 
 const LandingStyled = styled.section.attrs({
-  className: 'absolute top-0 left-0 w-full h-full'
+  className: 'absolute top-0 left-0 w-screen h-screen'
 })`
   background: url(${require('assets/images/showcase.jpg')}) no-repeat center;
   background-size: cover;
@@ -64,29 +65,38 @@ const BasicButton = styled.button.attrs({
     `}
 `
 
-const Landing: FunctionComponent = () => (
-  <LandingStyled>
-    <OverLay>
-      <Content>
-        <Title>Developer Connector</Title>
+const Landing: React.FC = () => {
+  const history = useHistory()
+  const { state } = useContext(AuthContext)
+  const { isAuthenticated, token } = state
 
-        <Description>
-          Create a developer profile/portfolio, share posts and get help from
-          other developers
-        </Description>
+  if (isAuthenticated || token) {
+    history.push('/dashboard')
+  }
 
-        <div className="actions">
-          <BasicButton btnName="register">
-            <Link to="register">Register</Link>
-          </BasicButton>
+  return (
+    <LandingStyled>
+      <OverLay>
+        <Content>
+          <Title>Developer Connector</Title>
 
-          <BasicButton btnName="login">
-            <Link to="login">Login</Link>
-          </BasicButton>
-        </div>
-      </Content>
-    </OverLay>
-  </LandingStyled>
-)
+          <Description>
+            Create a developer profile/portfolio, share posts and get help from
+            other developers
+          </Description>
+
+          <div className="actions">
+            <BasicButton btnName="register">
+              <Link to="register">Register</Link>
+            </BasicButton>
+            <BasicButton btnName="login">
+              <Link to="login">Login</Link>
+            </BasicButton>
+          </div>
+        </Content>
+      </OverLay>
+    </LandingStyled>
+  )
+}
 
 export { Landing }

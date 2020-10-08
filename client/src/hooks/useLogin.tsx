@@ -20,16 +20,6 @@ function LoginPage() {
   const { state, dispatch } = useContext(AuthContext)
   const formEl = useRef<HTMLFormElement>(null)
 
-  const onChange = (formValue: any) => {
-    setUser(formValue)
-  }
-
-  const onReset = () => {
-    if (formEl.current !== null) formEl.current.cleanErrors()
-
-    setUser({ email: '', password: '', isSubmitting: false })
-  }
-
   const onLogin = async () => {
     try {
       if (formEl.current !== null && !formEl.current.check()) return false
@@ -62,6 +52,22 @@ function LoginPage() {
     }
   }
 
+  const onChange = (formValue: any) => {
+    setUser(formValue)
+  }
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onLogin()
+    }
+  }
+
+  const onReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setUser({ email: '', password: '', isSubmitting: false })
+  }
+
   useEffect(() => {
     const { isAuthenticated, token } = state
 
@@ -70,7 +76,7 @@ function LoginPage() {
     }
   }, [state, history])
 
-  return { formEl, user, onChange, onReset, onLogin }
+  return { formEl, user, onChange, onKeyUp, onReset, onLogin }
 }
 
 export { LoginPage }
