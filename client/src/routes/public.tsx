@@ -1,7 +1,6 @@
-import { AppHeader } from 'components/App/AppHeader'
-import { AppContent } from 'components/Shared/Styles'
+import { AppLayout } from 'components/App/AppLayout'
 import { AuthContext } from 'context/AuthContext'
-import React, { Fragment, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
 
 interface PublicRouteProps extends Omit<RouteProps, 'component'> {
@@ -14,21 +13,18 @@ const PublicRoute: React.FC<PublicRouteProps> = ({
 }) => {
   const { state } = useContext(AuthContext)
   const { isAuthenticated, token } = state
+
   const routeComponent = () => {
     return !isAuthenticated && !token ? (
-      <Fragment>
-        <AppHeader />
-
-        <AppContent>
-          <Component />
-        </AppContent>
-      </Fragment>
+      <AppLayout>
+        <Component />
+      </AppLayout>
     ) : (
       <Redirect to="/dashboard" />
     )
   }
 
-  return <Route {...rest} component={routeComponent} />
+  return <Route {...rest} render={routeComponent} />
 }
 
 export { PublicRoute }

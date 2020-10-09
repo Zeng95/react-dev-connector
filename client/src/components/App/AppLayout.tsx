@@ -1,36 +1,16 @@
-import { getCurrentUser } from 'api/users'
-import { AuthContext } from 'context/AuthContext'
-import React, { useCallback, useContext, useEffect } from 'react'
-import { Alert } from 'rsuite'
-import { routes } from 'routes'
+import { AppHeader } from 'components/App/AppHeader'
+import { AppContent } from 'components/Shared/Styles'
+import React from 'react'
+import styled from 'styled-components'
 
-const AppLayout: React.FC = () => {
-  const auth = useContext(AuthContext)
-  const { state, dispatch } = auth
+const AppWrapper = styled.div``
 
-  const loadUser = useCallback(async () => {
-    try {
-      const response = await getCurrentUser()
-      const { user } = response.data
+const AppLayout: React.FC = ({ children }) => (
+  <AppWrapper>
+    <AppHeader />
 
-      dispatch({ type: 'USER_LOADED', payload: { user } })
-    } catch (err) {
-      Alert.error(err.message)
-
-      dispatch({ type: 'AUTH_ERROR' })
-    }
-  }, [dispatch])
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    const { user, token } = state
-
-    if (!user && token) {
-      loadUser()
-    }
-  }, [state, loadUser])
-
-  return routes
-}
+    <AppContent>{children}</AppContent>
+  </AppWrapper>
+)
 
 export { AppLayout }
