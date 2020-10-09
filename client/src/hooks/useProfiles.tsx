@@ -1,5 +1,5 @@
 import { getProfile } from 'api/profiles'
-import { ProfileContext } from 'context/ProfileContext'
+import { ProfileContext } from 'contexts/profile/ProfileContext'
 import { useContext, useEffect } from 'react'
 import { Alert } from 'rsuite'
 

@@ -1,5 +1,5 @@
 import { register } from 'api/users'
-import { AuthContext } from 'context/AuthContext'
+import { AuthContext } from 'contexts/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 

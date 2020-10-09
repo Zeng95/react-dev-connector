@@ -1,4 +1,4 @@
-import { AuthContext } from 'context/AuthContext'
+import { AuthContext } from 'contexts/auth/AuthContext'
 import React, { useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'

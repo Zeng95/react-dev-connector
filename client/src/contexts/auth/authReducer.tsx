@@ -1,14 +1,7 @@
-import React, { createContext, useReducer } from 'react'
-
 type InitialStateType = {
   user: null
   token: string | null
   isAuthenticated: boolean
-}
-
-type PayloadType = {
-  user: null
-  token: string
 }
 
 type ActionType =
@@ -18,16 +11,10 @@ type ActionType =
   | { type: 'USER_LOADED'; payload: PayloadType }
   | { type: 'AUTH_ERROR'; payload: PayloadType }
 
-const initialState = {
-  user: null,
-  token: localStorage.getItem('auth-token'),
-  isAuthenticated: false
+type PayloadType = {
+  user: null
+  token: string
 }
-
-const AuthContext = createContext<{
-  state: InitialStateType
-  dispatch: React.Dispatch<any>
-}>({ state: initialState, dispatch: () => null })
 
 const authReducer = (state: InitialStateType, action: ActionType) => {
   const { type, payload } = action
@@ -48,14 +35,4 @@ const authReducer = (state: InitialStateType, action: ActionType) => {
   }
 }
 
-const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState)
-
-  return (
-    <AuthContext.Provider value={{ state, dispatch }}>
-      {children}
-    </AuthContext.Provider>
-  )
-}
-
-export { AuthContext, AuthProvider }
+export { authReducer }

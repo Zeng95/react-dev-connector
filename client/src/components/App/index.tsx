@@ -1,6 +1,6 @@
 import { getCurrentUser } from 'api/users'
-import { AuthContext, AuthProvider } from 'context/AuthContext'
-import { ThemeProvider } from 'context/ThemeContext'
+import { AuthContext, AuthProvider } from 'contexts/auth/AuthContext'
+import { ThemeProvider } from 'contexts/theme/ThemeContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import { routes } from 'routes'
 import { Alert } from 'rsuite'

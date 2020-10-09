@@ -1,5 +1,5 @@
 import { User } from '@styled-icons/fa-solid'
-import { AuthContext } from 'context/AuthContext'
+import { AuthContext } from 'contexts/auth/AuthContext'
 // import { ProfileContext } from 'context/ProfileContext'
 // import { DashboardPage } from 'hooks/useProfiles'
 import React, { useContext } from 'react'
