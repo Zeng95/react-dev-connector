@@ -1,8 +1,8 @@
+import { Centos } from '@styled-icons/fa-brands'
 import {
-  Globe,
+  Edit,
   SignOutAlt,
   TachometerAlt,
-  Edit,
   UserFriends
 } from '@styled-icons/fa-solid'
 import { AuthContext } from 'contexts/auth/AuthContext'
@@ -103,7 +103,7 @@ const AppHeader: React.FC = () => {
       <NavBar>
         <Logo>
           <Link to="/">
-            <Globe size="24" title="Logo" />
+            <Centos size="30" title="Logo" />
             &nbsp;
             <span>DevConnector</span>
           </Link>
