@@ -1,8 +1,6 @@
-import { ReactLogo } from '@styled-icons/fa-brands'
-import { Envelope, Lock } from '@styled-icons/fa-solid'
+import { Envelope, Lock, User } from '@styled-icons/fa-solid'
 import { LoginPage } from 'hooks/useLogin'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {
   Button,
   ButtonToolbar,
@@ -34,7 +32,7 @@ const Description = styled.p.attrs({
   }
 `
 
-const Login: React.FC = () => {
+const CreateProfile: React.FC = () => {
   const login = LoginPage()
   const { StringType } = Schema.Types
   const model = Schema.Model({
@@ -46,11 +44,11 @@ const Login: React.FC = () => {
 
   return (
     <LoginPageStyled>
-      <Title>Log In</Title>
+      <Title>Create Your Profile</Title>
 
       <Description>
-        <ReactLogo size="24" />
-        <span>Log into Your Account</span>
+        <User size="24" title="User" />
+        <span>Let's get some information to make your profile stand out</span>
       </Description>
 
       <Form
@@ -113,17 +111,8 @@ const Login: React.FC = () => {
           </ButtonToolbar>
         </FormGroup>
       </Form>
-
-      <p className="my-4">
-        Don't have an account?{' '}
-        <strong>
-          <Link to="/register" className="text-primary">
-            Register now
-          </Link>
-        </strong>
-      </p>
     </LoginPageStyled>
   )
 }
 
-export { Login }
+export { CreateProfile }

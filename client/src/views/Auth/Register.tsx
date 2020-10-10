@@ -160,7 +160,9 @@ const Register: React.FC = () => {
       <p className="my-4">
         Already have an account?{' '}
         <strong>
-          <Link to="/login">Log in</Link>
+          <Link to="/login" className="text-primary">
+            Log in
+          </Link>
         </strong>
       </p>
     </RegisterPageStyled>

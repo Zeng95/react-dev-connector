@@ -1,4 +1,10 @@
-import { Globe, SignOutAlt, TachometerAlt } from '@styled-icons/fa-solid'
+import {
+  Globe,
+  SignOutAlt,
+  TachometerAlt,
+  Edit,
+  UserFriends
+} from '@styled-icons/fa-solid'
 import { AuthContext } from 'contexts/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -55,6 +61,14 @@ const AppHeader: React.FC = () => {
   const authLinks = (
     <Fragment>
       <MenuItem>
+        <Link to="/posts">
+          <IconStyleWrapper>
+            <Edit size="16" title="User Posts" />
+          </IconStyleWrapper>
+          <span>Posts</span>
+        </Link>
+      </MenuItem>
+      <MenuItem>
         <Link to="/dashboard">
           <IconStyleWrapper>
             <TachometerAlt size="16" title="Dashboard" />
@@ -97,7 +111,12 @@ const AppHeader: React.FC = () => {
 
         <Menu>
           <MenuItem>
-            <Link to="/developers">Developers</Link>
+            <Link to="/developers">
+              <IconStyleWrapper>
+                <UserFriends size="16" title="Logout account" />
+              </IconStyleWrapper>
+              <span>Developers</span>
+            </Link>
           </MenuItem>
           {isAuthenticated || token ? authLinks : guestLinks}
         </Menu>

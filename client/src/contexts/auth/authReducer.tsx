@@ -1,38 +1,33 @@
+import { AUTH_ERROR, LOGIN, LOGOUT, REGISTER, USER_LOADED } from '../types'
+
+type UserType = {
+  id: string
+  avatar: string
+  email: string
+  username: string
+}
+
 type InitialStateType = {
-  user: null
-  token: string | null
+  user: UserType
+  token: string
   isAuthenticated: boolean
 }
 
-type ActionType =
-  | { type: 'REGISTER'; payload: PayloadType }
-  | { type: 'LOGIN'; payload: PayloadType }
-  | { type: 'LOGOUT'; payload: PayloadType }
-  | { type: 'USER_LOADED'; payload: PayloadType }
-  | { type: 'AUTH_ERROR'; payload: PayloadType }
-
-type PayloadType = {
-  user: null
-  token: string
-}
-
-const authReducer = (state: InitialStateType, action: ActionType) => {
+export const authReducer = (state: InitialStateType, action: any) => {
   const { type, payload } = action
 
   switch (type) {
-    case 'USER_LOADED':
+    case USER_LOADED:
       return { ...state, ...payload, isAuthenticated: true }
-    case 'REGISTER':
-    case 'LOGIN':
+    case LOGIN:
+    case REGISTER:
       localStorage.setItem('auth-token', payload.token)
       return { ...state, ...payload, isAuthenticated: true }
-    case 'AUTH_ERROR':
-    case 'LOGOUT':
+    case LOGOUT:
+    case AUTH_ERROR:
       localStorage.removeItem('auth-token')
       return { user: null, token: null, isAuthenticated: false }
     default:
       return state
   }
 }
-
-export { authReducer }

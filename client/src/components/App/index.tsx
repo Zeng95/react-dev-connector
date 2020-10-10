@@ -1,41 +1,14 @@
-import { getCurrentUser } from 'api/users'
-import { AuthContext, AuthProvider } from 'contexts/auth/AuthContext'
-import { ThemeProvider } from 'contexts/theme/ThemeContext'
-import React, { useCallback, useContext, useEffect } from 'react'
-import { routes } from 'routes'
-import { Alert } from 'rsuite'
+import { AuthProvider } from 'contexts/auth/AuthProvider'
+import { ProfileProvider } from 'contexts/profile/ProfileProvider'
+import React from 'react'
+import { Router } from 'router'
 
-const App: React.FC = () => {
-  const auth = useContext(AuthContext)
-  const { state, dispatch } = auth
-
-  const loadUser = useCallback(async () => {
-    try {
-      const response = await getCurrentUser()
-      const { user } = response.data
-
-      dispatch({ type: 'USER_LOADED', payload: { user } })
-    } catch (err) {
-      Alert.error(err.message)
-
-      dispatch({ type: 'AUTH_ERROR' })
-    }
-  }, [dispatch])
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    const { user, token } = state
-
-    if (!user && token) {
-      loadUser()
-    }
-  }, [state, loadUser])
-
-  return (
-    <ThemeProvider>
-      <AuthProvider>{routes}</AuthProvider>
-    </ThemeProvider>
-  )
-}
+const App: React.FC = () => (
+  <AuthProvider>
+    <ProfileProvider>
+      <Router />
+    </ProfileProvider>
+  </AuthProvider>
+)
 
 export default App
