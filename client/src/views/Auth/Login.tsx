@@ -4,6 +4,7 @@ import { LoginPage } from 'hooks/useLogin'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
+  AutoComplete,
   Button,
   ButtonToolbar,
   Form,
@@ -68,7 +69,10 @@ const Login: React.FC = () => {
               name="email"
               type="email"
               placeholder="Email Address"
+              accepter={AutoComplete}
+              data={login.email}
               onKeyPress={login.onKeyUp}
+              onChange={login.onEmailChange}
             />
             <InputGroup.Addon>
               <Envelope size="16" title="Email Address" />
@@ -98,7 +102,7 @@ const Login: React.FC = () => {
               loading={login.user.isSubmitting}
               appearance="primary"
               size="lg"
-              onClick={login.onLogin}
+              onClick={login.onSubmit}
             >
               Submit
             </Button>

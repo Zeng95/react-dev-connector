@@ -3,23 +3,33 @@ import { AuthContext } from 'contexts/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 
-type IUser = {
+type UserType = {
   email: string
   password: string
   isSubmitting: boolean
 }
 
+type EmailType = string[]
+
 function LoginPage() {
-  const [user, setUser] = useState<IUser>({
+  const [user, setUser] = useState<UserType>({
     email: '',
     password: '',
     isSubmitting: false
   })
+  const [email, setEmail] = useState<EmailType>([])
   const auth = useContext(AuthContext)
   const { dispatch } = auth
   const formEl = useRef<HTMLFormElement>(null)
+  const emailSuggestions = [
+    '@gmail.com',
+    '@yahoo.com',
+    '@sina.com.cn',
+    '@qq.com',
+    '@163.com'
+  ]
 
-  const onLogin = async () => {
+  const onSubmit = async () => {
     try {
       if (formEl.current !== null && !formEl.current.check()) return false
 
@@ -27,9 +37,7 @@ function LoginPage() {
 
       const { email, password } = user
       const response = await login({ email, password })
-      const { token, msg } = response.data
-
-      Alert.success(msg)
+      const { token } = response.data
 
       dispatch({ type: 'LOGIN', payload: { token } })
     } catch (err) {
@@ -51,13 +59,30 @@ function LoginPage() {
     }
   }
 
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit()
+    }
+  }
+
   const onChange = (formValue: any) => {
     setUser(formValue)
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      onLogin()
+  const onEmailChange = (value: any) => {
+    const at = value.match(/@[\S]*/)
+    const nextData = at
+      ? emailSuggestions
+          .filter(item => item.indexOf(at[0]) >= 0)
+          .map(item => {
+            return `${value}${item.replace(at[0], '')}`
+          })
+      : emailSuggestions.map(item => `${value}${item}`)
+
+    setEmail(nextData)
+
+    if (nextData.length === 1) {
+      setUser({ ...user, email: nextData[0] })
     }
   }
 
@@ -67,7 +92,17 @@ function LoginPage() {
     setUser({ email: '', password: '', isSubmitting: false })
   }
 
-  return { formEl, user, onChange, onKeyUp, onReset, onLogin }
+  return {
+    formEl,
+    user,
+    email,
+    emailSuggestions,
+    onEmailChange,
+    onSubmit,
+    onChange,
+    onKeyUp,
+    onReset
+  }
 }
 
 export { LoginPage }

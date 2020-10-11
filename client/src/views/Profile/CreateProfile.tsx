@@ -1,7 +1,7 @@
 import { Github } from '@styled-icons/fa-brands'
-import { Building, Cog, Globe, MapPin, User } from '@styled-icons/fa-solid'
-import { LoginPage } from 'hooks/useLogin'
-import React from 'react'
+import { Building, Globe, MapPin, User, UserCog } from '@styled-icons/fa-solid'
+import { ProfilePage } from 'hooks/useProfiles'
+import React, { Fragment } from 'react'
 import {
   Button,
   ButtonToolbar,
@@ -35,9 +35,9 @@ const Description = styled.p.attrs({
     ${tw`ml-2`}
   }
 `
-const InputStyled = styled(FormControl)`
-  padding-left: 2.5rem !important;
-`
+const Instruction = styled.small.attrs({
+  className: 'block my-5'
+})``
 const IconStyled = styled(Icon)`
   ${props =>
     props.twitter &&
@@ -69,9 +69,12 @@ const IconStyled = styled(Icon)`
       color: #3f729b;
     `}
 `
+const InputStyled = styled(FormControl)`
+  padding-left: 2.5rem !important;
+`
 
 const CreateProfile: React.FC = () => {
-  const login = LoginPage()
+  const profile = ProfilePage()
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
@@ -81,8 +84,16 @@ const CreateProfile: React.FC = () => {
   })
   const status = [
     {
-      label: 'Eugenia',
-      value: 'Eugenia'
+      label: 'Developer',
+      value: 'A'
+    },
+    {
+      label: 'Junior Developer',
+      value: 'B'
+    },
+    {
+      label: 'Senior Developer',
+      value: 'C'
     }
   ]
 
@@ -95,13 +106,14 @@ const CreateProfile: React.FC = () => {
         <span>Let's get some information to make your profile stand out</span>
       </Description>
 
+      <Instruction>* = required field</Instruction>
+
       <Form
         fluid
         autoComplete="off"
         checkTrigger="blur"
-        formValue={login.user}
         model={model}
-        ref={login.formEl}
+        onChange={formValue => profile.onChange(formValue)}
       >
         <FormGroup>
           <InputPicker
@@ -116,7 +128,7 @@ const CreateProfile: React.FC = () => {
 
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl placeholder="Company" />
+            <FormControl name="company" placeholder="Company" />
             <InputGroup.Addon>
               <Building size="16" title="Company" />
             </InputGroup.Addon>
@@ -126,7 +138,7 @@ const CreateProfile: React.FC = () => {
 
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl placeholder="Website" />
+            <FormControl name="website" placeholder="Website" />
             <InputGroup.Addon>
               <Globe size="16" title="Website" />
             </InputGroup.Addon>
@@ -136,7 +148,7 @@ const CreateProfile: React.FC = () => {
 
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl placeholder="Location" />
+            <FormControl name="location" placeholder="Location" />
             <InputGroup.Addon>
               <MapPin size="16" title="Location" />
             </InputGroup.Addon>
@@ -146,9 +158,9 @@ const CreateProfile: React.FC = () => {
 
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl placeholder="* Skills" />
+            <FormControl name="skills" placeholder="* Skills" />
             <InputGroup.Addon>
-              <Cog size="16" title="Skills" />
+              <UserCog size="16" title="Skills" />
             </InputGroup.Addon>
           </InputGroup>
           <HelpBlock>
@@ -158,7 +170,7 @@ const CreateProfile: React.FC = () => {
 
         <FormGroup>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl placeholder="Github Username" />
+            <FormControl name="githubusername" placeholder="Github Username" />
             <InputGroup.Addon>
               <Github size="16" title="Github Username" />
             </InputGroup.Addon>
@@ -173,80 +185,86 @@ const CreateProfile: React.FC = () => {
           <FormControl
             componentClass="textarea"
             rows={3}
+            name="bio"
             placeholder="A short bio of yourself"
           />
           <HelpBlock>Tell us a little about yourself</HelpBlock>
         </FormGroup>
 
         <FormGroup>
-          <Button appearance="default" size="lg">
+          <Button
+            appearance="default"
+            size="lg"
+            onClick={profile.toggleSocialInputs}
+          >
             Add Social Network Links
           </Button>
           <span className="ml-2">Optional</span>
         </FormGroup>
 
-        <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <IconStyled icon="twitter" size="lg" twitter="true" />
-            </InputGroup.Addon>
-            <InputStyled placeholder="Twitter URL" />
-          </InputGroup>
-        </FormGroup>
+        {profile.showSocialInputs && (
+          <Fragment>
+            <FormGroup>
+              <InputGroup inside style={{ width: '100%' }}>
+                <InputGroup.Addon>
+                  <IconStyled icon="twitter" size="lg" twitter="true" />
+                </InputGroup.Addon>
+                <InputStyled name="twitter" placeholder="Twitter URL" />
+              </InputGroup>
+            </FormGroup>
 
-        <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <IconStyled icon="facebook-square" size="lg" faceboo="true" />
-            </InputGroup.Addon>
-            <InputStyled placeholder="Facebook URL" />
-          </InputGroup>
-        </FormGroup>
+            <FormGroup>
+              <InputGroup inside style={{ width: '100%' }}>
+                <InputGroup.Addon>
+                  <IconStyled
+                    icon="facebook-square"
+                    size="lg"
+                    facebook="true"
+                  />
+                </InputGroup.Addon>
+                <InputStyled name="facebook" placeholder="Facebook URL" />
+              </InputGroup>
+            </FormGroup>
 
-        <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <IconStyled icon="youtube-play" size="lg" youtube="true" />
-            </InputGroup.Addon>
-            <InputStyled placeholder="YouTube URL" />
-          </InputGroup>
-        </FormGroup>
+            <FormGroup>
+              <InputGroup inside style={{ width: '100%' }}>
+                <InputGroup.Addon>
+                  <IconStyled icon="youtube-play" size="lg" youtube="true" />
+                </InputGroup.Addon>
+                <InputStyled name="youtube" placeholder="YouTube URL" />
+              </InputGroup>
+            </FormGroup>
 
-        <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <IconStyled icon="linkedin-square" size="lg" linkedin="true" />
-            </InputGroup.Addon>
-            <InputStyled placeholder="Linkedin URL" />
-          </InputGroup>
-        </FormGroup>
+            <FormGroup>
+              <InputGroup inside style={{ width: '100%' }}>
+                <InputGroup.Addon>
+                  <IconStyled
+                    icon="linkedin-square"
+                    size="lg"
+                    linkedin="true"
+                  />
+                </InputGroup.Addon>
+                <InputStyled name="linkedin" placeholder="Linkedin URL" />
+              </InputGroup>
+            </FormGroup>
 
-        <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <IconStyled icon="instagram" size="lg" instagram="true" />
-            </InputGroup.Addon>
-            <InputStyled placeholder="Instagram URL" />
-          </InputGroup>
-        </FormGroup>
+            <FormGroup>
+              <InputGroup inside style={{ width: '100%' }}>
+                <InputGroup.Addon>
+                  <IconStyled icon="instagram" size="lg" instagram="true" />
+                </InputGroup.Addon>
+                <InputStyled name="instagram" placeholder="Instagram URL" />
+              </InputGroup>
+            </FormGroup>
+          </Fragment>
+        )}
 
         <FormGroup>
           <ButtonToolbar className="my-4">
-            <Button
-              disabled={login.user.isSubmitting}
-              loading={login.user.isSubmitting}
-              appearance="primary"
-              size="lg"
-              onClick={login.onLogin}
-            >
+            <Button appearance="primary" size="lg" onClick={profile.onSubmit}>
               Submit
             </Button>
-            <Button
-              disabled={login.user.isSubmitting}
-              appearance="default"
-              size="lg"
-              onClick={login.onReset}
-            >
+            <Button appearance="default" size="lg">
               Go Back
             </Button>
           </ButtonToolbar>

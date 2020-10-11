@@ -1,13 +1,14 @@
 import { getCurrentUser } from 'api/users'
-import React, { useCallback, useEffect, useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Alert } from 'rsuite'
-import { AuthContext, initialState } from './AuthContext'
+import { initialState, AuthContext } from './AuthContext'
 import { authReducer } from './authReducer'
 
 const AuthProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState)
+  const { user, token } = state
 
-  const loadUser = useCallback(async () => {
+  const loadUser = async () => {
     try {
       const response = await getCurrentUser()
       const { user } = response.data
@@ -30,16 +31,13 @@ const AuthProvider: React.FC = ({ children }) => {
 
       dispatch({ type: 'AUTH_ERROR' })
     }
-  }, [dispatch])
+  }
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    const { user, token } = state
-
     if (!user && token) {
       loadUser()
     }
-  }, [state, loadUser])
+  }, [user, token])
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

@@ -4,6 +4,7 @@ import { RegisterPage } from 'hooks/useRegister'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {
+  AutoComplete,
   Button,
   ButtonToolbar,
   Form,
@@ -92,7 +93,10 @@ const Register: React.FC = () => {
               name="email"
               type="email"
               placeholder="Email Address"
+              accepter={AutoComplete}
+              data={register.email}
               onKeyPress={register.onKeyUp}
+              onChange={register.onEmailChange}
             />
             <InputGroup.Addon>
               <Envelope size="16" title="Email Address" />
@@ -141,7 +145,7 @@ const Register: React.FC = () => {
               loading={register.user.isSubmitting}
               appearance="primary"
               size="lg"
-              onClick={register.onRegister}
+              onClick={register.onSubmit}
             >
               Submit
             </Button>
