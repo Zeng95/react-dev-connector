@@ -1,4 +1,4 @@
-# react-node-dev-connector
+# react-dev-connector
 A full-stack social network web app built with TypeScript, React Router, React Context API, React Hooks, Styled-components, Node.js, Express & MongoDB
 
 ## 主要技术（Tech）
