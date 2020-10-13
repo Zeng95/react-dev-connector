@@ -12,15 +12,14 @@ type UserType = {
 type EmailType = string[]
 
 function LoginPage() {
+  const { dispatch } = useContext(AuthContext)
+  const formEl = useRef<HTMLFormElement>(null)
+  const [email, setEmail] = useState<EmailType>([])
   const [user, setUser] = useState<UserType>({
     email: '',
     password: '',
     isSubmitting: false
   })
-  const [email, setEmail] = useState<EmailType>([])
-  const auth = useContext(AuthContext)
-  const { dispatch } = auth
-  const formEl = useRef<HTMLFormElement>(null)
   const emailSuggestions = [
     '@gmail.com',
     '@yahoo.com',

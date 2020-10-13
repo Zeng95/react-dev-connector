@@ -67,11 +67,11 @@ const Register: React.FC = () => {
 
       <Form
         fluid
-        autoComplete="off"
-        checkTrigger="blur"
-        formValue={register.user}
         model={model}
         ref={register.formEl}
+        formValue={register.user}
+        autoComplete="off"
+        checkTrigger="none"
         onChange={formValue => register.onChange(formValue)}
       >
         <FormGroup>

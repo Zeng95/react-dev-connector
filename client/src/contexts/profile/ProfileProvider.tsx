@@ -1,7 +1,7 @@
 import { getProfile } from 'api/profiles'
 import { AuthContext } from 'contexts/auth/AuthContext'
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Alert } from 'rsuite'
+import { Notification } from 'rsuite'
 import { initialState, ProfileContext } from './ProfileContext'
 import { profileReducer } from './profileReducer'
 
@@ -19,21 +19,10 @@ const ProfileProvider: React.FC = ({ children }) => {
 
       dispatch({ type: 'GET_PROFILE', payload: newProfile })
     } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
-
-      dispatch({ type: 'AUTH_ERROR' })
+      Notification.error({
+        title: 'info',
+        description: err.response.data.msg
+      })
     }
   }
 

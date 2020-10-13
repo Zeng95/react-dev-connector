@@ -16,7 +16,9 @@ const UserModel = require('../models/User')
  */
 router.get('/me', verifyToken, async (req, res) => {
   try {
-    const user = await UserModel.findById(req.userId).select('-password')
+    const user = await UserModel.findById(req.userId).select(
+      '-__v -date -password'
+    )
 
     if (!user) {
       res.status(404).json({ success: true, msg: 'Authentication failure' })
@@ -25,12 +27,7 @@ router.get('/me', verifyToken, async (req, res) => {
     res.status(200).json({
       success: true,
       msg: 'Authentication successful',
-      user: {
-        id: user['_id'],
-        avatar: user.avatar,
-        email: user.email,
-        username: user.username
-      }
+      user
     })
   } catch (err) {
     res.status(500).json({

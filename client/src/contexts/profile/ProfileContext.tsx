@@ -1,9 +1,21 @@
 import React, { createContext } from 'react'
 
+type UserType = {
+  id: string
+  avatar: string
+  email: string
+  username: string
+}
+
 type ProfileType = {
-  id: number
-  name: string
-  price: number
+  status: string
+  company: string
+  website: string
+  location: string
+  skills: string[]
+  githubusername: string
+  bio: string
+  user: UserType
 }
 
 type RepositoryType = {

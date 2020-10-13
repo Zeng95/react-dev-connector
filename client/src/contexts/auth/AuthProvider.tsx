@@ -1,7 +1,6 @@
 import { getCurrentUser } from 'api/users'
 import React, { useEffect, useReducer } from 'react'
-import { Alert } from 'rsuite'
-import { initialState, AuthContext } from './AuthContext'
+import { AuthContext, initialState } from './AuthContext'
 import { authReducer } from './authReducer'
 
 const AuthProvider: React.FC = ({ children }) => {
@@ -15,20 +14,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
       dispatch({ type: 'USER_LOADED', payload: { user } })
     } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
-
       dispatch({ type: 'AUTH_ERROR' })
     }
   }

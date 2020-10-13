@@ -1,7 +1,8 @@
 import { User } from '@styled-icons/fa-solid'
+import { DashboardActions } from 'components/Dashboard/Actions'
 import { AuthContext } from 'contexts/auth/AuthContext'
 import { ProfileContext } from 'contexts/profile/ProfileContext'
-import React, { useContext } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
@@ -25,6 +26,7 @@ const Description = styled.p.attrs({
     ${tw`ml-2`}
   }
 `
+const ExperienceSection = styled.section``
 
 const Dashboard: React.FC = () => {
   const authState = useContext(AuthContext).state
@@ -42,19 +44,13 @@ const Dashboard: React.FC = () => {
         <span>Welcome {user && user.username}</span>
       </Description>
 
-      {profile ? (
-        <div className="dash-buttons">
-          <a href="edit-profile.html" className="btn btn-light">
-            <i className="fas fa-user-circle text-primary"></i>
-            <span>Edit Profile</span>
-          </a>
-          <a href="add-experience.html" className="btn btn-light">
-            <i className="fab fa-black-tie text-primary"></i> Add Experience
-          </a>
-          <a href="add-education.html" className="btn btn-light">
-            <i className="fas fa-graduation-cap text-primary"></i> Add Education
-          </a>
-        </div>
+      {profile !== null ? (
+        <Fragment>
+          <DashboardActions />
+          <ExperienceSection></ExperienceSection>
+          <div></div>
+          <div></div>
+        </Fragment>
       ) : (
         <div>
           <p>You have not set up a profile yet, please add some info</p>

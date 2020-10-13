@@ -1,0 +1,124 @@
+import { createProfile, updateProfile } from 'api/profiles'
+import { ProfileContext } from 'contexts/profile/ProfileContext'
+import { GET_PROFILE } from 'contexts/types'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Alert } from 'rsuite'
+
+function ProfilePage() {
+  const history = useHistory()
+
+  const { state, dispatch } = useContext(ProfileContext)
+  const { profile } = state
+
+  const formEl = useRef<HTMLFormElement>(null)
+
+  const [showSocialInputs, setShowSocialInputs] = useState(false)
+  const [profileForm, setProfileForm] = useState({
+    status: '',
+    company: '',
+    website: '',
+    location: '',
+    skills: '',
+    githubusername: '',
+    bio: '',
+    twitter: '',
+    facebook: '',
+    linkedin: '',
+    youtube: '',
+    instgram: '',
+    isSubmitting: false
+  })
+
+  const fetchProfile = useCallback(() => {
+    if (profile !== null) {
+      const { status } = profile
+
+      setProfileForm(profileForm => ({ ...profileForm, status }))
+    }
+  }, [profile])
+
+  const onSubmit = async (edit: boolean) => {
+    try {
+      if (formEl.current !== null && !formEl.current.check()) return false
+
+      setProfileForm({ ...profileForm, isSubmitting: true })
+
+      let response
+
+      if (edit && profile !== null) {
+        response = await updateProfile(profileForm, profile.user.id)
+        Alert.success('Profile Updated', 2000)
+      } else {
+        response = await createProfile(profileForm)
+        Alert.success('Profile Created', 2000, () => history.push('/dashboard'))
+      }
+
+      dispatch({ type: GET_PROFILE, payload: response.data.profile })
+    } catch (err) {
+      const { response, message } = err
+
+      if (response) {
+        const { errors, msg } = response.data
+
+        if (errors) {
+          errors.forEach((error: any) => Alert.error(error.msg))
+        } else {
+          Alert.error(msg)
+        }
+      } else {
+        Alert.error(message)
+      }
+    } finally {
+      setProfileForm({ ...profileForm, isSubmitting: false })
+    }
+  }
+
+  const onChange = (formValue: any) => {
+    setProfileForm(formValue)
+  }
+
+  const onReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setProfileForm({
+      status: '',
+      company: '',
+      website: '',
+      location: '',
+      skills: '',
+      githubusername: '',
+      bio: '',
+      twitter: '',
+      facebook: '',
+      linkedin: '',
+      youtube: '',
+      instgram: '',
+      isSubmitting: false
+    })
+  }
+
+  const toggleSocialInputs = () => {
+    setShowSocialInputs(!showSocialInputs)
+  }
+
+  const navigateToDashboard = () => {
+    history.push('/dashboard')
+  }
+
+  useEffect(fetchProfile, [fetchProfile])
+
+  return {
+    formEl,
+    profileForm,
+    showSocialInputs,
+    fetchProfile,
+    onSubmit,
+    onChange,
+    onReset,
+    toggleSocialInputs,
+    navigateToDashboard
+  }
+}
+
+export { ProfilePage }

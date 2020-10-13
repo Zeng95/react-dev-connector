@@ -1,9 +1,26 @@
-import { GET_PROFILE, CREATE_PROFILE, UPDATE_PROFILE } from '../types'
+import { GET_PROFILE } from '../types'
+
+type UserType = {
+  id: string
+  avatar: string
+  email: string
+  username: string
+}
 
 type ProfileType = {
-  id: number
-  name: string
-  price: number
+  status: string
+  company: string
+  website: string
+  location: string
+  skills: string[]
+  githubusername: string
+  bio: string
+  twitter: string
+  facebook: string
+  linkedin: string
+  youtube: string
+  instgram: string
+  user: UserType
 }
 
 type RepositoryType = {
@@ -24,10 +41,6 @@ export const profileReducer = (state: InitialStateType, action: any) => {
   switch (type) {
     case GET_PROFILE:
       return { ...state, profile: payload }
-    case CREATE_PROFILE:
-      return { ...state, ...payload }
-    case UPDATE_PROFILE:
-      return { ...state, ...payload }
     default:
       return state
   }

@@ -56,11 +56,11 @@ const Login: React.FC = () => {
 
       <Form
         fluid
-        autoComplete="off"
-        checkTrigger="blur"
-        formValue={login.user}
         model={model}
         ref={login.formEl}
+        formValue={login.user}
+        autoComplete="off"
+        checkTrigger="none"
         onChange={formValue => login.onChange(formValue)}
       >
         <FormGroup>
