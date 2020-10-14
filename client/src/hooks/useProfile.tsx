@@ -2,11 +2,12 @@ import { createProfile, updateProfile } from 'api/profiles'
 import { ProfileContext } from 'contexts/profile/ProfileContext'
 import { GET_PROFILE } from 'contexts/types'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function ProfilePage() {
   const history = useHistory()
+  const location = useLocation()
 
   const { state, dispatch } = useContext(ProfileContext)
   const { profile } = state
@@ -27,16 +28,23 @@ function ProfilePage() {
     linkedin: '',
     youtube: '',
     instgram: '',
+    weibo: '',
     isSubmitting: false
   })
 
   const fetchProfile = useCallback(() => {
     if (profile !== null) {
-      const { status } = profile
+      if (location.pathname === '/create-profile') {
+        history.push('/edit-profile')
+      }
 
-      setProfileForm(profileForm => ({ ...profileForm, status }))
+      setProfileForm(profileForm => ({
+        ...profileForm,
+        status: profile.status,
+        skills: profile.skills.join(',')
+      }))
     }
-  }, [profile])
+  }, [profile, history, location])
 
   const onSubmit = async (edit: boolean) => {
     try {
@@ -94,6 +102,7 @@ function ProfilePage() {
       linkedin: '',
       youtube: '',
       instgram: '',
+      weibo: '',
       isSubmitting: false
     })
   }

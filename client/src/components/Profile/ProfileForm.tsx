@@ -1,5 +1,6 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Building, Globe, MapPin, UserCog } from '@styled-icons/fa-solid'
+import Weibo from 'assets/images/weibo.svg'
 import { ProfilePage } from 'hooks/useProfile'
 import React, { Fragment } from 'react'
 import {
@@ -57,7 +58,7 @@ const IconStyled = styled(Icon)`
     `}
 `
 const InputStyled = styled(FormControl)`
-  padding-left: 2.5rem !important;
+  padding-left: 2.8rem !important;
 `
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
@@ -66,7 +67,21 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
   const { StringType } = Schema.Types
   const model = Schema.Model({
     status: StringType().isRequired('This field is required.'),
-    skills: StringType().isRequired('This field is required.')
+    skills: StringType()
+      .isRequired('This field is required.')
+      .addRule(value => {
+        const skills = value.split(',').filter(skill => skill.trim() !== '')
+
+        if (value.indexOf(',') === -1) {
+          return false
+        }
+
+        if (skills.length < 2) {
+          return false
+        }
+
+        return true
+      }, 'Please enter at least two skills with one comma separated.')
   })
   const status = [
     {
@@ -245,6 +260,15 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 <IconStyled icon="instagram" size="lg" instagram="true" />
               </InputGroup.Addon>
               <InputStyled name="instagram" placeholder="Instagram URL" />
+            </InputGroup>
+          </FormGroup>
+
+          <FormGroup>
+            <InputGroup inside style={{ width: '100%' }}>
+              <InputGroup.Addon>
+                <IconStyled icon={Weibo} size="lg" />
+              </InputGroup.Addon>
+              <InputStyled name="weibo" placeholder="Weibo URL" />
             </InputGroup>
           </FormGroup>
         </Fragment>

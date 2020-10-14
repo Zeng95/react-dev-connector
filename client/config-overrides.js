@@ -1,4 +1,8 @@
-const { override, addLessLoader } = require('customize-cra')
+const {
+  override,
+  addLessLoader,
+  addWebpackModuleRule
+} = require('customize-cra')
 
 module.exports = override(
   addLessLoader({
@@ -15,5 +19,16 @@ module.exports = override(
         '@reset-import': false
       }
     }
+  }),
+  addWebpackModuleRule({
+    test: /\.svg$/,
+    use: [
+      {
+        loader: 'svg-sprite-loader',
+        options: {
+          symbolId: 'icon-[name]'
+        }
+      }
+    ]
   })
 )

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { verifyToken } = require('../middlewares/auth')
 
+const User = require('../models/User')
 const Profile = require('../models/Profile')
 
 /**
@@ -11,9 +12,10 @@ const Profile = require('../models/Profile')
  */
 router.get('/me', verifyToken, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.userId })
-      .select('-__v -date')
-      .populate('user', ['avatar', 'email', 'username'])
+    const profile = await Profile.findOne({ user: req.userId }).populate(
+      'user',
+      ['avatar', 'email', 'username']
+    )
 
     if (!profile) {
       return res.status(404).json({
@@ -32,6 +34,7 @@ router.get('/me', verifyToken, async (req, res) => {
     newProfile.skills = profile.skills
     newProfile.githubusername = profile.githubusername
     newProfile.bio = profile.bio
+    newProfile.social = profile.social
 
     newProfile.user = {}
     newProfile.user.id = profile.user._id
@@ -47,7 +50,7 @@ router.get('/me', verifyToken, async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: `Server error: ${err.message}`
+      msg: `Server Error: ${err.message}`
     })
   }
 })
@@ -71,14 +74,22 @@ router.post('/', verifyToken, async (req, res) => {
       facebook,
       linkedin,
       youtube,
-      instgram
+      instgram,
+      weibo
     } = req.body
+    const user = await User.findById(req.userId)
+    const newUser = {
+      id: user._id,
+      email: user.email,
+      avatar: user.avatar,
+      username: user.username
+    }
     const profileFields = { user: req.userId, status }
 
     profileFields.skills = skills
       .split(',')
       .filter(skill => skill.trim() !== '')
-      .map(skill => skill.tirm())
+      .map(skill => skill.trim())
 
     if (website) profileFields.website = website
     if (company) profileFields.company = company
@@ -93,21 +104,21 @@ router.post('/', verifyToken, async (req, res) => {
     if (linkedin) profileFields.social.linkedin = linkedin
     if (youtube) profileFields.social.youtube = youtube
     if (instgram) profileFields.social.instgram = instgram
+    if (weibo) profileFields.social.instgram = weibo
 
     // Create
     const profile = new Profile(profileFields)
     const savedProfile = await profile.save()
-    const newProfile = {}
+    const newProfile = { ...profileFields }
 
     newProfile.id = savedProfile._id
-    newProfile.status = savedProfile.status
-    newProfile.company = savedProfile.company
-    newProfile.webiste = savedProfile.website
-    newProfile.location = savedProfile.location
-    newProfile.skills = savedProfile.skills
-    newProfile.githubusername = savedProfile.githubusername
-    newProfile.bio = savedProfile.bio
-    newProfile.social = savedProfile.social
+    newProfile.user = newUser
+
+    if (Object.entries(profileFields.social).length !== 0) {
+      newProfile.social = savedProfile.social
+    } else {
+      delete newProfile.social
+    }
 
     res.status(201).json({
       success: true,
@@ -117,7 +128,7 @@ router.post('/', verifyToken, async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: `Server error: ${err.message}`
+      msg: `Server Error: ${err.message}`
     })
   }
 })
@@ -130,39 +141,75 @@ router.post('/', verifyToken, async (req, res) => {
 router.put('/:userId', verifyToken, async (req, res) => {
   try {
     const {
-      bio,
       status,
-      skills,
       website,
       company,
       location,
-      githubusername
+      skills,
+      githubusername,
+      bio,
+      twitter,
+      facebook,
+      linkedin,
+      youtube,
+      instgram,
+      weibo
     } = req.body
-    const profileFields = { user: req.userId }
+    const user = await User.findById(req.userId)
+    const newUser = {
+      id: user._id,
+      email: user.email,
+      avatar: user.avatar,
+      username: user.username
+    }
+    const profileFields = { user: req.userId, status }
 
-    if (bio) profileFields.bio = bio
-    if (status) profileFields.status = status
-    if (skills) profileFields.skills = skills
+    profileFields.skills = skills
+      .split(',')
+      .filter(skill => skill.trim() !== '')
+      .map(skill => skill.trim())
+
     if (website) profileFields.website = website
     if (company) profileFields.company = company
     if (location) profileFields.location = location
     if (githubusername) profileFields.githubusername = githubusername
+    if (bio) profileFields.bio = bio
 
     profileFields.social = {}
 
+    if (twitter) profileFields.social.twitter = twitter
+    if (facebook) profileFields.social.facebook = facebook
+    if (linkedin) profileFields.social.linkedin = linkedin
+    if (youtube) profileFields.social.youtube = youtube
+    if (instgram) profileFields.social.instgram = instgram
+    if (weibo) profileFields.social.instgram = weibo
+
     // Update
-    const newProfile = new Profile(profileFields)
-    const savedProfile = await newProfile.save()
+    const updatedProfile = await Profile.findOneAndUpdate(
+      { user: req.userId },
+      profileFields,
+      { new: true }
+    )
+    const newProfile = { ...profileFields }
+
+    newProfile.id = updatedProfile._id
+    newProfile.user = newUser
+
+    if (Object.entries(profileFields.social).length !== 0) {
+      newProfile.social = updatedProfile.social
+    } else {
+      delete newProfile.social
+    }
 
     res.status(201).json({
       success: true,
-      msg: 'You have successfully created your profile',
-      profile: savedProfile
+      msg: 'You have successfully updated your profile',
+      profile: newProfile
     })
   } catch (err) {
     res.status(500).json({
       success: false,
-      msg: `Server error: ${err.message}`
+      msg: `Server Error: ${err.message}`
     })
   }
 })
