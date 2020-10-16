@@ -23,8 +23,32 @@ const createProfile = profile => {
   })
 }
 
-const updateProfile = (profile, userId) => {
-  return httpClient.put(`${END_POINT}/${userId}`, profile, {
+const updateProfile = profile => {
+  return httpClient.put(`${END_POINT}`, profile, {
+    headers: setAuthToken()
+  })
+}
+
+const updateProfileExperience = experience => {
+  return httpClient.put(`${END_POINT}/experience`, experience, {
+    headers: setAuthToken()
+  })
+}
+
+const deleteProfileExperience = experienceId => {
+  return httpClient.delete(`${END_POINT}/experience/${experienceId}`, {
+    headers: setAuthToken()
+  })
+}
+
+const updateProfileEducation = education => {
+  return httpClient.put(`${END_POINT}/education`, education, {
+    headers: setAuthToken()
+  })
+}
+
+const deleteProfileEducation = educationId => {
+  return httpClient.delete(`${END_POINT}/education/${educationId}`, {
     headers: setAuthToken()
   })
 }
@@ -34,5 +58,9 @@ export {
   getProfileByUserId,
   getAllProfiles,
   createProfile,
-  updateProfile
+  updateProfile,
+  updateProfileExperience,
+  deleteProfileExperience,
+  updateProfileEducation,
+  deleteProfileEducation
 }

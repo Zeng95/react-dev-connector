@@ -26,74 +26,68 @@ const profileSchema = new Schema({
     type: [String], // An array of strings
     required: true
   },
-  bio: {
-    type: String
-  },
   githubusername: {
     type: String
   },
-  experience: [
+  bio: {
+    type: String
+  },
+  experiences: [
     {
-      type: String,
-      detail: {
-        title: {
-          type: String,
-          required: true
-        },
-        company: {
-          type: String,
-          required: true
-        },
-        location: {
-          type: String
-        },
-        from: {
-          type: Date,
-          required: true
-        },
-        to: {
-          type: Date
-        },
-        current: {
-          type: Boolean,
-          default: false
-        },
-        description: {
-          type: String
-        }
+      title: {
+        type: String,
+        required: true
+      },
+      company: {
+        type: String,
+        required: true
+      },
+      location: {
+        type: String
+      },
+      from: {
+        type: Date,
+        required: true
+      },
+      to: {
+        type: Date
+      },
+      current: {
+        type: Boolean,
+        default: false
+      },
+      description: {
+        type: String
       }
     }
   ],
-  education: [
+  educations: [
     {
-      type: String,
-      detail: {
-        school: {
-          type: String,
-          required: true
-        },
-        degree: {
-          type: String,
-          required: true
-        },
-        fieldofstudy: {
-          type: String,
-          required: true
-        },
-        from: {
-          type: Date,
-          required: true
-        },
-        to: {
-          type: Date
-        },
-        current: {
-          type: Boolean,
-          default: false
-        },
-        description: {
-          type: String
-        }
+      school: {
+        type: String,
+        required: true
+      },
+      degree: {
+        type: String,
+        required: true
+      },
+      fieldofstudy: {
+        type: String,
+        required: true
+      },
+      from: {
+        type: Date,
+        required: true
+      },
+      to: {
+        type: Date
+      },
+      current: {
+        type: Boolean,
+        default: false
+      },
+      description: {
+        type: String
       }
     }
   ],

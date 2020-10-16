@@ -17,9 +17,14 @@ router.get('/me', verifyToken, async (req, res) => {
       {
         _id: true,
         status: true,
+        company: true,
+        website: true,
+        location: true,
+        skills: true,
+        githubusername: true,
+        bio: true,
         experience: true,
         education: true,
-        skills: true,
         social: true
       }
     ).populate('user', ['avatar', 'email', 'username'])
@@ -96,7 +101,7 @@ router.post('/', verifyToken, async (req, res) => {
     // Create
     const profile = new Profile(profileFields)
     const savedProfile = await profile.save()
-    const findedProfile = await Profile.findOne(
+    const foundProfile = await Profile.findOne(
       { user: req.userId },
       {
         _id: true,
@@ -107,7 +112,7 @@ router.post('/', verifyToken, async (req, res) => {
         social: true
       }
     ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = findedProfile.transform()
+    const newProfile = foundProfile.transform()
 
     newProfile.user.id = savedProfile.user['_id']
     delete newProfile.user['_id']
@@ -126,11 +131,11 @@ router.post('/', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Put api/profiles/{userId}
+ * @route   Put api/profiles
  * @desc    Update an existing user's profile
  * @access  Private
  */
-router.put('/:userId', verifyToken, async (req, res) => {
+router.put('/', verifyToken, async (req, res) => {
   try {
     const {
       status,
@@ -195,6 +200,123 @@ router.put('/:userId', verifyToken, async (req, res) => {
       msg: 'You have successfully updated your profile',
       profile: newProfile
     })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   Put api/profiles/experiences
+ * @desc    Add an experience to an existing user's profile
+ * @access  Private
+ */
+router.put('/experiences', verifyToken, async (req, res) => {
+  try {
+    const experienceFields = { ...req.body }
+    const profile = await Profile.findOne({ user: req.userId })
+
+    profile.experiences.unshift(experienceFields)
+
+    // Update
+    const savedProfile = await profile.save()
+    const foundProfile = await Profile.findOne(
+      { user: req.userId },
+      {
+        _id: true,
+        status: true,
+        experience: true,
+        education: true,
+        skills: true,
+        social: true,
+        experiences: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
+    const newProfile = foundProfile.transform()
+
+    newProfile.user.id = savedProfile.user['_id']
+    delete newProfile.user['_id']
+
+    res.status(201).json({
+      success: true,
+      msg: 'You have successfully added an experience to your profile',
+      profile: newProfile
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   Put api/profiles/educations
+ * @desc    Add an education to an existing user's profile
+ * @access  Private
+ */
+router.put('/educations', verifyToken, async (req, res) => {
+  try {
+    const educationFields = { ...req.body }
+    const profile = await Profile.findOne({ user: req.userId })
+
+    profile.educations.unshift(educationFields)
+
+    // Update
+    const savedProfile = await profile.save()
+    const foundProfile = await Profile.findOne(
+      { user: req.userId },
+      {
+        _id: true,
+        status: true,
+        skills: true,
+        social: true,
+        experiences: true,
+        educations: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
+    const newProfile = foundProfile.transform()
+
+    newProfile.user.id = savedProfile.user['_id']
+    delete newProfile.user['_id']
+
+    res.status(201).json({
+      success: true,
+      msg: 'You have successfully added an education to your profile',
+      profile: newProfile
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   Delete api/profiles/experiences/:id
+ * @desc    Delete an experience from an existing user's profile
+ * @access  Private
+ */
+router.delete('/experiences/:id', verifyToken, async (req, res) => {
+  try {
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   Delete api/profiles/educations/:id
+ * @desc    Delete an education from an existing user's profile
+ * @access  Private
+ */
+router.delete('/educations/:id', verifyToken, async (req, res) => {
+  try {
   } catch (err) {
     res.status(500).json({
       success: false,

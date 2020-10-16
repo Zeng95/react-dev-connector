@@ -56,7 +56,7 @@ function ProfilePage() {
       let response
 
       if (edit && profile !== null) {
-        response = await updateProfile(profileForm, profile.user.id)
+        response = await updateProfile(profileForm)
         Alert.success('Profile Updated', 2000)
       } else {
         response = await createProfile(profileForm)
