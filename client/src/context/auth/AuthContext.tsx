@@ -1,28 +1,27 @@
 import { createContext } from 'react'
 
-type UserType = {
+export type UserType = {
   id: string | null
   avatar: string | null
   email: string | null
   username: string | null
 }
 
-type InitialStateType = {
+export type InitialStateType = {
   user: UserType | null
   token: string | null
   isAuthenticated: boolean
+  loading: boolean
 }
 
 export const initialState = {
   user: null,
   token: localStorage.getItem('auth-token'),
-  isAuthenticated: false
+  isAuthenticated: false,
+  loading: true
 }
 
 export const AuthContext = createContext<{
   state: InitialStateType
   dispatch: React.Dispatch<any>
-}>({
-  state: initialState,
-  dispatch: () => null
-})
+}>({ state: initialState, dispatch: () => null })

@@ -31,4 +31,14 @@ userSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password)
 }
 
+userSchema.methods.transform = function () {
+  let obj = this.toObject()
+
+  //Rename fields
+  obj.id = obj['_id']
+  delete obj['_id']
+
+  return obj
+}
+
 module.exports = model('User', userSchema)

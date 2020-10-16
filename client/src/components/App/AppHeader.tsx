@@ -1,11 +1,6 @@
 import { Centos } from '@styled-icons/fa-brands'
-import {
-  Edit,
-  SignOutAlt,
-  TachometerAlt,
-  UserFriends
-} from '@styled-icons/fa-solid'
-import { AuthContext } from 'contexts/auth/AuthContext'
+import { Edit, SignOutAlt, TachometerAlt, Users } from '@styled-icons/fa-solid'
+import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -113,7 +108,7 @@ const AppHeader: React.FC = () => {
           <MenuItem>
             <Link to="/developers">
               <IconStyleWrapper>
-                <UserFriends size="16" title="Logout account" />
+                <Users size="16" title="Logout account" />
               </IconStyleWrapper>
               <span>Developers</span>
             </Link>

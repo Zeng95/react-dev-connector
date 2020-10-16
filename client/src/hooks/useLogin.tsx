@@ -1,5 +1,5 @@
 import { login } from 'api/users'
-import { AuthContext } from 'contexts/auth/AuthContext'
+import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 
@@ -35,10 +35,9 @@ function LoginPage() {
       setUser({ ...user, isSubmitting: true })
 
       const { email, password } = user
-      const response = await login({ email, password })
-      const { token } = response.data
+      const res = await login({ email, password })
 
-      dispatch({ type: 'LOGIN', payload: { token } })
+      dispatch({ type: 'LOGIN', payload: { token: res.data.token } })
     } catch (err) {
       const { response, message } = err
 

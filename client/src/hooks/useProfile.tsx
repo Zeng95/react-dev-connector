@@ -1,6 +1,6 @@
 import { createProfile, updateProfile } from 'api/profiles'
-import { ProfileContext } from 'contexts/profile/ProfileContext'
-import { GET_PROFILE } from 'contexts/types'
+import { ProfileContext } from 'context/profile/ProfileContext'
+import { GET_PROFILE } from 'context/types'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
@@ -41,6 +41,7 @@ function ProfilePage() {
       setProfileForm(profileForm => ({
         ...profileForm,
         status: profile.status,
+        location: profile.location || '',
         skills: profile.skills.join(',')
       }))
     }

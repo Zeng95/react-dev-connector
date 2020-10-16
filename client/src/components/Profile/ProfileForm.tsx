@@ -2,8 +2,9 @@ import { Github } from '@styled-icons/fa-brands'
 import { Building, Globe, MapPin, UserCog } from '@styled-icons/fa-solid'
 import Weibo from 'assets/images/weibo.svg'
 import { ProfilePage } from 'hooks/useProfile'
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
+  Animation,
   Button,
   ButtonToolbar,
   Form,
@@ -21,6 +22,8 @@ type ProfileFormProps = {
   edit: boolean
 }
 
+const { Collapse } = Animation
+const SocialInputsContainer = styled.div``
 const InputPickerStyled = styled(InputPicker)`
   .rs-picker-toggle-value {
     color: #575757 !important;
@@ -216,8 +219,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
         <span className="ml-2">Optional</span>
       </FormGroup>
 
-      {profile.showSocialInputs && (
-        <Fragment>
+      <Collapse in={profile.showSocialInputs}>
+        <SocialInputsContainer>
           <FormGroup>
             <InputGroup inside style={{ width: '100%' }}>
               <InputGroup.Addon>
@@ -271,8 +274,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputStyled name="weibo" placeholder="Weibo URL" />
             </InputGroup>
           </FormGroup>
-        </Fragment>
-      )}
+        </SocialInputsContainer>
+      </Collapse>
 
       <FormGroup>
         <ButtonToolbar className="my-4">

@@ -9,10 +9,8 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const response = await getCurrentUser()
-      const { user } = response.data
-
-      dispatch({ type: 'USER_LOADED', payload: { user } })
+      const res = await getCurrentUser()
+      dispatch({ type: 'USER_LOADED', payload: { user: res.data.user } })
     } catch (err) {
       dispatch({ type: 'AUTH_ERROR' })
     }

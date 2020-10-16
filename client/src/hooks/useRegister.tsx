@@ -1,5 +1,5 @@
 import { register } from 'api/users'
-import { AuthContext } from 'contexts/auth/AuthContext'
+import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { Alert } from 'rsuite'
 
@@ -39,10 +39,9 @@ function RegisterPage() {
       setUser({ ...user, isSubmitting: true })
 
       const { email, username, password } = user
-      const response = await register({ email, username, password })
-      const { token } = response.data
+      const res = await register({ email, username, password })
 
-      dispatch({ type: 'REGISTER', payload: { token } })
+      dispatch({ type: 'REGISTER', payload: { token: res.data.token } })
     } catch (err) {
       const { response, message } = err
 

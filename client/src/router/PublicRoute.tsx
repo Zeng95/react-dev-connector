@@ -1,5 +1,5 @@
 import { AppLayout } from 'components/App/AppLayout'
-import { AuthContext } from 'contexts/auth/AuthContext'
+import { AuthContext } from 'context/auth/AuthContext'
 import React, { useContext } from 'react'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
 
@@ -15,12 +15,12 @@ const PublicRoute: React.FC<PublicRouteProps> = ({
   const { isAuthenticated, token } = state
 
   const routeComponent = () => {
-    return !isAuthenticated && !token ? (
+    return isAuthenticated || token ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <AppLayout>
         <Component />
       </AppLayout>
-    ) : (
-      <Redirect to="/dashboard" />
     )
   }
 

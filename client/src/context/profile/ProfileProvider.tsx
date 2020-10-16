@@ -1,5 +1,5 @@
 import { getProfile } from 'api/profiles'
-import { AuthContext } from 'contexts/auth/AuthContext'
+import { AuthContext } from 'context/auth/AuthContext'
 import React, { useContext, useEffect, useReducer } from 'react'
 import { Notification } from 'rsuite'
 import { initialState, ProfileContext } from './ProfileContext'
@@ -14,10 +14,9 @@ const ProfileProvider: React.FC = ({ children }) => {
 
   const getCurrentProfile = async () => {
     try {
-      const response = await getProfile()
-      const { profile: newProfile } = response.data
+      const res = await getProfile()
 
-      dispatch({ type: 'GET_PROFILE', payload: newProfile })
+      dispatch({ type: 'GET_PROFILE', payload: res.data.profile })
     } catch (err) {
       Notification.error({
         title: 'info',

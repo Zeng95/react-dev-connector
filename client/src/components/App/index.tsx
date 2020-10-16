@@ -1,5 +1,5 @@
-import { AuthProvider } from 'contexts/auth/AuthProvider'
-import { ProfileProvider } from 'contexts/profile/ProfileProvider'
+import { AuthProvider } from 'context/auth/AuthProvider'
+import { ProfileProvider } from 'context/profile/ProfileProvider'
 import React from 'react'
 import { Router } from 'router'
 

@@ -12,10 +12,17 @@ const Profile = require('../models/Profile')
  */
 router.get('/me', verifyToken, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.userId }).populate(
-      'user',
-      ['avatar', 'email', 'username']
-    )
+    const profile = await Profile.findOne(
+      { user: req.userId },
+      {
+        _id: true,
+        status: true,
+        experience: true,
+        education: true,
+        skills: true,
+        social: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
 
     if (!profile) {
       return res.status(404).json({
@@ -24,23 +31,10 @@ router.get('/me', verifyToken, async (req, res) => {
       })
     }
 
-    const newProfile = {}
+    const newProfile = profile.transform()
 
-    newProfile.id = profile._id
-    newProfile.status = profile.status
-    newProfile.company = profile.company
-    newProfile.webiste = profile.website
-    newProfile.location = profile.location
-    newProfile.skills = profile.skills
-    newProfile.githubusername = profile.githubusername
-    newProfile.bio = profile.bio
-    newProfile.social = profile.social
-
-    newProfile.user = {}
-    newProfile.user.id = profile.user._id
-    newProfile.user.avatar = profile.user.avatar
-    newProfile.user.email = profile.user.email
-    newProfile.user.username = profile.user.username
+    newProfile.user.id = profile.user['_id']
+    delete newProfile.user['_id']
 
     res.status(200).json({
       success: true,
@@ -77,13 +71,6 @@ router.post('/', verifyToken, async (req, res) => {
       instgram,
       weibo
     } = req.body
-    const user = await User.findById(req.userId)
-    const newUser = {
-      id: user._id,
-      email: user.email,
-      avatar: user.avatar,
-      username: user.username
-    }
     const profileFields = { user: req.userId, status }
 
     profileFields.skills = skills
@@ -104,21 +91,26 @@ router.post('/', verifyToken, async (req, res) => {
     if (linkedin) profileFields.social.linkedin = linkedin
     if (youtube) profileFields.social.youtube = youtube
     if (instgram) profileFields.social.instgram = instgram
-    if (weibo) profileFields.social.instgram = weibo
+    if (weibo) profileFields.social.weibo = weibo
 
     // Create
     const profile = new Profile(profileFields)
     const savedProfile = await profile.save()
-    const newProfile = { ...profileFields }
+    const findedProfile = await Profile.findOne(
+      { user: req.userId },
+      {
+        _id: true,
+        status: true,
+        experience: true,
+        education: true,
+        skills: true,
+        social: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
+    const newProfile = findedProfile.transform()
 
-    newProfile.id = savedProfile._id
-    newProfile.user = newUser
-
-    if (Object.entries(profileFields.social).length !== 0) {
-      newProfile.social = savedProfile.social
-    } else {
-      delete newProfile.social
-    }
+    newProfile.user.id = savedProfile.user['_id']
+    delete newProfile.user['_id']
 
     res.status(201).json({
       success: true,
@@ -155,13 +147,6 @@ router.put('/:userId', verifyToken, async (req, res) => {
       instgram,
       weibo
     } = req.body
-    const user = await User.findById(req.userId)
-    const newUser = {
-      id: user._id,
-      email: user.email,
-      avatar: user.avatar,
-      username: user.username
-    }
     const profileFields = { user: req.userId, status }
 
     profileFields.skills = skills
@@ -188,18 +173,22 @@ router.put('/:userId', verifyToken, async (req, res) => {
     const updatedProfile = await Profile.findOneAndUpdate(
       { user: req.userId },
       profileFields,
-      { new: true }
-    )
-    const newProfile = { ...profileFields }
+      {
+        fields: {
+          _id: true,
+          status: true,
+          experience: true,
+          education: true,
+          skills: true,
+          social: true
+        },
+        new: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
+    const newProfile = updatedProfile.transform()
 
-    newProfile.id = updatedProfile._id
-    newProfile.user = newUser
-
-    if (Object.entries(profileFields.social).length !== 0) {
-      newProfile.social = updatedProfile.social
-    } else {
-      delete newProfile.social
-    }
+    newProfile.user.id = updatedProfile.user['_id']
+    delete newProfile.user['_id']
 
     res.status(201).json({
       success: true,
