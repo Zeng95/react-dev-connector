@@ -1,5 +1,6 @@
 import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock } from '@styled-icons/fa-solid'
+import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { LoginPage } from 'hooks/useLogin'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -14,27 +15,6 @@ import {
   InputGroup,
   Schema
 } from 'rsuite'
-import styled from 'styled-components'
-import tw from 'twin.macro'
-
-const LoginPageStyled = styled.section.attrs({
-  className: 'mx-auto px-8'
-})`
-  max-width: 1100px;
-`
-const Title = styled.h1.attrs({
-  className: 'mb-4 text-primary'
-})`
-  font-size: 3rem;
-  line-height: 1.2;
-`
-const Description = styled.p.attrs({
-  className: 'flex items-center mb-4 text-2xl'
-})`
-  span {
-    ${tw`ml-2`}
-  }
-`
 
 const Login: React.FC = () => {
   const login = LoginPage()
@@ -47,7 +27,7 @@ const Login: React.FC = () => {
   })
 
   return (
-    <LoginPageStyled>
+    <PageStyled>
       <Title>Log In</Title>
 
       <Description>
@@ -129,7 +109,7 @@ const Login: React.FC = () => {
           </Link>
         </strong>
       </p>
-    </LoginPageStyled>
+    </PageStyled>
   )
 }
 

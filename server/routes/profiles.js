@@ -209,16 +209,16 @@ router.put('/', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Put api/profiles/experiences
+ * @route   Put api/profiles/experience
  * @desc    Add an experience to an existing user's profile
  * @access  Private
  */
-router.put('/experiences', verifyToken, async (req, res) => {
+router.put('/experience', verifyToken, async (req, res) => {
   try {
     const experienceFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
 
-    profile.experiences.unshift(experienceFields)
+    profile.experience.unshift(experienceFields)
 
     // Update
     const savedProfile = await profile.save()
@@ -227,11 +227,15 @@ router.put('/experiences', verifyToken, async (req, res) => {
       {
         _id: true,
         status: true,
+        company: true,
+        website: true,
+        location: true,
+        skills: true,
+        githubusername: true,
+        bio: true,
         experience: true,
         education: true,
-        skills: true,
-        social: true,
-        experiences: true
+        social: true
       }
     ).populate('user', ['avatar', 'email', 'username'])
     const newProfile = foundProfile.transform()
@@ -253,16 +257,16 @@ router.put('/experiences', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Put api/profiles/educations
+ * @route   Put api/profiles/education
  * @desc    Add an education to an existing user's profile
  * @access  Private
  */
-router.put('/educations', verifyToken, async (req, res) => {
+router.put('/education', verifyToken, async (req, res) => {
   try {
     const educationFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
 
-    profile.educations.unshift(educationFields)
+    profile.education.unshift(educationFields)
 
     // Update
     const savedProfile = await profile.save()
@@ -273,8 +277,8 @@ router.put('/educations', verifyToken, async (req, res) => {
         status: true,
         skills: true,
         social: true,
-        experiences: true,
-        educations: true
+        experience: true,
+        education: true
       }
     ).populate('user', ['avatar', 'email', 'username'])
     const newProfile = foundProfile.transform()
@@ -296,12 +300,56 @@ router.put('/educations', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Delete api/profiles/experiences/:id
+ * @route   Delete api/profiles/experience/:id
  * @desc    Delete an experience from an existing user's profile
  * @access  Private
  */
-router.delete('/experiences/:id', verifyToken, async (req, res) => {
+router.delete('/experience/:id', verifyToken, async (req, res) => {
   try {
+    const profile = await Profile.findOne({ user: req.userId })
+    const experienceId = req.params.id
+    const index = profile.experience.findIndex(item => {
+      return experienceId === item['_id'].toString()
+    })
+
+    if (index === -1) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Please send correct experience id'
+      })
+    }
+
+    // Delete
+    profile.experience.splice(index, 1)
+
+    // Update
+    const savedProfile = await profile.save()
+    const foundProfile = await Profile.findOne(
+      { user: req.userId },
+      {
+        _id: true,
+        status: true,
+        company: true,
+        website: true,
+        location: true,
+        skills: true,
+        githubusername: true,
+        bio: true,
+        experience: true,
+        education: true,
+        social: true
+      }
+    ).populate('user', ['avatar', 'email', 'username'])
+    const newProfile = foundProfile.transform()
+
+    newProfile.user.id = savedProfile.user['_id']
+    delete newProfile.user['_id']
+
+    res.status(201).json({
+      success: true,
+      msg: 'You have successfully deleted an experience from your profile',
+      profile: newProfile
+    })
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -311,11 +359,11 @@ router.delete('/experiences/:id', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Delete api/profiles/educations/:id
+ * @route   Delete api/profiles/education/:id
  * @desc    Delete an education from an existing user's profile
  * @access  Private
  */
-router.delete('/educations/:id', verifyToken, async (req, res) => {
+router.delete('/education/:id', verifyToken, async (req, res) => {
   try {
   } catch (err) {
     res.status(500).json({

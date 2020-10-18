@@ -5,6 +5,7 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
+import { AddExperiencePage } from 'hooks/useProfileExperience'
 import React from 'react'
 import {
   Button,
@@ -16,9 +17,10 @@ import {
   Form,
   FormControl,
   FormGroup,
-  InputGroup
+  InputGroup,
+  Schema
 } from 'rsuite'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const DatePickerStyled = styled(DatePicker)`
   .rs-picker-toggle-caret {
@@ -30,12 +32,27 @@ const CheckboxStyled = styled(Checkbox)`
   label {
     line-height: normal;
   }
+
+  ${props =>
+    props.hidden &&
+    css`
+      display: none;
+    `}
 `
 
 const AddExperience: React.FC = () => {
+  const experience = AddExperiencePage()
+  const { experienceForm, submitting, toDateDisabled } = experience
+
+  const { StringType } = Schema.Types
+  const model = Schema.Model({
+    title: StringType().isRequired('This field is required.'),
+    company: StringType().isRequired('This field is required.')
+  })
+
   return (
     <PageStyled>
-      <Title>Add An Experience</Title>
+      <Title>Experience</Title>
 
       <Description>
         <CodeBranch size="24" title="Add Experience" />
@@ -46,17 +63,27 @@ const AddExperience: React.FC = () => {
 
       <Instruction>* = required field</Instruction>
 
-      <Form fluid autoComplete="off" checkTrigger="none">
+      <Form
+        fluid
+        model={model}
+        ref={experience.formEl}
+        formValue={experienceForm}
+        autoComplete="off"
+        checkTrigger="none"
+        onChange={formValue => experience.onChange(formValue)}
+      >
         <FormGroup>
+          <ControlLabel>Job title</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="title" placeholder="* Job Title" />
+            <FormControl name="title" placeholder="* Job title" />
             <InputGroup.Addon>
-              <Briefcase size="16" title="Job Title" />
+              <Briefcase size="16" title="Job title" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
+          <ControlLabel>Company</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
             <FormControl name="company" placeholder="* Company" />
             <InputGroup.Addon>
@@ -66,6 +93,7 @@ const AddExperience: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
+          <ControlLabel>Location</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
             <FormControl name="location" placeholder="Location" />
             <InputGroup.Addon>
@@ -75,51 +103,74 @@ const AddExperience: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>From Date</ControlLabel>
+          <ControlLabel>From date</ControlLabel>
           <FormControl
+            block
             size="lg"
             name="from"
             placeholder="YYYY / MM / DD"
             accepter={DatePickerStyled}
-            block
           />
         </FormGroup>
 
         <FormGroup>
-          <FormControl name="current" accepter={CheckboxGroup}>
-            <CheckboxStyled value="">Current Job</CheckboxStyled>
+          <FormControl
+            name="current"
+            accepter={CheckboxGroup}
+            onChange={() => experience.toggleDisbaled(!toDateDisabled)}
+          >
+            <CheckboxStyled value="current">Current Job</CheckboxStyled>
+            <CheckboxStyled hidden={true} />
           </FormControl>
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>To Date</ControlLabel>
+          <ControlLabel>To date</ControlLabel>
           <FormControl
+            block
+            disabled={toDateDisabled}
             size="lg"
             name="to"
             placeholder="YYYY / MM / DD"
             accepter={DatePickerStyled}
-            block
           />
         </FormGroup>
 
         <FormGroup>
+          <ControlLabel>Job description</ControlLabel>
           <FormControl
             name="description"
             componentClass="textarea"
             rows={5}
-            placeholder="Job Description"
+            placeholder="Job description"
           />
         </FormGroup>
 
         <FormGroup>
           <ButtonToolbar className="my-4">
-            <Button appearance="primary" size="lg">
+            <Button
+              disabled={submitting}
+              loading={submitting}
+              appearance="primary"
+              size="lg"
+              onClick={experience.onSubmit}
+            >
               Submit
             </Button>
-            <Button appearance="default" size="lg">
+            <Button
+              disabled={submitting}
+              appearance="default"
+              size="lg"
+              onClick={experience.onReset}
+            >
               Remove
             </Button>
-            <Button appearance="ghost" size="lg">
+            <Button
+              disabled={submitting}
+              appearance="ghost"
+              size="lg"
+              onClick={experience.navigateToDashboard}
+            >
               Go Back
             </Button>
           </ButtonToolbar>

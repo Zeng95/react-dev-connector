@@ -67,6 +67,7 @@ const InputStyled = styled(FormControl)`
 const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
   const profile = ProfilePage()
   const { profileForm } = profile
+
   const { StringType } = Schema.Types
   const model = Schema.Model({
     status: StringType().isRequired('This field is required.'),
@@ -86,6 +87,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
         return true
       }, 'Please enter at least two skills with one comma separated.')
   })
+
   const status = [
     {
       label: 'Developer',

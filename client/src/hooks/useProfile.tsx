@@ -53,17 +53,17 @@ function ProfilePage() {
 
       setProfileForm({ ...profileForm, isSubmitting: true })
 
-      let response
+      let res
 
       if (edit && profile !== null) {
-        response = await updateProfile(profileForm)
+        res = await updateProfile(profileForm)
         Alert.success('Profile Updated', 2000)
       } else {
-        response = await createProfile(profileForm)
-        Alert.success('Profile Created', 2000, () => history.push('/dashboard'))
+        res = await createProfile(profileForm)
+        Alert.success('Profile Created', 2000, () => navigateToDashboard())
       }
 
-      dispatch({ type: GET_PROFILE, payload: response.data.profile })
+      dispatch({ type: GET_PROFILE, payload: res.data.profile })
     } catch (err) {
       const { response, message } = err
 

@@ -6,7 +6,7 @@ export const AppContent = styled.main.attrs({
 })``
 
 export const PageStyled = styled.section.attrs({
-  className: 'mx-auto px-8'
+  className: 'mx-auto px-40'
 })`
   max-width: 1100px;
 `
