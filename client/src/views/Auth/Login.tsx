@@ -7,6 +7,7 @@ import {
   AutoComplete,
   Button,
   ButtonToolbar,
+  ControlLabel,
   Form,
   FormControl,
   FormGroup,
@@ -51,7 +52,7 @@ const Login: React.FC = () => {
 
       <Description>
         <ReactLogo size="24" />
-        <span>Log into Your Account</span>
+        <span>Log in to your account</span>
       </Description>
 
       <Form
@@ -64,24 +65,29 @@ const Login: React.FC = () => {
         onChange={formValue => login.onChange(formValue)}
       >
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Email address</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <Envelope size="16" title="Email Address" />
+            </InputGroup.Addon>
             <FormControl
               name="email"
               type="email"
-              placeholder="Email Address"
+              placeholder="Email address"
               accepter={AutoComplete}
               data={login.email}
               onKeyPress={login.onKeyUp}
               onChange={login.onEmailChange}
             />
-            <InputGroup.Addon>
-              <Envelope size="16" title="Email Address" />
-            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Password</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <Lock size="16" title="Password" />
+            </InputGroup.Addon>
             <FormControl
               name="password"
               type="password"
@@ -89,9 +95,6 @@ const Login: React.FC = () => {
               autoComplete="on"
               onKeyPress={login.onKeyUp}
             />
-            <InputGroup.Addon>
-              <Lock size="16" title="Password" />
-            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 

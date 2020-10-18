@@ -7,6 +7,7 @@ import {
   AutoComplete,
   Button,
   ButtonToolbar,
+  ControlLabel,
   Form,
   FormControl,
   FormGroup,
@@ -62,7 +63,7 @@ const Register: React.FC = () => {
 
       <Description>
         <ReactLogo size="24" />
-        <span>Create Your Account</span>
+        <span>Sign up for free and experience DevConnector today</span>
       </Description>
 
       <Form
@@ -75,32 +76,34 @@ const Register: React.FC = () => {
         onChange={formValue => register.onChange(formValue)}
       >
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Username</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <UserCircle size="16" title="Username" />
+            </InputGroup.Addon>
             <FormControl
               name="username"
               placeholder="Username"
               onKeyPress={register.onKeyUp}
             />
-            <InputGroup.Addon>
-              <UserCircle size="16" title="Username" />
-            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Email address</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <Envelope size="16" title="Email address" />
+            </InputGroup.Addon>
             <FormControl
               name="email"
               type="email"
-              placeholder="Email Address"
+              placeholder="Email address"
               accepter={AutoComplete}
               data={register.email}
               onKeyPress={register.onKeyUp}
               onChange={register.onEmailChange}
             />
-            <InputGroup.Addon>
-              <Envelope size="16" title="Email Address" />
-            </InputGroup.Addon>
           </InputGroup>
           <HelpBlock>
             This site uses Gravatar so if you want a profile image, use a
@@ -109,7 +112,11 @@ const Register: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Password</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <Lock size="16" title="Password" />
+            </InputGroup.Addon>
             <FormControl
               name="password"
               type="password"
@@ -117,24 +124,22 @@ const Register: React.FC = () => {
               autoComplete="on"
               onKeyPress={register.onKeyUp}
             />
-            <InputGroup.Addon>
-              <Lock size="16" title="Password" />
-            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <InputGroup inside style={{ width: '100%' }}>
+          <ControlLabel>Confirm password</ControlLabel>
+          <InputGroup style={{ width: '100%' }}>
+            <InputGroup.Addon>
+              <Lock size="16" title="Confirm password" />
+            </InputGroup.Addon>
             <FormControl
               name="confirmPassword"
               type="password"
-              placeholder="Confirm Password"
+              placeholder="Confirm password"
               autoComplete="on"
               onKeyPress={register.onKeyUp}
             />
-            <InputGroup.Addon>
-              <Lock size="16" title="Confirm Password" />
-            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
