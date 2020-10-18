@@ -35,14 +35,14 @@ const updateProfileExperience = experience => {
   })
 }
 
-const deleteProfileExperience = experienceId => {
-  return httpClient.delete(`${END_POINT}/experience/${experienceId}`, {
+const updateProfileEducation = education => {
+  return httpClient.put(`${END_POINT}/education`, education, {
     headers: setAuthToken()
   })
 }
 
-const updateProfileEducation = education => {
-  return httpClient.put(`${END_POINT}/education`, education, {
+const deleteProfileExperience = experienceId => {
+  return httpClient.delete(`${END_POINT}/experience/${experienceId}`, {
     headers: setAuthToken()
   })
 }

@@ -1,25 +1,88 @@
-import { useState } from 'react'
+import { updateProfileEducation } from 'api/profiles'
+import { useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Alert } from 'rsuite'
 
 function AddEducationPage() {
-  const [experience, setExperience] = useState({
+  const history = useHistory()
+
+  const formEl = useRef<HTMLFormElement>(null)
+
+  const [experienceForm, setExperienceForm] = useState({
     title: '',
     company: '',
     location: '',
-    from: '',
-    to: '',
-    current: false
+    from: null,
+    to: null,
+    description: '',
+    current: []
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [toDateDisabled, toggleDisbaled] = useState(false)
 
   const onSubmit = async () => {
     try {
-    } catch (error) {}
+      if (formEl.current !== null && !formEl.current.check()) return false
+
+      setSubmitting(true)
+
+      const res = await updateProfileEducation()
+      console.log(res)
+
+      Alert.success('Experience Added', 2000, () => navigateToDashboard())
+    } catch (err) {
+      const { response, message } = err
+
+      if (response) {
+        const { errors, msg } = response.data
+
+        if (errors) {
+          errors.forEach((error: any) => Alert.error(error.msg))
+        } else {
+          Alert.error(msg)
+        }
+      } else {
+        Alert.error(message)
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const onChange = (formValue: any) => {
-    setExperience(formValue)
+    setExperienceForm(formValue)
   }
 
-  return { experience, onSubmit, onChange }
+  const onReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setExperienceForm({
+      title: '',
+      company: '',
+      location: '',
+      from: null,
+      to: null,
+      description: '',
+      current: []
+    })
+    setSubmitting(false)
+  }
+
+  const navigateToDashboard = () => {
+    history.push('/dashboard')
+  }
+
+  return {
+    formEl,
+    experienceForm,
+    toDateDisabled,
+    toggleDisbaled,
+    submitting,
+    onSubmit,
+    onChange,
+    onReset,
+    navigateToDashboard
+  }
 }
 
 export { AddEducationPage }

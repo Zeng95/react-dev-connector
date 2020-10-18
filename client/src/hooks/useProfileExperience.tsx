@@ -1,24 +1,29 @@
 import { updateProfileExperience } from 'api/profiles'
-import { useRef, useState } from 'react'
+import { ProfileContext } from 'context/profile/ProfileContext'
+import { UPDATE_PROFILE } from 'context/types'
+import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function AddExperiencePage() {
   const history = useHistory()
 
+  const { dispatch } = useContext(ProfileContext)
+
   const formEl = useRef<HTMLFormElement>(null)
+
+  const [submitting, setSubmitting] = useState(false)
+  const [toDateDisabled, toggleDisbaled] = useState(false)
 
   const [experienceForm, setExperienceForm] = useState({
     title: '',
     company: '',
     location: '',
+    description: '',
     from: null,
     to: null,
-    description: '',
     current: []
   })
-  const [submitting, setSubmitting] = useState(false)
-  const [toDateDisabled, toggleDisbaled] = useState(false)
 
   const onSubmit = async () => {
     try {
@@ -26,24 +31,20 @@ function AddExperiencePage() {
 
       setSubmitting(true)
 
-      const res = await updateProfileExperience()
-      console.log(res)
+      let formData
+
+      formData =
+        experienceForm.current.length > 0
+          ? { ...experienceForm, current: true }
+          : { ...experienceForm, current: false }
+
+      const res = await updateProfileExperience(formData)
 
       Alert.success('Experience Added', 2000, () => navigateToDashboard())
+
+      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
     } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
+      Alert.error(err.message)
     } finally {
       setSubmitting(false)
     }

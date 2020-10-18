@@ -1,33 +1,15 @@
 import { User } from '@styled-icons/fa-solid'
 import { DashboardActions } from 'components/Dashboard/Actions'
+import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Loader, Table } from 'rsuite'
 import styled from 'styled-components'
-import tw from 'twin.macro'
 
 const { Column, HeaderCell, Cell } = Table
 
-const Container = styled.section.attrs({
-  className: 'mx-auto px-8'
-})`
-  max-width: 1100px;
-`
-const Title = styled.h1.attrs({
-  className: 'mb-4 text-primary'
-})`
-  font-size: 3rem;
-  line-height: 1.2;
-`
-const Description = styled.p.attrs({
-  className: 'flex items-center mb-4 text-2xl'
-})`
-  span {
-    ${tw`ml-2`}
-  }
-`
 const ExperienceSection = styled.section``
 const SectionTitle = styled.h2.attrs({
   className: 'my-8 text-2xl font-bold'
@@ -123,7 +105,7 @@ const Dashboard: React.FC = () => {
   return loading ? (
     <Loader center size="lg" content="Loading..." vertical />
   ) : (
-    <Container>
+    <PageStyled>
       <Title>Dashboard</Title>
 
       <Description>
@@ -160,12 +142,7 @@ const Dashboard: React.FC = () => {
                     function handleAction() {
                       alert(`id:${rowData.id}`)
                     }
-                    return (
-                      <span>
-                        <a onClick={handleAction}> Edit </a> |{' '}
-                        <a onClick={handleAction}> Remove </a>
-                      </span>
-                    )
+                    return <span>abc</span>
                   }}
                 </Cell>
               </Column>
@@ -183,7 +160,7 @@ const Dashboard: React.FC = () => {
           </Link>
         </div>
       )}
-    </Container>
+    </PageStyled>
   )
 }
 
