@@ -7,9 +7,7 @@ import { Alert } from 'rsuite'
 
 function AddExperiencePage() {
   const history = useHistory()
-
   const { dispatch } = useContext(ProfileContext)
-
   const formEl = useRef<HTMLFormElement>(null)
 
   const [submitting, setSubmitting] = useState(false)

@@ -1,8 +1,8 @@
 import {
-  Briefcase,
-  Building,
+  Book,
+  Certificate,
   GraduationCap,
-  MapPin
+  University
 } from '@styled-icons/fa-solid'
 import {
   Description,
@@ -10,7 +10,7 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
-import { AddExperiencePage } from 'hooks/useProfileExperience'
+import { AddEducationPage } from 'hooks/useProfileEducation'
 import React from 'react'
 import {
   Button,
@@ -46,13 +46,15 @@ const CheckboxStyled = styled(Checkbox)`
 `
 
 const AddEducation: React.FC = () => {
-  const experience = AddExperiencePage()
-  const { experienceForm, submitting, toDateDisabled } = experience
+  const education = AddEducationPage()
+  const { educationForm, submitting, toDateDisabled } = education
 
-  const { StringType } = Schema.Types
+  const { StringType, DateType } = Schema.Types
   const model = Schema.Model({
-    title: StringType().isRequired('This field is required.'),
-    company: StringType().isRequired('This field is required.')
+    school: StringType().isRequired('This field is required.'),
+    degree: StringType().isRequired('This field is required.'),
+    fieldofstudy: StringType().isRequired('This field is required.'),
+    from: DateType().isRequired('This field is required.')
   })
 
   return (
@@ -69,38 +71,38 @@ const AddEducation: React.FC = () => {
       <Form
         fluid
         model={model}
-        ref={experience.formEl}
-        formValue={experienceForm}
+        ref={education.formEl}
+        formValue={educationForm}
         autoComplete="off"
         checkTrigger="none"
-        onChange={formValue => experience.onChange(formValue)}
+        onChange={formValue => education.onChange(formValue)}
       >
         <FormGroup>
-          <ControlLabel>Job title</ControlLabel>
+          <ControlLabel>School or bootcamp</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="title" placeholder="* Job title" />
+            <FormControl name="school" placeholder="* School or bootcamp" />
             <InputGroup.Addon>
-              <Briefcase size="16" title="Job title" />
+              <University size="16" title="School or bootcamp" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Company</ControlLabel>
+          <ControlLabel>Degree or certificate</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="company" placeholder="* Company" />
+            <FormControl name="degree" placeholder="* Degree or certificate" />
             <InputGroup.Addon>
-              <Building size="16" title="Company" />
+              <Certificate size="16" title="Degree or certificate" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Location</ControlLabel>
+          <ControlLabel>Field of study</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="location" placeholder="Location" />
+            <FormControl name="fieldofstudy" placeholder="* Field of study" />
             <InputGroup.Addon>
-              <MapPin size="16" title="Location" />
+              <Book size="16" title="Field of study" />
             </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
@@ -120,9 +122,11 @@ const AddEducation: React.FC = () => {
           <FormControl
             name="current"
             accepter={CheckboxGroup}
-            onChange={() => experience.toggleDisbaled(!toDateDisabled)}
+            onChange={() => education.toggleDisbaled(!toDateDisabled)}
           >
-            <CheckboxStyled value="current">Current Job</CheckboxStyled>
+            <CheckboxStyled value="current">
+              Current school or bootcamp
+            </CheckboxStyled>
             <CheckboxStyled hidden={true} />
           </FormControl>
         </FormGroup>
@@ -140,12 +144,12 @@ const AddEducation: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Job description</ControlLabel>
+          <ControlLabel>Program description</ControlLabel>
           <FormControl
             name="description"
             componentClass="textarea"
             rows={5}
-            placeholder="Job description"
+            placeholder="Program description"
           />
         </FormGroup>
 
@@ -156,7 +160,7 @@ const AddEducation: React.FC = () => {
               loading={submitting}
               appearance="primary"
               size="lg"
-              onClick={experience.onSubmit}
+              onClick={education.onSubmit}
             >
               Submit
             </Button>
@@ -164,7 +168,7 @@ const AddEducation: React.FC = () => {
               disabled={submitting}
               appearance="default"
               size="lg"
-              onClick={experience.onReset}
+              onClick={education.onReset}
             >
               Remove
             </Button>
@@ -172,7 +176,7 @@ const AddEducation: React.FC = () => {
               disabled={submitting}
               appearance="ghost"
               size="lg"
-              onClick={experience.navigateToDashboard}
+              onClick={education.navigateToDashboard}
             >
               Go Back
             </Button>

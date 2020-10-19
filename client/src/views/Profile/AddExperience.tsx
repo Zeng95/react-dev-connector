@@ -95,7 +95,7 @@ const AddExperience: React.FC = () => {
         <FormGroup>
           <ControlLabel>Location</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="location" placeholder="Location" />
+            <FormControl name="location" placeholder="* Location" />
             <InputGroup.Addon>
               <MapPin size="16" title="Location" />
             </InputGroup.Addon>
@@ -119,7 +119,7 @@ const AddExperience: React.FC = () => {
             accepter={CheckboxGroup}
             onChange={() => experience.toggleDisbaled(!toDateDisabled)}
           >
-            <CheckboxStyled value="current">Current Job</CheckboxStyled>
+            <CheckboxStyled value="current">Current job</CheckboxStyled>
             <CheckboxStyled hidden={true} />
           </FormControl>
         </FormGroup>

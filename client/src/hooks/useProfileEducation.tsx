@@ -1,17 +1,19 @@
 import { updateProfileEducation } from 'api/profiles'
-import { useRef, useState } from 'react'
+import { ProfileContext } from 'context/profile/ProfileContext'
+import { UPDATE_PROFILE } from 'context/types'
+import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function AddEducationPage() {
   const history = useHistory()
-
+  const { dispatch } = useContext(ProfileContext)
   const formEl = useRef<HTMLFormElement>(null)
 
-  const [experienceForm, setExperienceForm] = useState({
-    title: '',
-    company: '',
-    location: '',
+  const [educationForm, setEducationForm] = useState({
+    school: '',
+    degree: '',
+    fieldofstudy: '',
     from: null,
     to: null,
     description: '',
@@ -26,40 +28,36 @@ function AddEducationPage() {
 
       setSubmitting(true)
 
-      const res = await updateProfileEducation()
-      console.log(res)
+      let formData
 
-      Alert.success('Experience Added', 2000, () => navigateToDashboard())
+      formData =
+        educationForm.current.length > 0
+          ? { ...educationForm, current: true }
+          : { ...educationForm, current: false }
+
+      const res = await updateProfileEducation(formData)
+
+      Alert.success('Education Added', 2000, () => navigateToDashboard())
+
+      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
     } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
+      Alert.error(err.message)
     } finally {
       setSubmitting(false)
     }
   }
 
   const onChange = (formValue: any) => {
-    setExperienceForm(formValue)
+    setEducationForm(formValue)
   }
 
   const onReset = () => {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
-    setExperienceForm({
-      title: '',
-      company: '',
-      location: '',
+    setEducationForm({
+      school: '',
+      degree: '',
+      fieldofstudy: '',
       from: null,
       to: null,
       description: '',
@@ -74,7 +72,7 @@ function AddEducationPage() {
 
   return {
     formEl,
-    experienceForm,
+    educationForm,
     toDateDisabled,
     toggleDisbaled,
     submitting,
