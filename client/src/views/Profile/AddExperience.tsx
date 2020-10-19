@@ -44,10 +44,12 @@ const AddExperience: React.FC = () => {
   const experience = AddExperiencePage()
   const { experienceForm, submitting, toDateDisabled } = experience
 
-  const { StringType } = Schema.Types
+  const { StringType, DateType } = Schema.Types
   const model = Schema.Model({
     title: StringType().isRequired('This field is required.'),
-    company: StringType().isRequired('This field is required.')
+    company: StringType().isRequired('This field is required.'),
+    location: StringType().isRequired('This field is required.'),
+    from: DateType().isRequired('This field is required.')
   })
 
   return (
