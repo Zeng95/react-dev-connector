@@ -7,6 +7,16 @@ type UserType = {
   username: string
 }
 
+type ExperienceType = {
+  title: string
+  company: string
+}
+
+type EducationType = {
+  school: string
+  degree: string
+}
+
 type ProfileType = {
   status: string
   company: string
@@ -16,6 +26,14 @@ type ProfileType = {
   githubusername: string
   bio: string
   user: UserType
+  twitter: string
+  facebook: string
+  linkedin: string
+  youtube: string
+  instgram: string
+  weibo: string
+  experience: ExperienceType[]
+  education: EducationType[]
 }
 
 type RepositoryType = {

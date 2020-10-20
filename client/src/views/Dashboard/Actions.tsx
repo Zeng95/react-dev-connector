@@ -8,7 +8,7 @@ import tw from 'twin.macro'
 const DashboardButtons = styled.div``
 const LinkStyled = styled(Link).attrs({
   className:
-    'inline-flex items-center mr-2 px-5 py-2 bg-light text-base text-primary'
+    'inline-flex items-center mr-3 px-5 py-2 bg-light text-base text-primary'
 })`
   transition: opacity 0.2s ease-in;
 

@@ -1,5 +1,5 @@
 import { User } from '@styled-icons/fa-solid'
-import { ProfileForm } from 'components/Profile/ProfileForm'
+import { ProfileForm } from 'views/Profile/ProfileForm'
 import {
   Description,
   Instruction,

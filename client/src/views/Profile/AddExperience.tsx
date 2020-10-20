@@ -146,7 +146,7 @@ const AddExperience: React.FC = () => {
               size="lg"
               onClick={experience.onReset}
             >
-              Remove
+              Clear
             </Button>
             <Button
               disabled={submitting}

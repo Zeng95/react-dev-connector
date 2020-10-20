@@ -140,7 +140,7 @@ const Register: React.FC = () => {
               size="lg"
               onClick={register.onReset}
             >
-              Remove
+              Clear
             </Button>
           </ButtonToolbar>
         </FormGroup>

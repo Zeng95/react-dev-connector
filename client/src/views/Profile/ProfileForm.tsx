@@ -296,7 +296,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
             size="lg"
             onClick={profile.onReset}
           >
-            Remove
+            Clear
           </Button>
           <Button
             appearance="ghost"

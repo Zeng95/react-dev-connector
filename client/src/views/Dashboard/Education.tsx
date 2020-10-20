@@ -1,17 +1,110 @@
-import React from 'react'
+import { ProfileContext } from 'context/profile/ProfileContext'
+import moment from 'moment'
+import React, { Fragment, useContext } from 'react'
+import { Icon, IconButton, Table } from 'rsuite'
 import styled from 'styled-components'
+import tw from 'twin.macro'
+
+const { Column, HeaderCell, Cell } = Table
 
 const SectionStyled = styled.section``
 const SectionTitle = styled.h2.attrs({
-  className: 'my-8 text-2xl font-bold'
-})``
+  className: 'flex items-center my-8 text-2xl font-bold'
+})`
+  span {
+    ${tw`ml-2`}
+  }
+`
 const SectionContent = styled.div``
+const HeaderCellStyled = styled(HeaderCell)`
+  .rs-table-cell {
+    background-color: #f4f4f4 !important;
+    color: #333;
+    border-right: 2px solid white;
+  }
+
+  .rs-table-cell-content {
+    line-height: 40px;
+    ${tw`text-base`}
+  }
+
+  &:last-of-type {
+    .rs-table-cell {
+      border: none;
+    }
+  }
+`
 
 const EducationSection: React.FC = () => {
+  const profileState = useContext(ProfileContext).state
+  const { profile } = profileState
+
   return (
     <SectionStyled>
       <SectionTitle>Education Credentials</SectionTitle>
-      <SectionContent>Content</SectionContent>
+
+      {profile ? (
+        <SectionContent>
+          <Table
+            data={profile.education}
+            autoHeight={true}
+            headerHeight={60}
+            rowHeight={70}
+          >
+            {/* School */}
+            <Column sortable flexGrow={1} verticalAlign="middle">
+              <HeaderCellStyled>School</HeaderCellStyled>
+              <Cell dataKey="school" />
+            </Column>
+
+            {/* Degree */}
+            <Column sortable flexGrow={1} verticalAlign="middle">
+              <HeaderCellStyled>Degree</HeaderCellStyled>
+              <Cell dataKey="degree" />
+            </Column>
+
+            {/* Years */}
+            <Column sortable flexGrow={1} verticalAlign="middle">
+              <HeaderCellStyled>Years</HeaderCellStyled>
+              <Cell>
+                {(rowData: any) => {
+                  const { from, to } = rowData
+
+                  return (
+                    <Fragment>
+                      <span>{moment(from).format('YYYY.MM.DD')}</span>
+                      <span className="mx-2">-</span>
+                      <span>
+                        {to === null ? 'Now' : moment(to).format('YYYY.MM.DD')}
+                      </span>
+                    </Fragment>
+                  )
+                }}
+              </Cell>
+            </Column>
+
+            {/* Actions */}
+            <Column flexGrow={1} align="center" verticalAlign="middle">
+              <HeaderCellStyled>Actions</HeaderCellStyled>
+              <Cell>
+                <IconButton
+                  className="mr-2"
+                  icon={<Icon icon="pencil" />}
+                  appearance="primary"
+                  size="lg"
+                  title="edit"
+                />
+                <IconButton
+                  icon={<Icon icon="trash" />}
+                  color="red"
+                  size="lg"
+                  title="delete"
+                />
+              </Cell>
+            </Column>
+          </Table>
+        </SectionContent>
+      ) : null}
     </SectionStyled>
   )
 }

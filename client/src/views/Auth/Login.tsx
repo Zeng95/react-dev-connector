@@ -95,7 +95,7 @@ const Login: React.FC = () => {
               size="lg"
               onClick={login.onReset}
             >
-              Remove
+              Clear
             </Button>
           </ButtonToolbar>
         </FormGroup>

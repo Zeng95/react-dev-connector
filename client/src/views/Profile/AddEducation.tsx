@@ -151,7 +151,7 @@ const AddEducation: React.FC = () => {
               size="lg"
               onClick={education.onReset}
             >
-              Remove
+              Clear
             </Button>
             <Button
               disabled={submitting}
