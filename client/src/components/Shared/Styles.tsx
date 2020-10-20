@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import { DatePicker, Checkbox } from 'rsuite'
+import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
 
 export const AppContent = styled.main.attrs({
@@ -29,3 +30,22 @@ export const Description = styled.p.attrs({
 export const Instruction = styled.small.attrs({
   className: 'block my-5'
 })``
+
+export const DatePickerStyled = styled(DatePicker)`
+  .rs-picker-toggle-caret {
+    right: 12px !important;
+    color: #575757;
+  }
+`
+
+export const CheckboxStyled = styled(Checkbox)`
+  label {
+    line-height: normal;
+  }
+
+  ${props =>
+    props.hidden &&
+    css`
+      display: none;
+    `}
+`

@@ -1,20 +1,13 @@
 import { User } from '@styled-icons/fa-solid'
-import { DashboardActions } from 'components/Dashboard/Actions'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Loader, Table } from 'rsuite'
-import styled from 'styled-components'
-
-const { Column, HeaderCell, Cell } = Table
-
-const ExperienceSection = styled.section``
-const SectionTitle = styled.h2.attrs({
-  className: 'my-8 text-2xl font-bold'
-})``
-const EducationSection = styled.section``
+import { Button, Loader } from 'rsuite'
+import { DashboardActions } from 'views/Dashboard/Actions'
+import { EducationSection } from './Education'
+import { ExperienceSection } from './Experience'
 
 const Dashboard: React.FC = () => {
   const authState = useContext(AuthContext).state
@@ -116,41 +109,8 @@ const Dashboard: React.FC = () => {
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
-          <ExperienceSection>
-            <SectionTitle>Experience Credentials</SectionTitle>
-            <Table height={400} data={data}>
-              <Column>
-                <HeaderCell>Company</HeaderCell>
-                <Cell dataKey="id" />
-              </Column>
-
-              <Column>
-                <HeaderCell>Title</HeaderCell>
-                <Cell dataKey="companyName" />
-              </Column>
-
-              <Column>
-                <HeaderCell>Years</HeaderCell>
-                <Cell dataKey="email" />
-              </Column>
-
-              <Column>
-                <HeaderCell>Action</HeaderCell>
-
-                <Cell>
-                  {(rowData: any) => {
-                    function handleAction() {
-                      alert(`id:${rowData.id}`)
-                    }
-                    return <span>abc</span>
-                  }}
-                </Cell>
-              </Column>
-            </Table>
-          </ExperienceSection>
-          <EducationSection>
-            <SectionTitle>Education Credentials</SectionTitle>
-          </EducationSection>
+          <ExperienceSection />
+          <EducationSection />
         </Fragment>
       ) : (
         <div>

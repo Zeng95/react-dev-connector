@@ -41,6 +41,5 @@ const DashboardActions: React.FC = () => (
     </LinkStyled>
   </DashboardButtons>
 )
-  
 
 export { DashboardActions }

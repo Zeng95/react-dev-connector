@@ -5,6 +5,8 @@ import {
   University
 } from '@styled-icons/fa-solid'
 import {
+  CheckboxStyled,
+  DatePickerStyled,
   Description,
   Instruction,
   PageStyled,
@@ -15,35 +17,14 @@ import React from 'react'
 import {
   Button,
   ButtonToolbar,
-  Checkbox,
   CheckboxGroup,
   ControlLabel,
-  DatePicker,
   Form,
   FormControl,
   FormGroup,
   InputGroup,
   Schema
 } from 'rsuite'
-import styled, { css } from 'styled-components'
-
-const DatePickerStyled = styled(DatePicker)`
-  .rs-picker-toggle-caret {
-    right: 12px !important;
-    color: #575757;
-  }
-`
-const CheckboxStyled = styled(Checkbox)`
-  label {
-    line-height: normal;
-  }
-
-  ${props =>
-    props.hidden &&
-    css`
-      display: none;
-    `}
-`
 
 const AddEducation: React.FC = () => {
   const education = AddEducationPage()
