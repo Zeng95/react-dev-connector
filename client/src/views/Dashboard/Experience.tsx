@@ -1,39 +1,15 @@
+import {
+  HeaderCellStyled,
+  SectionContent,
+  SectionStyled,
+  SectionTitle
+} from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import moment from 'moment'
 import React, { Fragment, useContext } from 'react'
 import { Icon, IconButton, Table } from 'rsuite'
-import styled from 'styled-components'
-import tw from 'twin.macro'
 
-const { Column, HeaderCell, Cell } = Table
-
-const SectionStyled = styled.section``
-const SectionTitle = styled.h2.attrs({
-  className: 'flex items-center my-8 text-2xl font-bold'
-})`
-  span {
-    ${tw`ml-2`}
-  }
-`
-const SectionContent = styled.div``
-const HeaderCellStyled = styled(HeaderCell)`
-  .rs-table-cell {
-    background-color: #f4f4f4 !important;
-    color: #333;
-    border-right: 2px solid white;
-  }
-
-  .rs-table-cell-content {
-    line-height: 40px;
-    ${tw`text-base`}
-  }
-
-  &:last-of-type {
-    .rs-table-cell {
-      border: none;
-    }
-  }
-`
+const { Column, Cell } = Table
 
 const ExperienceSection: React.FC = () => {
   const profileState = useContext(ProfileContext).state

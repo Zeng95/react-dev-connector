@@ -1,6 +1,8 @@
-import { DatePicker, Checkbox } from 'rsuite'
+import { Checkbox, DatePicker, Table } from 'rsuite'
 import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
+
+const { HeaderCell } = Table
 
 export const AppContent = styled.main.attrs({
   className: 'mt-24 mb-12'
@@ -48,4 +50,35 @@ export const CheckboxStyled = styled(Checkbox)`
     css`
       display: none;
     `}
+`
+
+export const SectionStyled = styled.section``
+
+export const SectionTitle = styled.h2.attrs({
+  className: 'flex items-center my-8 text-2xl font-bold'
+})`
+  span {
+    ${tw`ml-2`}
+  }
+`
+
+export const SectionContent = styled.div``
+
+export const HeaderCellStyled = styled(HeaderCell)`
+  .rs-table-cell {
+    background-color: #f4f4f4 !important;
+    color: #333;
+    border-right: 2px solid white;
+  }
+
+  .rs-table-cell-content {
+    line-height: 40px;
+    ${tw`text-base`}
+  }
+
+  &:last-of-type {
+    .rs-table-cell {
+      border: none;
+    }
+  }
 `
