@@ -301,13 +301,6 @@ router.put('/education', verifyToken, async (req, res) => {
 })
 
 /**
- * @route   Delete api/profiles/me
- * @desc    Delete an experience from an existing user's profile
- * @access  Private
- */
-router.delete('/me')
-
-/**
  * @route   Delete api/profiles/experience/:id
  * @desc    Delete an experience from an existing user's profile
  * @access  Private
@@ -382,6 +375,33 @@ router.delete('/education/:id', verifyToken, async (req, res) => {
       success: true,
       msg: 'You have successfully deleted an education from your profile',
       profile: foundProfile
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   Delete api/profiles/me
+ * @desc    Delete an existing user account
+ * @access  Private
+ */
+router.delete('/me', verifyToken, async (req, res) => {
+  try {
+    // Remove user posts
+
+    // Remove profile
+    await Profile.findOneAndRemove({ user: req.userId })
+
+    // Remove user
+    await User.findByIdAndRemove(req.userId)
+
+    res.status(201).json({
+      success: true,
+      msg: 'User deleted successfully'
     })
   } catch (err) {
     res.status(500).json({
