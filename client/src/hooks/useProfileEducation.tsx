@@ -1,15 +1,17 @@
-import { updateProfileEducation } from 'api/profiles'
+import { deleteProfileEducation, updateProfileEducation } from 'api/profiles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import { UPDATE_PROFILE } from 'context/types'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
-function AddEducationPage() {
+function useProfileEducation() {
   const history = useHistory()
   const { dispatch } = useContext(ProfileContext)
   const formEl = useRef<HTMLFormElement>(null)
 
+  const [submitting, setSubmitting] = useState(false)
+  const [toDateDisabled, toggleDisbaled] = useState(false)
   const [educationForm, setEducationForm] = useState({
     school: '',
     degree: '',
@@ -19,8 +21,22 @@ function AddEducationPage() {
     description: '',
     current: []
   })
-  const [submitting, setSubmitting] = useState(false)
-  const [toDateDisabled, toggleDisbaled] = useState(false)
+
+  const onDelete = async (educationId: string) => {
+    try {
+      setSubmitting(true)
+
+      const res = await deleteProfileEducation(educationId)
+
+      Alert.success('Education Deleted', 2000)
+
+      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
+    } catch (err) {
+      Alert.error(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   const onSubmit = async () => {
     try {
@@ -44,6 +60,12 @@ function AddEducationPage() {
       Alert.error(err.message)
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit()
     }
   }
 
@@ -76,11 +98,13 @@ function AddEducationPage() {
     toDateDisabled,
     toggleDisbaled,
     submitting,
+    onDelete,
     onSubmit,
+    onKeyUp,
     onChange,
     onReset,
     navigateToDashboard
   }
 }
 
-export { AddEducationPage }
+export { useProfileEducation }

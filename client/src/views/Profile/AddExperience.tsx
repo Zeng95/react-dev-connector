@@ -7,7 +7,7 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
-import { AddExperiencePage } from 'hooks/useProfileExperience'
+import { useProfileExperience } from 'hooks/useProfileExperience'
 import React from 'react'
 import {
   Button,
@@ -22,8 +22,17 @@ import {
 } from 'rsuite'
 
 const AddExperience: React.FC = () => {
-  const experience = AddExperiencePage()
-  const { experienceForm, submitting, toDateDisabled } = experience
+  const experience = useProfileExperience()
+  const {
+    formEl,
+    experienceForm,
+    toDateDisabled,
+    submitting,
+    onSubmit,
+    onKeyUp,
+    onReset,
+    navigateToDashboard
+  } = experience
 
   const { StringType, DateType } = Schema.Types
   const model = Schema.Model({
@@ -49,7 +58,7 @@ const AddExperience: React.FC = () => {
       <Form
         fluid
         model={model}
-        ref={experience.formEl}
+        ref={formEl}
         formValue={experienceForm}
         autoComplete="off"
         checkTrigger="none"
@@ -58,7 +67,11 @@ const AddExperience: React.FC = () => {
         <FormGroup>
           <ControlLabel>Job title</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="title" placeholder="* Job title" />
+            <FormControl
+              name="title"
+              placeholder="* Job title"
+              onKeyPress={onKeyUp}
+            />
             <InputGroup.Addon>
               <Briefcase size="16" title="Job title" />
             </InputGroup.Addon>
@@ -68,7 +81,11 @@ const AddExperience: React.FC = () => {
         <FormGroup>
           <ControlLabel>Company</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="company" placeholder="* Company" />
+            <FormControl
+              name="company"
+              placeholder="* Company"
+              onKeyPress={onKeyUp}
+            />
             <InputGroup.Addon>
               <Building size="16" title="Company" />
             </InputGroup.Addon>
@@ -78,7 +95,11 @@ const AddExperience: React.FC = () => {
         <FormGroup>
           <ControlLabel>Location</ControlLabel>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="location" placeholder="* Location" />
+            <FormControl
+              name="location"
+              placeholder="* Location"
+              onKeyPress={onKeyUp}
+            />
             <InputGroup.Addon>
               <MapPin size="16" title="Location" />
             </InputGroup.Addon>
@@ -122,10 +143,11 @@ const AddExperience: React.FC = () => {
         <FormGroup>
           <ControlLabel>Job description</ControlLabel>
           <FormControl
-            name="description"
             componentClass="textarea"
             rows={5}
+            name="description"
             placeholder="Job description"
+            onKeyPress={onKeyUp}
           />
         </FormGroup>
 
@@ -136,7 +158,7 @@ const AddExperience: React.FC = () => {
               loading={submitting}
               appearance="primary"
               size="lg"
-              onClick={experience.onSubmit}
+              onClick={onSubmit}
             >
               Submit
             </Button>
@@ -144,7 +166,7 @@ const AddExperience: React.FC = () => {
               disabled={submitting}
               appearance="default"
               size="lg"
-              onClick={experience.onReset}
+              onClick={onReset}
             >
               Clear
             </Button>
@@ -152,7 +174,7 @@ const AddExperience: React.FC = () => {
               disabled={submitting}
               appearance="ghost"
               size="lg"
-              onClick={experience.navigateToDashboard}
+              onClick={navigateToDashboard}
             >
               Go Back
             </Button>

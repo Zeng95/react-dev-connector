@@ -1,7 +1,7 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Building, Globe, MapPin, UserCog } from '@styled-icons/fa-solid'
 import Weibo from 'assets/images/weibo.svg'
-import { ProfilePage } from 'hooks/useProfile'
+import { useProfile } from 'hooks/useProfile'
 import React from 'react'
 import {
   Animation,
@@ -65,8 +65,18 @@ const InputStyled = styled(FormControl)`
 `
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
-  const profile = ProfilePage()
-  const { profileForm } = profile
+  const profile = useProfile()
+  const {
+    formEl,
+    profileForm,
+    showSocialInputs,
+    submitting,
+    onKeyUp,
+    onSubmit,
+    onReset,
+    toggleSocialInputs,
+    navigateToDashboard
+  } = profile
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
@@ -127,7 +137,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
     <Form
       fluid
       model={model}
-      ref={profile.formEl}
+      ref={formEl}
       formValue={profileForm}
       autoComplete="off"
       checkTrigger="none"
@@ -148,7 +158,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="company" placeholder="Company" />
+          <FormControl
+            name="company"
+            placeholder="Company"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <Building size="16" title="Company" />
           </InputGroup.Addon>
@@ -158,7 +174,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="website" placeholder="Website" />
+          <FormControl
+            name="website"
+            placeholder="Website"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <Globe size="16" title="Website" />
           </InputGroup.Addon>
@@ -168,7 +190,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="location" placeholder="Location" />
+          <FormControl
+            name="location"
+            placeholder="Location"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <MapPin size="16" title="Location" />
           </InputGroup.Addon>
@@ -178,7 +206,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="skills" placeholder="* Skills" />
+          <FormControl
+            name="skills"
+            placeholder="* Skills"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <UserCog size="16" title="Skills" />
           </InputGroup.Addon>
@@ -190,7 +224,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="githubusername" placeholder="Github Username" />
+          <FormControl
+            name="githubusername"
+            placeholder="Github Username"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <Github size="16" title="Github Username" />
           </InputGroup.Addon>
@@ -202,33 +242,38 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <FormControl
-          name="bio"
-          placeholder="A short bio of yourself"
           rows={2}
           componentClass="textarea"
+          name="bio"
+          placeholder="A short bio of yourself"
+          onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+            onKeyUp(event, edit)
+          }
         />
         <HelpBlock>Tell us a little about yourself</HelpBlock>
       </FormGroup>
 
       <FormGroup>
-        <Button
-          appearance="default"
-          size="lg"
-          onClick={profile.toggleSocialInputs}
-        >
+        <Button appearance="default" size="lg" onClick={toggleSocialInputs}>
           Add Social Network Links
         </Button>
         <span className="ml-2">Optional</span>
       </FormGroup>
 
-      <Collapse in={profile.showSocialInputs}>
+      <Collapse in={showSocialInputs}>
         <SocialInputsContainer>
           <FormGroup>
             <InputGroup inside style={{ width: '100%' }}>
               <InputGroup.Addon>
                 <IconStyled icon="twitter" size="lg" twitter="true" />
               </InputGroup.Addon>
-              <InputStyled name="twitter" placeholder="Twitter URL" />
+              <InputStyled
+                name="twitter"
+                placeholder="Twitter URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
 
@@ -237,7 +282,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputGroup.Addon>
                 <IconStyled icon="facebook-square" size="lg" facebook="true" />
               </InputGroup.Addon>
-              <InputStyled name="facebook" placeholder="Facebook URL" />
+              <InputStyled
+                name="facebook"
+                placeholder="Facebook URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
 
@@ -246,7 +297,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputGroup.Addon>
                 <IconStyled icon="youtube-play" size="lg" youtube="true" />
               </InputGroup.Addon>
-              <InputStyled name="youtube" placeholder="YouTube URL" />
+              <InputStyled
+                name="youtube"
+                placeholder="YouTube URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
 
@@ -255,7 +312,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputGroup.Addon>
                 <IconStyled icon="linkedin-square" size="lg" linkedin="true" />
               </InputGroup.Addon>
-              <InputStyled name="linkedin" placeholder="Linkedin URL" />
+              <InputStyled
+                name="linkedin"
+                placeholder="Linkedin URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
 
@@ -264,7 +327,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputGroup.Addon>
                 <IconStyled icon="instagram" size="lg" instagram="true" />
               </InputGroup.Addon>
-              <InputStyled name="instagram" placeholder="Instagram URL" />
+              <InputStyled
+                name="instagram"
+                placeholder="Instagram URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
 
@@ -273,7 +342,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
               <InputGroup.Addon>
                 <IconStyled icon={Weibo} size="lg" />
               </InputGroup.Addon>
-              <InputStyled name="weibo" placeholder="Weibo URL" />
+              <InputStyled
+                name="weibo"
+                placeholder="Weibo URL"
+                onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                  onKeyUp(event, edit)
+                }
+              />
             </InputGroup>
           </FormGroup>
         </SocialInputsContainer>
@@ -282,26 +357,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       <FormGroup>
         <ButtonToolbar className="my-4">
           <Button
-            disabled={profileForm.isSubmitting}
-            loading={profileForm.isSubmitting}
+            loading={submitting}
             appearance="primary"
             size="lg"
-            onClick={() => profile.onSubmit(edit)}
+            onClick={() => onSubmit(edit)}
           >
             Submit
           </Button>
           <Button
-            disabled={profileForm.isSubmitting}
+            disabled={submitting}
             appearance="default"
             size="lg"
-            onClick={profile.onReset}
+            onClick={onReset}
           >
             Clear
           </Button>
           <Button
+            disabled={submitting}
             appearance="ghost"
             size="lg"
-            onClick={profile.navigateToDashboard}
+            onClick={navigateToDashboard}
           >
             Go Back
           </Button>

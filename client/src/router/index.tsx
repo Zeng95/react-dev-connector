@@ -10,6 +10,8 @@ import { NoMatch } from 'views/NoMatch'
 import { AddEducation } from 'views/Profile/AddEducation'
 import { AddExperience } from 'views/Profile/AddExperience'
 import { CreateProfile } from 'views/Profile/CreateProfile'
+import { EditEducation } from 'views/Profile/EditEducation'
+import { EditExperience } from 'views/Profile/EditExperience'
 import { EditProfile } from 'views/Profile/EditProfile'
 import { PrivateRoute } from './PrivateRoute'
 import { PublicRoute } from './PublicRoute'
@@ -24,7 +26,9 @@ const Router: React.FC = () => (
       <PrivateRoute path="/create-profile" component={CreateProfile} />
       <PrivateRoute path="/edit-profile" component={EditProfile} />
       <PrivateRoute path="/add-experience" component={AddExperience} />
+      <PrivateRoute path="/edit-experience" component={EditExperience} />
       <PrivateRoute path="/add-education" component={AddEducation} />
+      <PrivateRoute path="/edit-education" component={EditEducation} />
       <PrivateRoute path="/logout" component={Logout} />
       <Route path="*" component={NoMatch} />
     </Switch>

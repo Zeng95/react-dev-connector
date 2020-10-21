@@ -12,7 +12,7 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
-import { AddEducationPage } from 'hooks/useProfileEducation'
+import { useProfileEducation } from 'hooks/useProfileEducation'
 import React from 'react'
 import {
   Button,
@@ -27,7 +27,7 @@ import {
 } from 'rsuite'
 
 const AddEducation: React.FC = () => {
-  const education = AddEducationPage()
+  const education = useProfileEducation()
   const { educationForm, submitting, toDateDisabled } = education
 
   const { StringType, DateType } = Schema.Types

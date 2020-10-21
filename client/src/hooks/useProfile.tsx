@@ -1,11 +1,11 @@
 import { createProfile, updateProfile } from 'api/profiles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { GET_PROFILE } from 'context/types'
+import { GET_PROFILE, UPDATE_PROFILE } from 'context/types'
 import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
-function ProfilePage() {
+function useProfile() {
   const history = useHistory()
   const location = useLocation()
 
@@ -15,6 +15,7 @@ function ProfilePage() {
   const formEl = useRef<HTMLFormElement>(null)
 
   const [showSocialInputs, setShowSocialInputs] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [profileForm, setProfileForm] = useState({
     status: '',
     company: '',
@@ -28,8 +29,7 @@ function ProfilePage() {
     linkedin: '',
     youtube: '',
     instgram: '',
-    weibo: '',
-    isSubmitting: false
+    weibo: ''
   })
 
   const fetchProfile = useCallback(() => {
@@ -40,8 +40,7 @@ function ProfilePage() {
 
       setProfileForm(profileForm => ({
         ...profileForm,
-        status: profile.status,
-        location: profile.location || '',
+        ...profile,
         skills: profile.skills.join(',')
       }))
     }
@@ -51,35 +50,33 @@ function ProfilePage() {
     try {
       if (formEl.current !== null && !formEl.current.check()) return false
 
-      setProfileForm({ ...profileForm, isSubmitting: true })
+      setSubmitting(true)
 
-      let res
+      if (edit) {
+        const res = await updateProfile(profileForm)
 
-      if (edit && profile !== null) {
-        res = await updateProfile(profileForm)
+        dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
         Alert.success('Profile Updated', 2000)
       } else {
-        res = await createProfile(profileForm)
-        Alert.success('Profile Created', 2000, () => navigateToDashboard())
-      }
+        const res = await createProfile(profileForm)
 
-      dispatch({ type: GET_PROFILE, payload: res.data.profile })
+        dispatch({ type: GET_PROFILE, payload: res.data.profile })
+        Alert.success('Profile Created', 2000)
+        navigateToDashboard()
+      }
     } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
+      Alert.error(err.message)
     } finally {
-      setProfileForm({ ...profileForm, isSubmitting: false })
+      setSubmitting(false)
+    }
+  }
+
+  const onKeyUp = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    edit: boolean
+  ) => {
+    if (event.key === 'Enter') {
+      onSubmit(edit)
     }
   }
 
@@ -103,8 +100,7 @@ function ProfilePage() {
       linkedin: '',
       youtube: '',
       instgram: '',
-      weibo: '',
-      isSubmitting: false
+      weibo: ''
     })
   }
 
@@ -123,7 +119,9 @@ function ProfilePage() {
     profileForm,
     showSocialInputs,
     fetchProfile,
+    submitting,
     onSubmit,
+    onKeyUp,
     onChange,
     onReset,
     toggleSocialInputs,
@@ -131,4 +129,4 @@ function ProfilePage() {
   }
 }
 
-export { ProfilePage }
+export { useProfile }

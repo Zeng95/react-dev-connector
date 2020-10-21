@@ -5,6 +5,7 @@ import {
   SectionTitle
 } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
+import { useProfileExperience } from 'hooks/useProfileExperience'
 import moment from 'moment'
 import React, { Fragment, useContext } from 'react'
 import { Icon, IconButton, Table } from 'rsuite'
@@ -14,6 +15,9 @@ const { Column, Cell } = Table
 const ExperienceSection: React.FC = () => {
   const profileState = useContext(ProfileContext).state
   const { profile } = profileState
+
+  const experience = useProfileExperience()
+  const { submitting, onDelete } = experience
 
   return (
     <SectionStyled>
@@ -63,19 +67,26 @@ const ExperienceSection: React.FC = () => {
             <Column flexGrow={1} align="center" verticalAlign="middle">
               <HeaderCellStyled>Actions</HeaderCellStyled>
               <Cell>
-                <IconButton
-                  className="mr-2"
-                  icon={<Icon icon="pencil" />}
-                  appearance="primary"
-                  size="lg"
-                  title="edit"
-                />
-                <IconButton
-                  icon={<Icon icon="trash" />}
-                  color="red"
-                  size="lg"
-                  title="delete"
-                />
+                {(rowData: any) => (
+                  <Fragment>
+                    <IconButton
+                      disabled={submitting}
+                      className="mr-2"
+                      icon={<Icon icon="pencil" />}
+                      appearance="primary"
+                      size="lg"
+                      title="edit"
+                    />
+                    <IconButton
+                      loading={submitting}
+                      icon={<Icon icon="trash" />}
+                      color="red"
+                      size="lg"
+                      title="delete"
+                      onClick={() => onDelete(rowData['_id'])}
+                    />
+                  </Fragment>
+                )}
               </Cell>
             </Column>
           </Table>

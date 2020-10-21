@@ -182,9 +182,14 @@ router.put('/', verifyToken, async (req, res) => {
         fields: {
           _id: true,
           status: true,
+          company: true,
+          website: true,
+          location: true,
+          skills: true,
+          githubusername: true,
+          bio: true,
           experience: true,
           education: true,
-          skills: true,
           social: true
         },
         new: true

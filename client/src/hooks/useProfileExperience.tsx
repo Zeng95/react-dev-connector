@@ -1,18 +1,17 @@
-import { updateProfileExperience } from 'api/profiles'
+import { deleteProfileExperience, updateProfileExperience } from 'api/profiles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import { UPDATE_PROFILE } from 'context/types'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
-function AddExperiencePage() {
+function useProfileExperience() {
   const history = useHistory()
   const { dispatch } = useContext(ProfileContext)
   const formEl = useRef<HTMLFormElement>(null)
 
   const [submitting, setSubmitting] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
-
   const [experienceForm, setExperienceForm] = useState({
     title: '',
     company: '',
@@ -22,6 +21,21 @@ function AddExperiencePage() {
     to: null,
     current: []
   })
+
+  const onDelete = async (experienceId: string) => {
+    try {
+      setSubmitting(true)
+
+      const res = await deleteProfileExperience(experienceId)
+
+      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
+      Alert.success('Experience Deleted', 2000)
+    } catch (err) {
+      Alert.error(err.message)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   const onSubmit = async () => {
     try {
@@ -38,13 +52,19 @@ function AddExperiencePage() {
 
       const res = await updateProfileExperience(formData)
 
-      Alert.success('Experience Added', 2000, () => navigateToDashboard())
-
       dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
+      Alert.success('Experience Added', 2000)
+      navigateToDashboard()
     } catch (err) {
       Alert.error(err.message)
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit()
     }
   }
 
@@ -64,7 +84,6 @@ function AddExperiencePage() {
       description: '',
       current: []
     })
-    setSubmitting(false)
   }
 
   const navigateToDashboard = () => {
@@ -77,11 +96,13 @@ function AddExperiencePage() {
     toDateDisabled,
     toggleDisbaled,
     submitting,
+    onDelete,
     onSubmit,
+    onKeyUp,
     onChange,
     onReset,
     navigateToDashboard
   }
 }
 
-export { AddExperiencePage }
+export { useProfileExperience }
