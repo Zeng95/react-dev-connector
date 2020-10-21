@@ -5,6 +5,7 @@ import {
   SectionTitle
 } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
+import { useProfileEducation } from 'hooks/useProfileEducation'
 import moment from 'moment'
 import React, { Fragment, useContext } from 'react'
 import { Icon, IconButton, Table } from 'rsuite'
@@ -14,6 +15,9 @@ const { Column, Cell } = Table
 const EducationSection: React.FC = () => {
   const profileState = useContext(ProfileContext).state
   const { profile } = profileState
+
+  const education = useProfileEducation()
+  const { submitting, onDelete, navigateToEditEducation } = education
 
   return (
     <SectionStyled>
@@ -63,19 +67,27 @@ const EducationSection: React.FC = () => {
             <Column flexGrow={1} align="center" verticalAlign="middle">
               <HeaderCellStyled>Actions</HeaderCellStyled>
               <Cell>
-                <IconButton
-                  className="mr-2"
-                  icon={<Icon icon="pencil" />}
-                  appearance="primary"
-                  size="lg"
-                  title="edit"
-                />
-                <IconButton
-                  icon={<Icon icon="trash" />}
-                  color="red"
-                  size="lg"
-                  title="delete"
-                />
+                {(rowData: any) => (
+                  <Fragment>
+                    <IconButton
+                      disabled={submitting}
+                      className="mr-2"
+                      icon={<Icon icon="pencil" />}
+                      appearance="primary"
+                      size="lg"
+                      title="edit"
+                      onClick={() => navigateToEditEducation(rowData['_id'])}
+                    />
+                    <IconButton
+                      loading={submitting}
+                      icon={<Icon icon="trash" />}
+                      color="red"
+                      size="lg"
+                      title="delete"
+                      onClick={() => onDelete(rowData['_id'])}
+                    />
+                  </Fragment>
+                )}
               </Cell>
             </Column>
           </Table>

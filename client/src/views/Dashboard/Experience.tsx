@@ -17,7 +17,7 @@ const ExperienceSection: React.FC = () => {
   const { profile } = profileState
 
   const experience = useProfileExperience()
-  const { submitting, onDelete } = experience
+  const { submitting, onDelete, navigateToEditExperience } = experience
 
   return (
     <SectionStyled>
@@ -76,6 +76,7 @@ const ExperienceSection: React.FC = () => {
                       appearance="primary"
                       size="lg"
                       title="edit"
+                      onClick={() => navigateToEditExperience(rowData['_id'])}
                     />
                     <IconButton
                       loading={submitting}

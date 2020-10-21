@@ -90,6 +90,11 @@ function useProfileExperience() {
     history.push('/dashboard')
   }
 
+  const navigateToEditExperience = (experienceId: string) => {
+    console.log(experienceId)
+    history.push('/edit-experience')
+  }
+
   return {
     formEl,
     experienceForm,
@@ -101,7 +106,8 @@ function useProfileExperience() {
     onKeyUp,
     onChange,
     onReset,
-    navigateToDashboard
+    navigateToDashboard,
+    navigateToEditExperience
   }
 }
 

@@ -53,9 +53,9 @@ function useProfileEducation() {
 
       const res = await updateProfileEducation(formData)
 
-      Alert.success('Education Added', 2000, () => navigateToDashboard())
-
       dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
+      Alert.success('Education Added', 2000)
+      navigateToDashboard()
     } catch (err) {
       Alert.error(err.message)
     } finally {
@@ -92,6 +92,11 @@ function useProfileEducation() {
     history.push('/dashboard')
   }
 
+  const navigateToEditEducation = (educationId: string) => {
+    console.log(educationId)
+    history.push('/edit-education')
+  }
+
   return {
     formEl,
     educationForm,
@@ -103,7 +108,8 @@ function useProfileEducation() {
     onKeyUp,
     onChange,
     onReset,
-    navigateToDashboard
+    navigateToDashboard,
+    navigateToEditEducation
   }
 }
 
