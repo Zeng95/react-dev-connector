@@ -6,6 +6,39 @@ const User = require('../models/User')
 const Profile = require('../models/Profile')
 
 /**
+ * @route   GET api/profiles/all
+ * @desc    Get all profiles
+ * @access  Public
+ */
+router.get('/all', async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', [
+      'avatar',
+      'email',
+      'username'
+    ])
+
+    if (!profiles) {
+      return res.status(404).json({
+        success: false,
+        msg: 'There are no profiles existing'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: 'Get all the profiles successfully',
+      profiles
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
  * @route   GET api/profiles/me
  * @desc    Get the authenticated user's profile
  * @access  Private
@@ -53,6 +86,13 @@ router.get('/me', verifyToken, async (req, res) => {
     })
   }
 })
+
+/**
+ * @route   GET api/profiles/:userId
+ * @desc    Get the authenticated user's profile
+ * @access  Private
+ */
+router.get('/:userId')
 
 /**
  * @route   POST api/profiles
@@ -308,6 +348,13 @@ router.put('/education', verifyToken, async (req, res) => {
     })
   }
 })
+
+/**
+ * @route   Delete api/profiles/me
+ * @desc    Delete an experience from an existing user's profile
+ * @access  Private
+ */
+router.delete('/me')
 
 /**
  * @route   Delete api/profiles/experience/:id
