@@ -6,8 +6,39 @@ const User = require('../models/User')
 const Profile = require('../models/Profile')
 
 /**
+ * @route   GET api/profiles/me
+ * @desc    Get the authenticated user's profile
+ * @access  Private
+ */
+router.get('/me', verifyToken, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.userId })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        msg: 'There is no profile for this user'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: 'Get the users profile successfully',
+      profile
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
  * @route   GET api/profiles/all
- * @desc    Get all profiles
+ * @desc    Get all the profiles
  * @access  Public
  */
 router.get('/all', async (req, res) => {
@@ -39,60 +70,43 @@ router.get('/all', async (req, res) => {
 })
 
 /**
- * @route   GET api/profiles/me
- * @desc    Get the authenticated user's profile
- * @access  Private
+ * @route   GET api/profiles/:userId
+ * @desc    Get a profile by a user's id
+ * @access  Public
  */
-router.get('/me', verifyToken, async (req, res) => {
+router.get('/:userId', async (req, res) => {
   try {
-    const profile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        company: true,
-        website: true,
-        location: true,
-        skills: true,
-        githubusername: true,
-        bio: true,
-        experience: true,
-        education: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
+    const userId = req.params.userId
+    const profile = await Profile.findOne({ user: userId })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     if (!profile) {
       return res.status(404).json({
         success: false,
-        msg: 'There is no profile for this user'
+        msg: 'Profile not found'
       })
     }
-
-    const newProfile = profile.transform()
-
-    newProfile.user.id = profile.user['_id']
-    delete newProfile.user['_id']
 
     res.status(200).json({
       success: true,
       msg: 'Get the users profile successfully',
-      profile: newProfile
+      profile
     })
   } catch (err) {
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        success: false,
+        msg: 'Profile not found'
+      })
+    }
+
     res.status(500).json({
       success: false,
       msg: `Server Error: ${err.message}`
     })
   }
 })
-
-/**
- * @route   GET api/profiles/:userId
- * @desc    Get the authenticated user's profile
- * @access  Private
- */
-router.get('/:userId')
 
 /**
  * @route   POST api/profiles
@@ -141,26 +155,14 @@ router.post('/', verifyToken, async (req, res) => {
     // Create
     const profile = new Profile(profileFields)
     const savedProfile = await profile.save()
-    const foundProfile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        experience: true,
-        education: true,
-        skills: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = foundProfile.transform()
-
-    newProfile.user.id = savedProfile.user['_id']
-    delete newProfile.user['_id']
+    const foundProfile = await Profile.findOne({ user: savedProfile.user })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully created your profile',
-      profile: newProfile
+      profile: foundProfile
     })
   } catch (err) {
     res.status(500).json({
@@ -218,32 +220,15 @@ router.put('/', verifyToken, async (req, res) => {
     const updatedProfile = await Profile.findOneAndUpdate(
       { user: req.userId },
       profileFields,
-      {
-        fields: {
-          _id: true,
-          status: true,
-          company: true,
-          website: true,
-          location: true,
-          skills: true,
-          githubusername: true,
-          bio: true,
-          experience: true,
-          education: true,
-          social: true
-        },
-        new: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = updatedProfile.transform()
-
-    newProfile.user.id = updatedProfile.user['_id']
-    delete newProfile.user['_id']
+      { new: true }
+    )
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully updated your profile',
-      profile: newProfile
+      profile: updatedProfile
     })
   } catch (err) {
     res.status(500).json({
@@ -267,31 +252,14 @@ router.put('/experience', verifyToken, async (req, res) => {
 
     // Update
     const savedProfile = await profile.save()
-    const foundProfile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        company: true,
-        website: true,
-        location: true,
-        skills: true,
-        githubusername: true,
-        bio: true,
-        experience: true,
-        education: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = foundProfile.transform()
-
-    newProfile.user.id = savedProfile.user['_id']
-    delete newProfile.user['_id']
+    const foundProfile = await Profile.findOne({ user: savedProfile.user })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully added an experience to your profile',
-      profile: newProfile
+      profile: foundProfile
     })
   } catch (err) {
     res.status(500).json({
@@ -315,31 +283,14 @@ router.put('/education', verifyToken, async (req, res) => {
 
     // Update
     const savedProfile = await profile.save()
-    const foundProfile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        company: true,
-        website: true,
-        location: true,
-        skills: true,
-        githubusername: true,
-        bio: true,
-        experience: true,
-        education: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = foundProfile.transform()
-
-    newProfile.user.id = savedProfile.user['_id']
-    delete newProfile.user['_id']
+    const foundProfile = await Profile.findOne({ user: savedProfile.user })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully added an education to your profile',
-      profile: newProfile
+      profile: foundProfile
     })
   } catch (err) {
     res.status(500).json({
@@ -381,31 +332,14 @@ router.delete('/experience/:id', verifyToken, async (req, res) => {
 
     // Update
     const savedProfile = await profile.save()
-    const foundProfile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        company: true,
-        website: true,
-        location: true,
-        skills: true,
-        githubusername: true,
-        bio: true,
-        experience: true,
-        education: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = foundProfile.transform()
-
-    newProfile.user.id = savedProfile.user['_id']
-    delete newProfile.user['_id']
+    const foundProfile = await Profile.findOne({ user: savedProfile.user })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully deleted an experience from your profile',
-      profile: newProfile
+      profile: foundProfile
     })
   } catch (err) {
     res.status(500).json({
@@ -440,31 +374,14 @@ router.delete('/education/:id', verifyToken, async (req, res) => {
 
     // Update
     const savedProfile = await profile.save()
-    const foundProfile = await Profile.findOne(
-      { user: req.userId },
-      {
-        _id: true,
-        status: true,
-        company: true,
-        website: true,
-        location: true,
-        skills: true,
-        githubusername: true,
-        bio: true,
-        experience: true,
-        education: true,
-        social: true
-      }
-    ).populate('user', ['avatar', 'email', 'username'])
-    const newProfile = foundProfile.transform()
-
-    newProfile.user.id = savedProfile.user['_id']
-    delete newProfile.user['_id']
+    const foundProfile = await Profile.findOne({ user: savedProfile.user })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
 
     res.status(201).json({
       success: true,
       msg: 'You have successfully deleted an education from your profile',
-      profile: newProfile
+      profile: foundProfile
     })
   } catch (err) {
     res.status(500).json({
