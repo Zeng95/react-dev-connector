@@ -3,11 +3,7 @@ import { setAuthToken } from 'utils'
 
 const END_POINT = '/profiles'
 
-const getAllProfiles = () => {
-  return httpClient.get(`${END_POINT}`)
-}
-
-const getProfile = () => {
+const getCurrentProfile = () => {
   return httpClient.get(`${END_POINT}/me`, {
     headers: setAuthToken()
   })
@@ -15,6 +11,10 @@ const getProfile = () => {
 
 const getProfileByUserId = userId => {
   return httpClient.get(`${END_POINT}/${userId}`)
+}
+
+const getAllProfiles = () => {
+  return httpClient.get(`${END_POINT}/all`)
 }
 
 const createProfile = profile => {
@@ -54,7 +54,7 @@ const deleteProfileEducation = educationId => {
 }
 
 export {
-  getProfile,
+  getCurrentProfile,
   getProfileByUserId,
   getAllProfiles,
   createProfile,

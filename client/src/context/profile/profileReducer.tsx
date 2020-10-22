@@ -1,4 +1,4 @@
-import { GET_PROFILE, UPDATE_PROFILE } from '../types'
+import { GET_PROFILE, GET_PROFILES, UPDATE_PROFILE } from '../types'
 
 type UserType = {
   id: string
@@ -55,6 +55,8 @@ export const profileReducer = (state: InitialStateType, action: any) => {
     case GET_PROFILE:
     case UPDATE_PROFILE:
       return { ...state, profile: payload }
+    case GET_PROFILES:
+      return { ...state, profiles: payload }
     default:
       return state
   }

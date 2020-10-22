@@ -4,7 +4,6 @@ import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import tw from 'twin.macro'
 
 const AppHeaderStyled = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
@@ -32,19 +31,14 @@ const Logo = styled.h1.attrs({
   className: 'font-bold leading-normal'
 })`
   font-size: 1.5em;
-
-  a {
-    ${tw`flex items-center`}
-  }
 `
 const Menu = styled.ul.attrs({
   className: 'flex mb-0'
 })``
-const MenuItem = styled.li`
-  a {
-    ${tw`flex items-center`}
-  }
-`
+const MenuItem = styled.li``
+const LinkStyled = styled(Link).attrs({
+  className: 'flex items-center'
+})``
 const IconStyleWrapper = styled.span.attrs({
   className: 'inline-flex mr-1'
 })``
@@ -56,28 +50,28 @@ const AppHeader: React.FC = () => {
   const authLinks = (
     <Fragment>
       <MenuItem>
-        <Link to="/posts">
+        <LinkStyled to="/posts">
           <IconStyleWrapper>
-            <Edit size="16" title="User Posts" />
+            <Edit size="16" title="User posts" />
           </IconStyleWrapper>
           <span>Posts</span>
-        </Link>
+        </LinkStyled>
       </MenuItem>
       <MenuItem>
-        <Link to="/dashboard">
+        <LinkStyled to="/dashboard">
           <IconStyleWrapper>
             <TachometerAlt size="16" title="Dashboard" />
           </IconStyleWrapper>
           <span>Dashboard</span>
-        </Link>
+        </LinkStyled>
       </MenuItem>
       <MenuItem>
-        <Link to="/logout">
+        <LinkStyled to="/logout">
           <IconStyleWrapper>
             <SignOutAlt size="16" title="Logout account" />
           </IconStyleWrapper>
           <span>Logout</span>
-        </Link>
+        </LinkStyled>
       </MenuItem>
     </Fragment>
   )
@@ -85,10 +79,10 @@ const AppHeader: React.FC = () => {
   const guestLinks = (
     <Fragment>
       <MenuItem>
-        <Link to="/register">Register</Link>
+        <LinkStyled to="/register">Register</LinkStyled>
       </MenuItem>
       <MenuItem>
-        <Link to="/login">Login</Link>
+        <LinkStyled to="/login">Login</LinkStyled>
       </MenuItem>
     </Fragment>
   )
@@ -97,21 +91,22 @@ const AppHeader: React.FC = () => {
     <AppHeaderStyled>
       <NavBar>
         <Logo>
-          <Link to="/">
-            <Centos size="30" title="Logo" />
-            &nbsp;
+          <LinkStyled to="/">
+            <IconStyleWrapper>
+              <Centos size="30" title="Logo" />
+            </IconStyleWrapper>
             <span>DevConnector</span>
-          </Link>
+          </LinkStyled>
         </Logo>
 
         <Menu>
           <MenuItem>
-            <Link to="/developers">
+            <LinkStyled to="/profiles">
               <IconStyleWrapper>
-                <Users size="16" title="Logout account" />
+                <Users size="16" title="Developer profiles" />
               </IconStyleWrapper>
               <span>Developers</span>
-            </Link>
+            </LinkStyled>
           </MenuItem>
           {isAuthenticated || token ? authLinks : guestLinks}
         </Menu>

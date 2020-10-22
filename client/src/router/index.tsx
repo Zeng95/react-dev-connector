@@ -5,6 +5,7 @@ import { Login } from 'views/Auth/Login'
 import { Logout } from 'views/Auth/Logout'
 import { Register } from 'views/Auth/Register'
 import { Dashboard } from 'views/Dashboard'
+import { Profiles } from 'views/Profiles'
 import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
 import { AddEducation } from 'views/Profile/AddEducation'
@@ -22,6 +23,7 @@ const Router: React.FC = () => (
       <PublicRoute exact path="/" component={Landing} />
       <PublicRoute path="/register" component={Register} />
       <PublicRoute path="/login" component={Login} />
+      <PublicRoute path="/profiles" component={Profiles} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-profile" component={CreateProfile} />
       <PrivateRoute path="/edit-profile" component={EditProfile} />

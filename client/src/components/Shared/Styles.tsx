@@ -15,11 +15,8 @@ export const PageStyled = styled.section.attrs({
 `
 
 export const Title = styled.h1.attrs({
-  className: 'mb-4 text-primary'
-})`
-  font-size: 3rem;
-  line-height: 1.2;
-`
+  className: 'mb-4 text-primary text-5xl leading-tight'
+})``
 
 export const Description = styled.p.attrs({
   className: 'flex items-center mb-4 text-2xl'
