@@ -1,7 +1,23 @@
-import React, { createContext } from 'react'
+import {
+  createProfile,
+  deleteProfileEducation,
+  deleteProfileExperience,
+  getProfile,
+  getProfiles,
+  updateProfile,
+  updateProfileEducation,
+  updateProfileExperience
+} from 'api/profiles'
+import {
+  GET_PROFILE,
+  GET_PROFILES,
+  PROFILE_ERROR,
+  UPDATE_PROFILE
+} from 'context/types'
+import { createContext } from 'react'
 
 type UserType = {
-  id: string
+  _id: string
   avatar: string
   email: string
   username: string
@@ -18,6 +34,7 @@ type EducationType = {
 }
 
 type ProfileType = {
+  _id: string
   status: string
   company: string
   website: string
@@ -42,22 +59,191 @@ type RepositoryType = {
   price: number
 }
 
+type ErrorType = {
+  msg: string
+  status: string
+}
+
 type InitialStateType = {
-  profile: ProfileType | null
-  profiles: ProfileType[]
-  repos: RepositoryType[]
+  state: {
+    profile: ProfileType | null
+    profiles: ProfileType[]
+    repos: RepositoryType[]
+    error: ErrorType | {}
+    loading: boolean
+  }
+  actions: {
+    getAllUsersProfiles: () => any
+    getCurrentUserProfile: () => any
+    createUserProfile: (profile: any) => any
+    updateUserProfile: (profile: any) => any
+    updateUserProfileExperience: (experience: any) => any
+    deleteUserProfileExperience: (experienceId: string) => any
+    updateUserProfileEducation: (education: any) => any
+    deleteUserProfileEducation: (educationId: string) => any
+  }
 }
 
-export const initialState = {
-  profile: null,
-  profiles: [],
-  repos: []
+const initialState = {
+  state: {
+    profile: null,
+    profiles: [],
+    repos: [],
+    error: {},
+    loading: true
+  },
+  actions: {
+    getAllUsersProfiles: () => {},
+    getCurrentUserProfile: () => {},
+    createUserProfile: () => {},
+    updateUserProfile: () => {},
+    updateUserProfileExperience: () => {},
+    deleteUserProfileExperience: () => {},
+    updateUserProfileEducation: () => {},
+    deleteUserProfileEducation: () => {}
+  }
 }
 
-export const ProfileContext = createContext<{
-  state: InitialStateType
-  dispatch: React.Dispatch<any>
-}>({
-  state: initialState,
-  dispatch: () => null
+const ProfileContext = createContext<InitialStateType>(initialState)
+
+const reducer = (state: any, action: any) => {
+  const { type, payload } = action
+  const { state: profileState } = state
+
+  switch (type) {
+    case GET_PROFILES:
+      return { ...profileState, profiles: payload, loading: false }
+    case GET_PROFILE:
+    case UPDATE_PROFILE:
+      return { ...profileState, profile: payload, loading: false }
+    case PROFILE_ERROR:
+      return { ...profileState, error: payload, loading: false }
+    default:
+      return state
+  }
+}
+
+const actions = (dispatch: React.Dispatch<any>) => ({
+  getAllUsersProfiles: async () => {
+    try {
+      const res = await getProfiles()
+
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data.profiles
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  getCurrentUserProfile: async () => {
+    try {
+      const res = await getProfile()
+
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  createUserProfile: async (profile: any) => {
+    try {
+      const res = await createProfile(profile)
+
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  updateUserProfile: async (profile: any) => {
+    try {
+      const res = await updateProfile(profile)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  updateUserProfileExperience: async (experience: any) => {
+    try {
+      const res = await updateProfileExperience(experience)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  deleteUserProfileExperience: async (experienceId: string) => {
+    try {
+      const res = await deleteProfileExperience(experienceId)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  updateUserProfileEducation: async (education: any) => {
+    try {
+      const res = await updateProfileEducation(education)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  deleteUserProfileEducation: async (educationId: string) => {
+    try {
+      const res = await deleteProfileEducation(educationId)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  }
 })
+
+export { ProfileContext, initialState, reducer, actions }

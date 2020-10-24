@@ -1,17 +1,26 @@
 import { Globe } from '@styled-icons/fa-solid'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { Loader } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileItem } from './ProfileItem'
 
 const ProfileList = styled.ul``
+const ProfilesNotFound = styled.h4``
 
 const Profiles: React.FC = () => {
-  const profileState = useContext(ProfileContext).state
-  const { profiles } = profileState
+  const context = useContext(ProfileContext)
+  const { profiles, loading } = context.state
+  const { getAllUsersProfiles } = context.actions
 
-  return (
+  useEffect(() => {
+    getAllUsersProfiles()
+  }, [])
+
+  return loading || !profiles ? (
+    <Loader center size="lg" content="Loading..." vertical />
+  ) : (
     <PageStyled>
       <Title>Developers</Title>
 
@@ -23,11 +32,11 @@ const Profiles: React.FC = () => {
       {profiles.length > 0 ? (
         <ProfileList>
           {profiles.map(profile => (
-            <ProfileItem />
+            <ProfileItem key={profile['_id']} profile={profile} />
           ))}
         </ProfileList>
       ) : (
-        <h4>No profiles found...</h4>
+        <ProfilesNotFound>No profiles found...</ProfilesNotFound>
       )}
     </PageStyled>
   )

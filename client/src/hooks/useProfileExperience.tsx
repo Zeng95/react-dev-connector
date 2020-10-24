@@ -1,16 +1,18 @@
-import { deleteProfileExperience, updateProfileExperience } from 'api/profiles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { UPDATE_PROFILE } from 'context/types'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function useProfileExperience() {
+  const context = useContext(ProfileContext)
+  const {
+    updateUserProfileExperience,
+    deleteUserProfileExperience
+  } = context.actions
+
   const history = useHistory()
-  const { dispatch } = useContext(ProfileContext)
   const formEl = useRef<HTMLFormElement>(null)
 
-  const [submitting, setSubmitting] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
   const [experienceForm, setExperienceForm] = useState({
     title: '',
@@ -22,44 +24,22 @@ function useProfileExperience() {
     current: []
   })
 
-  const onDelete = async (experienceId: string) => {
-    try {
-      setSubmitting(true)
-
-      const res = await deleteProfileExperience(experienceId)
-
-      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
-      Alert.success('Experience Deleted', 2000)
-    } catch (err) {
-      Alert.error(err.message)
-    } finally {
-      setSubmitting(false)
-    }
+  const onDelete = (experienceId: string) => {
+    deleteUserProfileExperience(experienceId)
   }
 
-  const onSubmit = async () => {
-    try {
-      if (formEl.current !== null && !formEl.current.check()) return false
+  const onSubmit = () => {
+    if (formEl.current !== null && !formEl.current.check()) return false
 
-      setSubmitting(true)
+    const formData =
+      experienceForm.current.length > 0
+        ? { ...experienceForm, current: true }
+        : { ...experienceForm, current: false }
 
-      let formData
+    updateUserProfileExperience(formData)
 
-      formData =
-        experienceForm.current.length > 0
-          ? { ...experienceForm, current: true }
-          : { ...experienceForm, current: false }
-
-      const res = await updateProfileExperience(formData)
-
-      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
-      Alert.success('Experience Added', 2000)
-      navigateToDashboard()
-    } catch (err) {
-      Alert.error(err.message)
-    } finally {
-      setSubmitting(false)
-    }
+    Alert.success('Experience Added', 2000)
+    navigateToDashboard()
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -100,7 +80,6 @@ function useProfileExperience() {
     experienceForm,
     toDateDisabled,
     toggleDisbaled,
-    submitting,
     onDelete,
     onSubmit,
     onKeyUp,

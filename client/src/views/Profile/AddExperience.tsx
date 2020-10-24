@@ -27,7 +27,6 @@ const AddExperience: React.FC = () => {
     formEl,
     experienceForm,
     toDateDisabled,
-    submitting,
     onSubmit,
     onKeyUp,
     onReset,
@@ -153,29 +152,13 @@ const AddExperience: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar className="my-4">
-            <Button
-              disabled={submitting}
-              loading={submitting}
-              appearance="primary"
-              size="lg"
-              onClick={onSubmit}
-            >
+            <Button appearance="primary" size="lg" onClick={onSubmit}>
               Submit
             </Button>
-            <Button
-              disabled={submitting}
-              appearance="default"
-              size="lg"
-              onClick={onReset}
-            >
+            <Button appearance="default" size="lg" onClick={onReset}>
               Clear
             </Button>
-            <Button
-              disabled={submitting}
-              appearance="ghost"
-              size="lg"
-              onClick={navigateToDashboard}
-            >
+            <Button appearance="ghost" size="lg" onClick={navigateToDashboard}>
               Go Back
             </Button>
           </ButtonToolbar>

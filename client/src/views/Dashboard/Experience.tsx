@@ -17,7 +17,7 @@ const ExperienceSection: React.FC = () => {
   const { profile } = profileState
 
   const experience = useProfileExperience()
-  const { submitting, onDelete, navigateToEditExperience } = experience
+  const { onDelete, navigateToEditExperience } = experience
 
   return (
     <SectionStyled>
@@ -70,7 +70,6 @@ const ExperienceSection: React.FC = () => {
                 {(rowData: any) => (
                   <Fragment>
                     <IconButton
-                      disabled={submitting}
                       className="mr-2"
                       icon={<Icon icon="pencil" />}
                       appearance="primary"
@@ -79,7 +78,6 @@ const ExperienceSection: React.FC = () => {
                       onClick={() => navigateToEditExperience(rowData['_id'])}
                     />
                     <IconButton
-                      loading={submitting}
                       icon={<Icon icon="trash" />}
                       color="red"
                       size="lg"

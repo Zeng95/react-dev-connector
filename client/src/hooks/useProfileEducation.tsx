@@ -1,13 +1,16 @@
-import { deleteProfileEducation, updateProfileEducation } from 'api/profiles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { UPDATE_PROFILE } from 'context/types'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function useProfileEducation() {
+  const context = useContext(ProfileContext)
+  const {
+    updateUserProfileEducation,
+    deleteUserProfileEducation
+  } = context.actions
+
   const history = useHistory()
-  const { dispatch } = useContext(ProfileContext)
   const formEl = useRef<HTMLFormElement>(null)
 
   const [submitting, setSubmitting] = useState(false)
@@ -22,45 +25,27 @@ function useProfileEducation() {
     current: []
   })
 
-  const onDelete = async (educationId: string) => {
-    try {
-      setSubmitting(true)
-
-      const res = await deleteProfileEducation(educationId)
-
-      Alert.success('Education Deleted', 2000)
-
-      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
-    } catch (err) {
-      Alert.error(err.message)
-    } finally {
-      setSubmitting(false)
-    }
+  const onDelete = (educationId: string) => {
+    deleteUserProfileEducation(educationId)
+    Alert.success('Education Deleted', 2000)
   }
 
-  const onSubmit = async () => {
-    try {
-      if (formEl.current !== null && !formEl.current.check()) return false
+  const onSubmit = () => {
+    if (formEl.current !== null && !formEl.current.check()) return false
 
-      setSubmitting(true)
+    setSubmitting(true)
 
-      let formData
+    let formData
 
-      formData =
-        educationForm.current.length > 0
-          ? { ...educationForm, current: true }
-          : { ...educationForm, current: false }
+    formData =
+      educationForm.current.length > 0
+        ? { ...educationForm, current: true }
+        : { ...educationForm, current: false }
 
-      const res = await updateProfileEducation(formData)
+    updateUserProfileEducation(formData)
+    Alert.success('Education Added', 2000)
 
-      dispatch({ type: UPDATE_PROFILE, payload: res.data.profile })
-      Alert.success('Education Added', 2000)
-      navigateToDashboard()
-    } catch (err) {
-      Alert.error(err.message)
-    } finally {
-      setSubmitting(false)
-    }
+    navigateToDashboard()
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {

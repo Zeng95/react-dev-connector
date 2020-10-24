@@ -103,7 +103,7 @@ const AppHeader: React.FC = () => {
           <MenuItem>
             <LinkStyled to="/profiles">
               <IconStyleWrapper>
-                <Users size="16" title="Developer profiles" />
+                <Users size="16" title="User profiles" />
               </IconStyleWrapper>
               <span>Developers</span>
             </LinkStyled>

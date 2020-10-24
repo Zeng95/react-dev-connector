@@ -7,11 +7,11 @@ const getCurrentUser = () => {
   return httpClient.get(`${END_POINT}/me`, { headers: setAuthToken() })
 }
 
-const login = formData => {
+const login = (formData: any) => {
   return httpClient.post(`${END_POINT}/login`, formData)
 }
 
-const register = formData => {
+const register = (formData: any) => {
   return httpClient.post(`${END_POINT}/register`, formData)
 }
 

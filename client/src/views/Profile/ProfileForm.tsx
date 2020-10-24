@@ -70,7 +70,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
     formEl,
     profileForm,
     showSocialInputs,
-    submitting,
     onKeyUp,
     onSubmit,
     onReset,
@@ -356,28 +355,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button
-            loading={submitting}
-            appearance="primary"
-            size="lg"
-            onClick={() => onSubmit(edit)}
-          >
+          <Button appearance="primary" size="lg" onClick={() => onSubmit(edit)}>
             Submit
           </Button>
-          <Button
-            disabled={submitting}
-            appearance="default"
-            size="lg"
-            onClick={onReset}
-          >
+          <Button appearance="default" size="lg" onClick={onReset}>
             Clear
           </Button>
-          <Button
-            disabled={submitting}
-            appearance="ghost"
-            size="lg"
-            onClick={navigateToDashboard}
-          >
+          <Button appearance="ghost" size="lg" onClick={navigateToDashboard}>
             Go Back
           </Button>
         </ButtonToolbar>
