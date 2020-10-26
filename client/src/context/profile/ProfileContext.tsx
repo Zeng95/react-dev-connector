@@ -1,4 +1,5 @@
 import {
+  getGithubReposByUsername,
   createProfile,
   deleteProfileEducation,
   deleteProfileExperience,
@@ -11,6 +12,7 @@ import {
 import {
   GET_PROFILE,
   GET_PROFILES,
+  GET_REPOS,
   PROFILE_ERROR,
   UPDATE_PROFILE
 } from 'context/types'
@@ -84,7 +86,7 @@ type InitialStateType = {
   }
 }
 
-const initialState = {
+const initialProfile = {
   state: {
     profile: null,
     profiles: [],
@@ -104,7 +106,7 @@ const initialState = {
   }
 }
 
-const ProfileContext = createContext<InitialStateType>(initialState)
+const ProfileContext = createContext<InitialStateType>(initialProfile)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -112,18 +114,47 @@ const reducer = (state: any, action: any) => {
 
   switch (type) {
     case GET_PROFILES:
-      return { ...profileState, profiles: payload, loading: false }
+      return {
+        ...state,
+        state: { ...profileState, profiles: payload, loading: false }
+      }
     case GET_PROFILE:
     case UPDATE_PROFILE:
-      return { ...profileState, profile: payload, loading: false }
+      return {
+        ...state,
+        state: { ...profileState, profile: payload, loading: false }
+      }
     case PROFILE_ERROR:
-      return { ...profileState, error: payload, loading: false }
+      return {
+        ...state,
+        state: { ...profileState, error: payload, loading: false }
+      }
+    case GET_REPOS:
+      return {
+        ...state,
+        state: { ...profileState, repos: payload, loading: false }
+      }
     default:
       return state
   }
 }
 
 const actions = (dispatch: React.Dispatch<any>) => ({
+  getUserGithubRepos: async (username: string) => {
+    try {
+      const res = await getGithubReposByUsername(username)
+
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data.profiles
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
   getAllUsersProfiles: async () => {
     try {
       const res = await getProfiles()
@@ -246,4 +277,4 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   }
 })
 
-export { ProfileContext, initialState, reducer, actions }
+export { ProfileContext, initialProfile, reducer, actions }

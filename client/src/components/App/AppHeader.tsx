@@ -1,5 +1,6 @@
 import { Centos } from '@styled-icons/fa-brands'
 import { Edit, SignOutAlt, TachometerAlt, Users } from '@styled-icons/fa-solid'
+import { IconStyleWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -38,9 +39,6 @@ const Menu = styled.ul.attrs({
 const MenuItem = styled.li``
 const LinkStyled = styled(Link).attrs({
   className: 'flex items-center'
-})``
-const IconStyleWrapper = styled.span.attrs({
-  className: 'inline-flex mr-1'
 })``
 
 const AppHeader: React.FC = () => {

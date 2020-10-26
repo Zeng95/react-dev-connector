@@ -1,5 +1,7 @@
+import { Check } from '@styled-icons/fa-solid'
+import { IconStyleWrapper } from 'components/Shared/Styles'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Button } from 'rsuite'
 import styled from 'styled-components'
 
 type UserType = {
@@ -43,48 +45,70 @@ type ProfileItemProps = {
   profile: ProfileType
 }
 
-const ProfileItemStyled = styled.li`
-  display: grid;
+const ProfileItemStyled = styled.li.attrs({
+  className: 'grid mb-4 bg-light'
+})`
   grid-template-columns: 2fr 4fr 2fr;
   align-items: center;
   grid-gap: 2rem;
   padding: 1rem;
   line-height: 1.8;
-  margin-bottom: 1rem;
+  border: #ccc solid 1px;
 `
 
 const UserAvatar = styled.img.attrs({
-  className: 'rounded-full'
+  className: 'rounded-full w-full'
 })``
 
 const UserInfo = styled.div``
-const UserName = styled.h2``
+const UserName = styled.h2.attrs({
+  className: 'font-bold text-2xl'
+})``
 const JobDescription = styled.p``
 const JobLocation = styled.p``
+const ButtonStyled = styled(Button).attrs({
+  className: 'mt-1'
+})``
 
 const UserSkills = styled.ul``
-const SkillItem = styled.li``
+const SkillItem = styled.li.attrs({
+  className: 'flex items-center text-primary'
+})``
 
 const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
-  const { user, status, location, skills } = profile
+  const {
+    user: { avatar, username },
+    status,
+    company,
+    location,
+    skills
+  } = profile
 
   return (
     <ProfileItemStyled>
-      <UserAvatar src={user.avatar} alt="User Avatar" />
+      <UserAvatar src={avatar} alt="User Avatar" />
 
       <UserInfo>
-        <UserName>{user.username}</UserName>
-        <JobDescription>{status}</JobDescription>
-        <JobLocation>{location}</JobLocation>
+        <UserName>{username}</UserName>
+        <JobDescription>
+          {status} {company && <span>at {company}</span>}
+        </JobDescription>
+        {location && <JobLocation>{location}</JobLocation>}
+        <ButtonStyled appearance="primary">View Profile</ButtonStyled>
       </UserInfo>
 
       <UserSkills>
-        {skills.map((skill, index) => (
-          <SkillItem key={index}>{skill}</SkillItem>
-        ))}
+        {skills.slice(0, 4).map((skill, index) => {
+          return (
+            <SkillItem key={index}>
+              <IconStyleWrapper>
+                <Check size="18" />
+              </IconStyleWrapper>
+              <span>{skill}</span>
+            </SkillItem>
+          )
+        })}
       </UserSkills>
-
-      <Link to={`/profile/${profile['_id']}`}>View Profile</Link>
     </ProfileItemStyled>
   )
 }

@@ -8,6 +8,10 @@ export const AppContent = styled.main.attrs({
   className: 'mt-24 mb-12'
 })``
 
+export const IconStyleWrapper = styled.span.attrs({
+  className: 'inline-flex mr-1'
+})``
+
 export const PageStyled = styled.section.attrs({
   className: 'mx-auto px-8'
 })`

@@ -10,15 +10,17 @@ const ProfileList = styled.ul``
 const ProfilesNotFound = styled.h4``
 
 const Profiles: React.FC = () => {
-  const context = useContext(ProfileContext)
-  const { profiles, loading } = context.state
-  const { getAllUsersProfiles } = context.actions
+  const { state, actions } = useContext(ProfileContext)
+  const { profiles, loading } = state
+  const { getAllUsersProfiles } = actions
 
   useEffect(() => {
-    getAllUsersProfiles()
+    if (profiles.length === 0) {
+      getAllUsersProfiles()
+    }
   }, [])
 
-  return loading || !profiles ? (
+  return loading ? (
     <Loader center size="lg" content="Loading..." vertical />
   ) : (
     <PageStyled>
@@ -29,11 +31,12 @@ const Profiles: React.FC = () => {
         <span>Browse and connect with developers</span>
       </Description>
 
+      {/* Check to make sure that there are profiles */}
       {profiles.length > 0 ? (
         <ProfileList>
-          {profiles.map(profile => (
-            <ProfileItem key={profile['_id']} profile={profile} />
-          ))}
+          {profiles.map(profile => {
+            return <ProfileItem key={profile['_id']} profile={profile} />
+          })}
         </ProfileList>
       ) : (
         <ProfilesNotFound>No profiles found...</ProfilesNotFound>

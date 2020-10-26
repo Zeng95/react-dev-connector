@@ -1,14 +1,18 @@
-import httpClient from './httpClient'
 import { setAuthToken } from 'utils'
+import httpClient from './httpClient'
 
 const END_POINT = '/profiles'
 
-const getProfileByUserId = (userId: string) => {
-  return httpClient.get(`${END_POINT}/${userId}`)
+const getGithubReposByUsername = (username: string) => {
+  return httpClient.get(`${END_POINT}/${username}`)
 }
 
 const getProfiles = () => {
   return httpClient.get(`${END_POINT}/all`)
+}
+
+const getProfileById = (userId: string) => {
+  return httpClient.get(`${END_POINT}/${userId}`)
 }
 
 const getProfile = () => {
@@ -54,9 +58,10 @@ const deleteProfileEducation = (educationId: string) => {
 }
 
 export {
-  getProfile,
-  getProfileByUserId,
+  getGithubReposByUsername,
   getProfiles,
+  getProfileById,
+  getProfile,
   createProfile,
   updateProfile,
   updateProfileExperience,

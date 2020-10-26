@@ -1,13 +1,14 @@
 import React, { useReducer } from 'react'
 import {
   actions,
-  initialState,
+  initialProfile,
   ProfileContext,
   reducer
 } from './ProfileContext'
 
 const ProfileProvider: React.FC = props => {
-  const [reducerState, dispatch] = useReducer(reducer, initialState)
+  const [profile, dispatch] = useReducer(reducer, initialProfile)
+  const reducerState = profile.state
   const reducerActions = actions(dispatch)
   const context = { state: { ...reducerState }, actions: { ...reducerActions } }
 
