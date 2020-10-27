@@ -1,6 +1,7 @@
 import { Check } from '@styled-icons/fa-solid'
 import { IconStyleWrapper } from 'components/Shared/Styles'
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 
@@ -67,7 +68,7 @@ const UserName = styled.h2.attrs({
 const JobDescription = styled.p``
 const JobLocation = styled.p``
 const ButtonStyled = styled(Button).attrs({
-  className: 'mt-1'
+  className: 'mt-2'
 })``
 
 const UserSkills = styled.ul``
@@ -76,13 +77,19 @@ const SkillItem = styled.li.attrs({
 })``
 
 const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
+  const history = useHistory()
   const {
-    user: { avatar, username },
+    _id,
     status,
     company,
     location,
-    skills
+    skills,
+    user: { avatar, username }
   } = profile
+
+  const navigateToProfile = (profileId: string) => {
+    history.push(`/profile/${profileId}`)
+  }
 
   return (
     <ProfileItemStyled>
@@ -94,7 +101,12 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
           {status} {company && <span>at {company}</span>}
         </JobDescription>
         {location && <JobLocation>{location}</JobLocation>}
-        <ButtonStyled appearance="primary">View Profile</ButtonStyled>
+        <ButtonStyled
+          appearance="primary"
+          onClick={() => navigateToProfile(_id)}
+        >
+          View Profile
+        </ButtonStyled>
       </UserInfo>
 
       <UserSkills>

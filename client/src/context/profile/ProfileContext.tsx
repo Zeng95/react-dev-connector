@@ -1,8 +1,8 @@
 import {
-  getGithubReposByUsername,
   createProfile,
   deleteProfileEducation,
   deleteProfileExperience,
+  getGithubReposByUsername,
   getProfile,
   getProfiles,
   updateProfile,

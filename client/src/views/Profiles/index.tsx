@@ -1,7 +1,7 @@
 import { Globe } from '@styled-icons/fa-solid'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { Loader } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileItem } from './ProfileItem'
@@ -14,11 +14,11 @@ const Profiles: React.FC = () => {
   const { profiles, loading } = state
   const { getAllUsersProfiles } = actions
 
+  const getPorfiles = useCallback(getAllUsersProfiles, [])
+
   useEffect(() => {
-    if (profiles.length === 0) {
-      getAllUsersProfiles()
-    }
-  }, [])
+    getPorfiles()
+  }, [getPorfiles])
 
   return loading ? (
     <Loader center size="lg" content="Loading..." vertical />
