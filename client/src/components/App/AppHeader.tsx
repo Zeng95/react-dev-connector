@@ -1,4 +1,4 @@
-import { Centos } from '@styled-icons/fa-brands'
+import { ShareAlt } from '@styled-icons/fa-solid'
 import { Edit, SignOutAlt, TachometerAlt, Users } from '@styled-icons/fa-solid'
 import { IconStyleWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
@@ -91,7 +91,7 @@ const AppHeader: React.FC = () => {
         <Logo>
           <LinkStyled to="/">
             <IconStyleWrapper>
-              <Centos size="30" title="Logo" />
+              <ShareAlt size="24" title="Logo" />
             </IconStyleWrapper>
             <span>DevConnector</span>
           </LinkStyled>

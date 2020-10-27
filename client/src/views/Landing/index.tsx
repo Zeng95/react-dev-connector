@@ -26,10 +26,10 @@ const Content = styled.div.attrs({
   width: 80%;
 `
 const Title = styled.h1.attrs({
-  className: 'font-bold text-5xl'
+  className: 'font-bold text-6xl leading-tight'
 })``
 const Description = styled.p.attrs({
-  className: 'my-4 text-base'
+  className: 'my-4 text-2xl'
 })``
 const BasicButton = styled.button.attrs({
   className: 'inline-block rounded-sm bg-light text-base outline-none'

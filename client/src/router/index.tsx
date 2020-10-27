@@ -21,11 +21,25 @@ import { PublicRoute } from './PublicRoute'
 const Router: React.FC = () => (
   <BrowserRouter>
     <Switch>
-      <PublicRoute exact path="/" component={Landing} />
-      <PublicRoute path="/login" component={Login} />
-      <PublicRoute path="/register" component={Register} />
-      <PublicRoute path="/profile/:userId" component={Profile} />
-      <PublicRoute path="/profiles" component={Profiles} />
+      <PublicRoute exact path="/" restricted={true} component={Landing} />
+      <PublicRoute exact path="/login" restricted={true} component={Login} />
+      <PublicRoute
+        exact
+        path="/register"
+        restricted={true}
+        component={Register}
+      />
+      <PublicRoute
+        path="/profile/:userId"
+        restricted={false}
+        component={Profile}
+      />
+      <PublicRoute
+        exact
+        path="/profiles"
+        restricted={false}
+        component={Profiles}
+      />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-profile" component={CreateProfile} />

@@ -5,11 +5,11 @@ import styled from 'styled-components'
 
 const AppWrapper = styled.div``
 
-const AppLayout: React.FC = ({ children }) => (
+const AppLayout: React.FC = props => (
   <AppWrapper>
     <AppHeader />
 
-    <AppContent>{children}</AppContent>
+    <AppContent>{props.children}</AppContent>
   </AppWrapper>
 )
 
