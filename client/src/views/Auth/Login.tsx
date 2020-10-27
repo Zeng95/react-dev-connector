@@ -21,12 +21,14 @@ const Login: React.FC = () => {
     formEl,
     user,
     email,
+    loading,
     onEmailChange,
     onChange,
     onSubmit,
     onKeyUp,
     onReset
   } = LoginPage()
+
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
@@ -91,10 +93,20 @@ const Login: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar>
-            <Button appearance="primary" size="lg" onClick={onSubmit}>
+            <Button
+              appearance="primary"
+              size="lg"
+              onClick={onSubmit}
+              loading={loading}
+            >
               Submit
             </Button>
-            <Button appearance="default" size="lg" onClick={onReset}>
+            <Button
+              appearance="default"
+              size="lg"
+              onClick={onReset}
+              disabled={loading}
+            >
               Clear
             </Button>
           </ButtonToolbar>

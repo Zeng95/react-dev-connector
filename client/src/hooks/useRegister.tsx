@@ -8,20 +8,21 @@ interface IUser {
   confirmPassword: string
 }
 
-type EmailType = string[]
-
 function RegisterPage() {
   const { actions } = useContext(AuthContext)
   const { userRegister } = actions
 
+  const formEl = useRef<HTMLFormElement>(null)
+
+  const [loading, setLoading] = useState<boolean>(false)
+  const [email, setEmail] = useState<string[]>([])
   const [user, setUser] = useState<IUser>({
     email: '',
     username: '',
     password: '',
     confirmPassword: ''
   })
-  const [email, setEmail] = useState<EmailType>([])
-  const formEl = useRef<HTMLFormElement>(null)
+
   const emailSuggestions = [
     '@gmail.com',
     '@yahoo.com',
@@ -34,9 +35,10 @@ function RegisterPage() {
     if (formEl.current !== null && !formEl.current.check()) return false
 
     const { email, username, password } = user
-    const formData = { email, username, password }
 
-    userRegister(formData)
+    setLoading(true)
+
+    userRegister({ email, username, password })
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -82,6 +84,7 @@ function RegisterPage() {
     user,
     email,
     emailSuggestions,
+    loading,
     onEmailChange,
     onChange,
     onSubmit,

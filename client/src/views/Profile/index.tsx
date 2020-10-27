@@ -23,11 +23,15 @@ const Profile: React.FC = () => {
     getPorfileById(userId)
   }, [getPorfileById, userId])
 
-  return loading || !profile ? (
+  return loading ? (
     <AppLoader />
   ) : (
     <PageStyled>
-      <Button onClick={navigateToProfiles}>Back To Profiles</Button>
+      {profile !== null ? (
+        <Button onClick={navigateToProfiles}>Back To Profiles</Button>
+      ) : (
+        <p>Not found</p>
+      )}
     </PageStyled>
   )
 }

@@ -22,6 +22,7 @@ const Register: React.FC = () => {
     formEl,
     user,
     email,
+    loading,
     onEmailChange,
     onChange,
     onSubmit,
@@ -138,10 +139,20 @@ const Register: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar>
-            <Button appearance="primary" size="lg" onClick={onSubmit}>
+            <Button
+              appearance="primary"
+              size="lg"
+              onClick={onSubmit}
+              loading={loading}
+            >
               Submit
             </Button>
-            <Button appearance="default" size="lg" onClick={onReset}>
+            <Button
+              appearance="default"
+              size="lg"
+              onClick={onReset}
+              disabled={loading}
+            >
               Clear
             </Button>
           </ButtonToolbar>
