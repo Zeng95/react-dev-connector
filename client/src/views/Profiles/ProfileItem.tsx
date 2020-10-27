@@ -79,12 +79,11 @@ const SkillItem = styled.li.attrs({
 const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
   const history = useHistory()
   const {
-    _id,
     status,
     company,
     location,
     skills,
-    user: { avatar, username }
+    user: { _id, avatar, username }
   } = profile
 
   const navigateToProfile = (profileId: string) => {

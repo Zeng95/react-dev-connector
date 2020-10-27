@@ -24,7 +24,7 @@ const Router: React.FC = () => (
       <PublicRoute exact path="/" component={Landing} />
       <PublicRoute path="/login" component={Login} />
       <PublicRoute path="/register" component={Register} />
-      <PublicRoute path="/profile" component={Profile} />
+      <PublicRoute path="/profile/:userId" component={Profile} />
       <PublicRoute path="/profiles" component={Profiles} />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />

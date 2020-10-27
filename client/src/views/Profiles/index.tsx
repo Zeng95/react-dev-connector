@@ -1,8 +1,8 @@
 import { Globe } from '@styled-icons/fa-solid'
+import { AppLoader } from 'components/Loader'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { useCallback, useContext, useEffect } from 'react'
-import { Loader } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileItem } from './ProfileItem'
 
@@ -21,7 +21,7 @@ const Profiles: React.FC = () => {
   }, [getPorfiles])
 
   return loading ? (
-    <Loader center size="lg" content="Loading..." vertical />
+    <AppLoader />
   ) : (
     <PageStyled>
       <Title>Developers</Title>

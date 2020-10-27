@@ -4,6 +4,7 @@ import {
   deleteProfileExperience,
   getGithubReposByUsername,
   getProfile,
+  getProfileById,
   getProfiles,
   updateProfile,
   updateProfileEducation,
@@ -77,6 +78,7 @@ type InitialStateType = {
   actions: {
     getAllUsersProfiles: () => any
     getCurrentUserProfile: () => any
+    getUserProfileByUserId: (userId: string) => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
     updateUserProfileExperience: (experience: any) => any
@@ -97,6 +99,7 @@ const initialProfile = {
   actions: {
     getAllUsersProfiles: () => {},
     getCurrentUserProfile: () => {},
+    getUserProfileByUserId: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
     updateUserProfileExperience: () => {},
@@ -173,6 +176,21 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getCurrentUserProfile: async () => {
     try {
       const res = await getProfile()
+
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
+  getUserProfileByUserId: async (userId: string) => {
+    try {
+      const res = await getProfileById(userId)
 
       dispatch({
         type: GET_PROFILE,
