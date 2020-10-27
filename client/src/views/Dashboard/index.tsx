@@ -1,30 +1,41 @@
 import { User } from '@styled-icons/fa-solid'
+import { AppLoader } from 'components/Loader'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Loader } from 'rsuite'
+import { Button } from 'rsuite'
 import { DashboardActions } from 'views/Dashboard/Actions'
 import { EducationSection } from './Education'
 import { ExperienceSection } from './Experience'
 
 const Dashboard: React.FC = () => {
-  const authState = useContext(AuthContext).state
-  const { user, loading } = authState
+  const authContext = useContext(AuthContext)
+  const { user, loading: authLoading } = authContext.state
+  const { userLoad } = authContext.actions
 
-  const profileState = useContext(ProfileContext).state
-  const { profile } = profileState
+  const profileContext = useContext(ProfileContext)
+  const { profile, loading: profileLoading } = profileContext.state
+  const { getCurrentUserProfile } = profileContext.actions
 
-  return loading ? (
-    <Loader center size="lg" content="Loading..." vertical />
+  const getUser = useCallback(userLoad, [])
+  const getProfile = useCallback(getCurrentUserProfile, [])
+
+  useEffect(() => {
+    getUser()
+    getProfile()
+  }, [getUser, getProfile])
+
+  return authLoading || profileLoading || user === null ? (
+    <AppLoader />
   ) : (
     <PageStyled>
       <Title>Dashboard</Title>
 
       <Description>
         <User size="24" title="User" />
-        <span>Welcome {user && user.username}</span>
+        <span>Welcome {user.username}</span>
       </Description>
 
       {profile !== null ? (

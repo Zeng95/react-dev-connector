@@ -1,30 +1,15 @@
-import { getCurrentUser } from 'api/users'
-import React, { useEffect, useReducer } from 'react'
-import { AuthContext, initialState } from './AuthContext'
-import { authReducer } from './authReducer'
+import React, { useReducer } from 'react'
+import { actions, AuthContext, initialAuth, reducer } from './AuthContext'
 
-const AuthProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, initialState)
-  const { user, token } = state
-
-  const loadUser = async () => {
-    try {
-      const res = await getCurrentUser()
-      dispatch({ type: 'USER_LOADED', payload: { user: res.data.user } })
-    } catch (err) {
-      dispatch({ type: 'AUTH_ERROR' })
-    }
-  }
-
-  useEffect(() => {
-    if (!user && token) {
-      loadUser()
-    }
-  }, [user, token])
+const AuthProvider: React.FC = props => {
+  const [auth, dispatch] = useReducer(reducer, initialAuth)
+  const reducerState = auth.state
+  const reducerActions = actions(dispatch)
+  const context = { state: { ...reducerState }, actions: { ...reducerActions } }
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
-      {children}
+    <AuthContext.Provider value={context}>
+      {props.children}
     </AuthContext.Provider>
   )
 }

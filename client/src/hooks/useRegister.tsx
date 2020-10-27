@@ -1,29 +1,27 @@
-import { register } from 'api/users'
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
-import { Alert } from 'rsuite'
 
-type UserType = {
+interface IUser {
   email: string
   username: string
   password: string
   confirmPassword: string
-  isSubmitting: boolean
 }
 
 type EmailType = string[]
 
 function RegisterPage() {
-  const [user, setUser] = useState<UserType>({
+  const { actions } = useContext(AuthContext)
+  const { userRegister } = actions
+
+  const [user, setUser] = useState<IUser>({
     email: '',
     username: '',
     password: '',
-    confirmPassword: '',
-    isSubmitting: false
+    confirmPassword: ''
   })
   const [email, setEmail] = useState<EmailType>([])
   const formEl = useRef<HTMLFormElement>(null)
-  const { dispatch } = useContext(AuthContext)
   const emailSuggestions = [
     '@gmail.com',
     '@yahoo.com',
@@ -32,33 +30,13 @@ function RegisterPage() {
     '@163.com'
   ]
 
-  const onSubmit = async () => {
-    try {
-      if (formEl.current !== null && !formEl.current.check()) return false
+  const onSubmit = () => {
+    if (formEl.current !== null && !formEl.current.check()) return false
 
-      setUser({ ...user, isSubmitting: true })
+    const { email, username, password } = user
+    const formData = { email, username, password }
 
-      const { email, username, password } = user
-      const res = await register({ email, username, password })
-
-      dispatch({ type: 'REGISTER', payload: { token: res.data.token } })
-    } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = err.response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
-    } finally {
-      setUser({ ...user, isSubmitting: false })
-    }
+    userRegister(formData)
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -95,8 +73,7 @@ function RegisterPage() {
       email: '',
       username: '',
       password: '',
-      confirmPassword: '',
-      isSubmitting: false
+      confirmPassword: ''
     })
   }
 
@@ -106,8 +83,8 @@ function RegisterPage() {
     email,
     emailSuggestions,
     onEmailChange,
-    onSubmit,
     onChange,
+    onSubmit,
     onKeyUp,
     onReset
   }

@@ -4,9 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
 function useProfile() {
-  const context = useContext(ProfileContext)
-  const { profile } = context.state
-  const { createUserProfile, updateUserProfile } = context.actions
+  const { state, actions } = useContext(ProfileContext)
+  const { profile } = state
+  const { createUserProfile, updateUserProfile } = actions
 
   const history = useHistory()
   const location = useLocation()

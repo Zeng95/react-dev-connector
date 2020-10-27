@@ -18,7 +18,16 @@ import {
 } from 'rsuite'
 
 const Register: React.FC = () => {
-  const register = RegisterPage()
+  const {
+    formEl,
+    user,
+    email,
+    onEmailChange,
+    onChange,
+    onSubmit,
+    onKeyUp,
+    onReset
+  } = RegisterPage()
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
@@ -49,11 +58,11 @@ const Register: React.FC = () => {
       <Form
         fluid
         model={model}
-        ref={register.formEl}
-        formValue={register.user}
+        ref={formEl}
+        formValue={user}
         autoComplete="off"
         checkTrigger="none"
-        onChange={formValue => register.onChange(formValue)}
+        onChange={formValue => onChange(formValue)}
       >
         <FormGroup>
           <ControlLabel>Username</ControlLabel>
@@ -62,9 +71,10 @@ const Register: React.FC = () => {
               <UserCircle size="16" title="Username" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="username"
               placeholder="Username"
-              onKeyPress={register.onKeyUp}
+              onKeyPress={onKeyUp}
             />
           </InputGroup>
         </FormGroup>
@@ -76,13 +86,14 @@ const Register: React.FC = () => {
               <Envelope size="16" title="Email address" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="email"
               type="email"
               placeholder="Email address"
               accepter={AutoComplete}
-              data={register.email}
-              onKeyPress={register.onKeyUp}
-              onChange={register.onEmailChange}
+              data={email}
+              onKeyPress={onKeyUp}
+              onChange={onEmailChange}
             />
           </InputGroup>
           <HelpBlock>
@@ -98,11 +109,12 @@ const Register: React.FC = () => {
               <Lock size="16" title="Password" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="password"
               type="password"
               placeholder="Password"
               autoComplete="on"
-              onKeyPress={register.onKeyUp}
+              onKeyPress={onKeyUp}
             />
           </InputGroup>
         </FormGroup>
@@ -114,32 +126,22 @@ const Register: React.FC = () => {
               <Lock size="16" title="Confirm password" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="confirmPassword"
               type="password"
               placeholder="Confirm password"
               autoComplete="on"
-              onKeyPress={register.onKeyUp}
+              onKeyPress={onKeyUp}
             />
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ButtonToolbar>
-            <Button
-              disabled={register.user.isSubmitting}
-              loading={register.user.isSubmitting}
-              appearance="primary"
-              size="lg"
-              onClick={register.onSubmit}
-            >
+            <Button appearance="primary" size="lg" onClick={onSubmit}>
               Submit
             </Button>
-            <Button
-              disabled={register.user.isSubmitting}
-              appearance="default"
-              size="lg"
-              onClick={register.onReset}
-            >
+            <Button appearance="default" size="lg" onClick={onReset}>
               Clear
             </Button>
           </ButtonToolbar>

@@ -1,25 +1,20 @@
-import { login } from 'api/users'
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
-import { Alert } from 'rsuite'
 
-type UserType = {
+interface IUser {
   email: string
   password: string
-  isSubmitting: boolean
 }
 
-type EmailType = string[]
-
 function LoginPage() {
-  const { dispatch } = useContext(AuthContext)
+  const { actions } = useContext(AuthContext)
+  const { userLogin } = actions
+
   const formEl = useRef<HTMLFormElement>(null)
-  const [email, setEmail] = useState<EmailType>([])
-  const [user, setUser] = useState<UserType>({
-    email: '',
-    password: '',
-    isSubmitting: false
-  })
+
+  const [email, setEmail] = useState<string[]>([])
+  const [user, setUser] = useState<IUser>({ email: '', password: '' })
+
   const emailSuggestions = [
     '@gmail.com',
     '@yahoo.com',
@@ -28,33 +23,10 @@ function LoginPage() {
     '@163.com'
   ]
 
-  const onSubmit = async () => {
-    try {
-      if (formEl.current !== null && !formEl.current.check()) return false
+  const onSubmit = () => {
+    if (formEl.current !== null && !formEl.current.check()) return false
 
-      setUser({ ...user, isSubmitting: true })
-
-      const { email, password } = user
-      const res = await login({ email, password })
-
-      dispatch({ type: 'LOGIN', payload: { token: res.data.token } })
-    } catch (err) {
-      const { response, message } = err
-
-      if (response) {
-        const { errors, msg } = response.data
-
-        if (errors) {
-          errors.forEach((error: any) => Alert.error(error.msg))
-        } else {
-          Alert.error(msg)
-        }
-      } else {
-        Alert.error(message)
-      }
-    } finally {
-      setUser({ ...user, isSubmitting: false })
-    }
+    userLogin(user)
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -87,7 +59,7 @@ function LoginPage() {
   const onReset = () => {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
-    setUser({ email: '', password: '', isSubmitting: false })
+    setUser({ email: '', password: '' })
   }
 
   return {
@@ -96,8 +68,8 @@ function LoginPage() {
     email,
     emailSuggestions,
     onEmailChange,
-    onSubmit,
     onChange,
+    onSubmit,
     onKeyUp,
     onReset
   }

@@ -16,6 +16,7 @@ module.exports = override(
           'Raleway, sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Helvetica Neue, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji, PingFang SC, Hiragino Sans GB, Microsoft YaHei, STXihei',
         '@font-size-base': '1rem',
         '@line-height-base': '1.5',
+        'line-height-large-computed': '24px',
         '@reset-import': false
       }
     }

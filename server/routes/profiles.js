@@ -25,7 +25,7 @@ router.get('/me', verifyToken, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: 'Get the user profile successfully',
+      msg: "Get the user's profile successfully",
       profile
     })
   } catch (err) {
@@ -90,7 +90,7 @@ router.get('/:userId', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: 'Get the user profile successfully',
+      msg: "Get the user's profile successfully",
       profile
     })
   } catch (err) {

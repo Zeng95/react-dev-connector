@@ -17,7 +17,16 @@ import {
 } from 'rsuite'
 
 const Login: React.FC = () => {
-  const login = LoginPage()
+  const {
+    formEl,
+    user,
+    email,
+    onEmailChange,
+    onChange,
+    onSubmit,
+    onKeyUp,
+    onReset
+  } = LoginPage()
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
@@ -38,11 +47,11 @@ const Login: React.FC = () => {
       <Form
         fluid
         model={model}
-        ref={login.formEl}
-        formValue={login.user}
+        ref={formEl}
+        formValue={user}
         autoComplete="off"
         checkTrigger="none"
-        onChange={formValue => login.onChange(formValue)}
+        onChange={formValue => onChange(formValue)}
       >
         <FormGroup>
           <ControlLabel>Email address</ControlLabel>
@@ -51,13 +60,14 @@ const Login: React.FC = () => {
               <Envelope size="16" title="Email Address" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="email"
               type="email"
               placeholder="Email address"
               accepter={AutoComplete}
-              data={login.email}
-              onKeyPress={login.onKeyUp}
-              onChange={login.onEmailChange}
+              data={email}
+              onKeyPress={onKeyUp}
+              onChange={onEmailChange}
             />
           </InputGroup>
         </FormGroup>
@@ -69,32 +79,22 @@ const Login: React.FC = () => {
               <Lock size="16" title="Password" />
             </InputGroup.Addon>
             <FormControl
+              size="lg"
               name="password"
               type="password"
               placeholder="Password"
               autoComplete="on"
-              onKeyPress={login.onKeyUp}
+              onKeyPress={onKeyUp}
             />
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ButtonToolbar>
-            <Button
-              disabled={login.user.isSubmitting}
-              loading={login.user.isSubmitting}
-              appearance="primary"
-              size="lg"
-              onClick={login.onSubmit}
-            >
+            <Button appearance="primary" size="lg" onClick={onSubmit}>
               Submit
             </Button>
-            <Button
-              disabled={login.user.isSubmitting}
-              appearance="default"
-              size="lg"
-              onClick={login.onReset}
-            >
+            <Button appearance="default" size="lg" onClick={onReset}>
               Clear
             </Button>
           </ButtonToolbar>
