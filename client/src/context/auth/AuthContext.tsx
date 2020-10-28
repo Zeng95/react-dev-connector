@@ -1,6 +1,14 @@
 import { getCurrentUser, login, register } from 'api/users'
-import { USER_LOADED, LOGIN, REGISTER, LOGOUT, AUTH_ERROR } from 'context/types'
+import {
+  AUTH_ERROR,
+  AUTH_SUBMIT,
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+  USER_LOADED
+} from 'context/types'
 import { createContext } from 'react'
+import { openAlert, openNotification } from 'utils'
 
 interface IUser {
   _id: string
@@ -20,18 +28,13 @@ interface IUserRegisterProps {
   password: string
 }
 
-interface IError {
-  msg: string
-  status: string
-}
-
 interface IContextProps {
   state: {
     token: string | null
     user: IUser | null
-    error: IError | null
     isAuthenticated: boolean
-    loading: boolean
+    pageLoading: boolean
+    submitLoading: boolean
   }
   actions: {
     userLoad: () => any
@@ -45,9 +48,9 @@ const initialAuth = {
   state: {
     token: localStorage.getItem('auth-token'),
     user: null,
-    error: null,
     isAuthenticated: false,
-    loading: true
+    pageLoading: true,
+    submitLoading: false
   },
   actions: {
     userLoad: () => {},
@@ -64,6 +67,14 @@ const reducer = (state: any, action: any) => {
   const { state: authState } = state
 
   switch (type) {
+    case AUTH_SUBMIT:
+      return {
+        ...state,
+        state: {
+          ...authState,
+          submitLoading: true
+        }
+      }
     case USER_LOADED:
       return {
         ...state,
@@ -71,7 +82,7 @@ const reducer = (state: any, action: any) => {
           ...authState,
           user: payload,
           isAuthenticated: true,
-          loading: false
+          pageLoading: false
         }
       }
     case LOGIN:
@@ -83,7 +94,8 @@ const reducer = (state: any, action: any) => {
           ...authState,
           ...payload,
           isAuthenticated: true,
-          loading: false
+          pageLoading: false,
+          submitLoading: false
         }
       }
     case LOGOUT:
@@ -92,11 +104,12 @@ const reducer = (state: any, action: any) => {
       return {
         ...state,
         state: {
-          error: payload,
+          ...authState,
           user: null,
           token: null,
           isAuthenticated: false,
-          loading: true
+          pageLoading: false,
+          submitLoading: false
         }
       }
     default:
@@ -107,6 +120,7 @@ const reducer = (state: any, action: any) => {
 const actions = (dispatch: React.Dispatch<any>) => ({
   userLoad: async () => {
     try {
+      // 发送请求
       const res = await getCurrentUser()
 
       dispatch({
@@ -114,14 +128,22 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: res.data.user
       })
     } catch (err) {
+      const { msg } = err.response.data
+      openNotification('error', msg)
+
       dispatch({
-        type: AUTH_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: AUTH_ERROR
       })
     }
   },
   userLogin: async (formData: IUserLoginProps) => {
     try {
+      // 提交按钮显示加载中状态
+      dispatch({
+        type: AUTH_SUBMIT
+      })
+
+      // 发送请求
       const res = await login(formData)
 
       dispatch({
@@ -129,14 +151,26 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: { token: res.data.token }
       })
     } catch (err) {
+      const { errors, msg } = err.response.data
+
+      if (errors) {
+        errors.forEach((error: any) => openAlert('error', error.msg))
+      } else {
+        openNotification('error', msg)
+      }
+
       dispatch({
-        type: AUTH_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: AUTH_ERROR
       })
     }
   },
   userRegister: async (formData: IUserRegisterProps) => {
     try {
+      // 提交按钮显示加载中状态
+      dispatch({
+        type: AUTH_SUBMIT
+      })
+
       const res = await register(formData)
 
       dispatch({
@@ -144,9 +178,16 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: { token: res.data.token }
       })
     } catch (err) {
+      const { errors, msg } = err.response.data
+
+      if (errors) {
+        errors.forEach((error: any) => openAlert('error', error.msg))
+      } else {
+        openNotification('error', msg)
+      }
+
       dispatch({
-        type: AUTH_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: AUTH_ERROR
       })
     }
   },

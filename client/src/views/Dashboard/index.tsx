@@ -12,11 +12,11 @@ import { ExperienceSection } from './Experience'
 
 const Dashboard: React.FC = () => {
   const authContext = useContext(AuthContext)
-  const { user, loading: authLoading } = authContext.state
+  const { user, pageLoading: authPageLoading } = authContext.state
   const { userLoad } = authContext.actions
 
   const profileContext = useContext(ProfileContext)
-  const { profile, loading: profileLoading } = profileContext.state
+  const { profile, pageLoading: profilePageLoading } = profileContext.state
   const { getCurrentUserProfile } = profileContext.actions
 
   const getUser = useCallback(userLoad, [])
@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
     getProfile()
   }, [getUser, getProfile])
 
-  return authLoading || profileLoading || user === null ? (
+  return authPageLoading || profilePageLoading || user === null ? (
     <AppLoader />
   ) : (
     <PageStyled>

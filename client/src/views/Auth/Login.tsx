@@ -1,8 +1,9 @@
 import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock } from '@styled-icons/fa-solid'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import { AuthContext } from 'context/auth/AuthContext'
 import { LoginPage } from 'hooks/useLogin'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AutoComplete,
@@ -17,11 +18,13 @@ import {
 } from 'rsuite'
 
 const Login: React.FC = () => {
+  const { state } = useContext(AuthContext)
+  const { submitLoading } = state
+
   const {
     formEl,
     user,
     email,
-    loading,
     onEmailChange,
     onChange,
     onSubmit,
@@ -97,7 +100,7 @@ const Login: React.FC = () => {
               appearance="primary"
               size="lg"
               onClick={onSubmit}
-              loading={loading}
+              loading={submitLoading}
             >
               Submit
             </Button>
@@ -105,7 +108,7 @@ const Login: React.FC = () => {
               appearance="default"
               size="lg"
               onClick={onReset}
-              disabled={loading}
+              disabled={submitLoading}
             >
               Clear
             </Button>

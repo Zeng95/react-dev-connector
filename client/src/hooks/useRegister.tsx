@@ -14,7 +14,6 @@ function RegisterPage() {
 
   const formEl = useRef<HTMLFormElement>(null)
 
-  const [loading, setLoading] = useState<boolean>(false)
   const [email, setEmail] = useState<string[]>([])
   const [user, setUser] = useState<IUser>({
     email: '',
@@ -35,8 +34,6 @@ function RegisterPage() {
     if (formEl.current !== null && !formEl.current.check()) return false
 
     const { email, username, password } = user
-
-    setLoading(true)
 
     userRegister({ email, username, password })
   }
@@ -84,7 +81,6 @@ function RegisterPage() {
     user,
     email,
     emailSuggestions,
-    loading,
     onEmailChange,
     onChange,
     onSubmit,

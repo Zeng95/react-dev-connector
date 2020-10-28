@@ -73,7 +73,7 @@ type InitialStateType = {
     profiles: ProfileType[]
     repos: RepositoryType[]
     error: ErrorType | {}
-    loading: boolean
+    pageLoading: boolean
   }
   actions: {
     getAllUsersProfiles: () => any
@@ -94,7 +94,7 @@ const initialProfile = {
     profiles: [],
     repos: [],
     error: {},
-    loading: true
+    pageLoading: true
   },
   actions: {
     getAllUsersProfiles: () => {},
@@ -119,23 +119,23 @@ const reducer = (state: any, action: any) => {
     case GET_PROFILES:
       return {
         ...state,
-        state: { ...profileState, profiles: payload, loading: false }
+        state: { ...profileState, profiles: payload, pageLoading: false }
       }
     case GET_PROFILE:
     case UPDATE_PROFILE:
       return {
         ...state,
-        state: { ...profileState, profile: payload, loading: false }
+        state: { ...profileState, profile: payload, pageLoading: false }
       }
     case PROFILE_ERROR:
       return {
         ...state,
-        state: { ...profileState, error: payload, loading: false }
+        state: { ...profileState, error: payload, pageLoading: false }
       }
     case GET_REPOS:
       return {
         ...state,
-        state: { ...profileState, repos: payload, loading: false }
+        state: { ...profileState, repos: payload, pageLoading: false }
       }
     default:
       return state

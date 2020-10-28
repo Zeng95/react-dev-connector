@@ -1,8 +1,9 @@
 import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock, UserCircle } from '@styled-icons/fa-solid'
 import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import { AuthContext } from 'context/auth/AuthContext'
 import { RegisterPage } from 'hooks/useRegister'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import {
   AutoComplete,
@@ -18,17 +19,20 @@ import {
 } from 'rsuite'
 
 const Register: React.FC = () => {
+  const { state } = useContext(AuthContext)
+  const { submitLoading } = state
+
   const {
     formEl,
     user,
     email,
-    loading,
     onEmailChange,
     onChange,
     onSubmit,
     onKeyUp,
     onReset
   } = RegisterPage()
+
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
@@ -143,7 +147,7 @@ const Register: React.FC = () => {
               appearance="primary"
               size="lg"
               onClick={onSubmit}
-              loading={loading}
+              loading={submitLoading}
             >
               Submit
             </Button>
@@ -151,7 +155,7 @@ const Register: React.FC = () => {
               appearance="default"
               size="lg"
               onClick={onReset}
-              disabled={loading}
+              disabled={submitLoading}
             >
               Clear
             </Button>

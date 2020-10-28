@@ -10,7 +10,7 @@ const Profile: React.FC = () => {
   const { userId } = useParams()
 
   const { state, actions } = useContext(ProfileContext)
-  const { loading, profile } = state
+  const { pageLoading, profile } = state
   const { getUserProfileByUserId } = actions
 
   const getPorfileById = useCallback(getUserProfileByUserId, [])
@@ -23,7 +23,7 @@ const Profile: React.FC = () => {
     getPorfileById(userId)
   }, [getPorfileById, userId])
 
-  return loading ? (
+  return pageLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

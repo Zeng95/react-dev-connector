@@ -11,7 +11,7 @@ const ProfilesNotFound = styled.h4``
 
 const Profiles: React.FC = () => {
   const { state, actions } = useContext(ProfileContext)
-  const { profiles, loading } = state
+  const { profiles, pageLoading } = state
   const { getAllUsersProfiles } = actions
 
   const getPorfiles = useCallback(getAllUsersProfiles, [])
@@ -20,7 +20,7 @@ const Profiles: React.FC = () => {
     getPorfiles()
   }, [getPorfiles])
 
-  return loading ? (
+  return pageLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

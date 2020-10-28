@@ -28,7 +28,7 @@
     "watch:css": "postcss src/tailwind.css -o src/assets/styles/index.css",
     "dev": "(cd ../server && yarn start) & yarn start",
     "start": "yarn run watch:css & react-app-rewired start",
-    "build": "yarn run build:css react-app-rewired build",
+    "build": "yarn run build:css & react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
     "stylelint": "stylelint '**/*.css'"

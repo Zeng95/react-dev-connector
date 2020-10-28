@@ -2,8 +2,9 @@
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const REGISTER = 'REGISTER'
-export const AUTH_ERROR = 'AUTH_ERROR'
 export const USER_LOADED = 'USER_LOADED'
+export const AUTH_SUBMIT = 'AUTH_SUBMIT'
+export const AUTH_ERROR = 'AUTH_ERROR'
 
 // Profile
 export const GET_REPOS = 'GET_REPOS'

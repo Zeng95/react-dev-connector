@@ -1,0 +1,9 @@
+{
+  "dbConfig": {
+    "user": "leo_1995",
+    "password": "19950723",
+    "host": "devconnector.qxzen.mongodb.net",
+    "dbName": "test"
+  },
+  "jwtSecret": "WinterIsComingGOT2021"
+}

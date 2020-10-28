@@ -7,12 +7,10 @@ interface IUser {
 }
 
 function LoginPage() {
-  const { actions } = useContext(AuthContext)
-  const { userLogin } = actions
+  const { userLogin } = useContext(AuthContext).actions
 
   const formEl = useRef<HTMLFormElement>(null)
 
-  const [loading, setLoading] = useState<boolean>(false)
   const [email, setEmail] = useState<string[]>([])
   const [user, setUser] = useState<IUser>({ email: '', password: '' })
 
@@ -26,8 +24,6 @@ function LoginPage() {
 
   const onSubmit = () => {
     if (formEl.current !== null && !formEl.current.check()) return false
-
-    setLoading(true)
 
     userLogin(user)
   }
@@ -70,7 +66,6 @@ function LoginPage() {
     user,
     email,
     emailSuggestions,
-    loading,
     onEmailChange,
     onChange,
     onSubmit,
