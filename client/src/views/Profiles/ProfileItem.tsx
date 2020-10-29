@@ -42,7 +42,7 @@ type ProfileType = {
   education: EducationType[]
 }
 
-type ProfileItemProps = {
+interface ProfileItemProps {
   profile: ProfileType
 }
 
@@ -63,13 +63,17 @@ const UserAvatar = styled.img.attrs({
 
 const UserInfo = styled.div``
 const UserName = styled.h2.attrs({
-  className: 'font-bold text-2xl'
+  className: 'mb-2 font-bold text-2xl'
 })``
-const JobDescription = styled.p``
-const JobLocation = styled.p``
-const ButtonStyled = styled(Button).attrs({
-  className: 'mt-2'
+const JobDescription = styled.p.attrs({
+  className: 'mb-4'
 })``
+const JobLocation = styled.p.attrs({
+  className: 'mb-4'
+})``
+const ButtonStyled = styled(Button)`
+  padding: 0.5rem 1.3rem;
+`
 
 const UserSkills = styled.ul``
 const SkillItem = styled.li.attrs({
@@ -109,7 +113,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
       </UserInfo>
 
       <UserSkills>
-        {skills.slice(0, 4).map((skill, index) => {
+        {skills.slice(0, 5).map((skill, index) => {
           return (
             <SkillItem key={index}>
               <IconStyleWrapper>

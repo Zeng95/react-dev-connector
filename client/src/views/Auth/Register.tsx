@@ -1,6 +1,11 @@
 import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock, UserCircle } from '@styled-icons/fa-solid'
-import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import {
+  Description,
+  IconStyleWrapper,
+  PageStyled,
+  Title
+} from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { RegisterPage } from 'hooks/useRegister'
 import React, { useContext } from 'react'
@@ -56,7 +61,9 @@ const Register: React.FC = () => {
       <Title>Register</Title>
 
       <Description>
-        <ReactLogo size="24" />
+        <IconStyleWrapper>
+          <ReactLogo size="24" />
+        </IconStyleWrapper>
         <span>Sign up for free and experience DevConnector today</span>
       </Description>
 

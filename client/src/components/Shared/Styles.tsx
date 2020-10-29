@@ -24,11 +24,7 @@ export const Title = styled.h1.attrs({
 
 export const Description = styled.p.attrs({
   className: 'flex items-center mb-4 text-2xl'
-})`
-  span {
-    ${tw`ml-2`}
-  }
-`
+})``
 
 export const Instruction = styled.small.attrs({
   className: 'block my-5'

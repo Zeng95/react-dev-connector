@@ -1,6 +1,11 @@
 import { Globe } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
-import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import {
+  Description,
+  IconStyleWrapper,
+  PageStyled,
+  Title
+} from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
@@ -27,7 +32,9 @@ const Profiles: React.FC = () => {
       <Title>Developers</Title>
 
       <Description>
-        <Globe size="24" />
+        <IconStyleWrapper>
+          <Globe size="24" />
+        </IconStyleWrapper>
         <span>Browse and connect with developers</span>
       </Description>
 

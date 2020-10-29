@@ -94,7 +94,6 @@ const reducer = (state: any, action: any) => {
           ...authState,
           ...payload,
           isAuthenticated: true,
-          pageLoading: false,
           submitLoading: false
         }
       }

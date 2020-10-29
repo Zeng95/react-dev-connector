@@ -1,6 +1,11 @@
 import { User } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
-import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import {
+  Description,
+  IconStyleWrapper,
+  PageStyled,
+  Title
+} from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useCallback, useContext, useEffect } from 'react'
@@ -34,7 +39,9 @@ const Dashboard: React.FC = () => {
       <Title>Dashboard</Title>
 
       <Description>
-        <User size="24" title="User" />
+        <IconStyleWrapper>
+          <User size="24" title="User" />
+        </IconStyleWrapper>
         <span>Welcome {user.username}</span>
       </Description>
 

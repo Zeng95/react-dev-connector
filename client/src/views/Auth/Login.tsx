@@ -1,6 +1,11 @@
 import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock } from '@styled-icons/fa-solid'
-import { Description, PageStyled, Title } from 'components/Shared/Styles'
+import {
+  Description,
+  IconStyleWrapper,
+  PageStyled,
+  Title
+} from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import { LoginPage } from 'hooks/useLogin'
 import React, { useContext } from 'react'
@@ -45,7 +50,9 @@ const Login: React.FC = () => {
       <Title>Log In</Title>
 
       <Description>
-        <ReactLogo size="24" />
+        <IconStyleWrapper>
+          <ReactLogo size="24" />
+        </IconStyleWrapper>
         <span>Log in to your account</span>
       </Description>
 
