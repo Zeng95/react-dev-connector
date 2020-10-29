@@ -5,24 +5,24 @@ import { useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 
-type UserType = {
+interface UserType {
   _id: string
   avatar: string
   email: string
   username: string
 }
 
-type ExperienceType = {
+interface ExperienceType {
   title: string
   company: string
 }
 
-type EducationType = {
+interface EducationType {
   school: string
   degree: string
 }
 
-type ProfileType = {
+interface ProfileType {
   _id: string
   status: string
   company: string
@@ -47,7 +47,7 @@ interface ProfileItemProps {
 }
 
 const ProfileItemStyled = styled.li.attrs({
-  className: 'grid mb-4 bg-light'
+  className: 'grid mb-6 bg-light'
 })`
   grid-template-columns: 2fr 4fr 2fr;
   align-items: center;
