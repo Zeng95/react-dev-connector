@@ -91,8 +91,8 @@ interface InitialStateType {
     pageLoading: boolean
   }
   actions: {
-    getAllUsersProfiles: () => any
     getCurrentUserProfile: () => any
+    getAllUsersProfiles: () => any
     getUserProfileByUserId: (userId: string) => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
@@ -112,8 +112,8 @@ const initialProfile = {
     pageLoading: true
   },
   actions: {
-    getAllUsersProfiles: () => {},
     getCurrentUserProfile: () => {},
+    getAllUsersProfiles: () => {},
     getUserProfileByUserId: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
@@ -178,6 +178,25 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
+  getCurrentUserProfile: async () => {
+    try {
+      dispatch({
+        type: SHOW_LOADING
+      })
+
+      const res = await getProfile()
+
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.data.msg, status: err.response.status }
+      })
+    }
+  },
   getAllUsersProfiles: async () => {
     try {
       dispatch({
@@ -189,21 +208,6 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       dispatch({
         type: GET_PROFILES,
         payload: res.data.profiles
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
-      })
-    }
-  },
-  getCurrentUserProfile: async () => {
-    try {
-      const res = await getProfile()
-
-      dispatch({
-        type: GET_PROFILE,
-        payload: res.data.profile
       })
     } catch (err) {
       dispatch({

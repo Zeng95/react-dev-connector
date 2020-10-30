@@ -5,6 +5,7 @@ import {
   LOGIN,
   LOGOUT,
   REGISTER,
+  SHOW_LOADING,
   USER_LOADED
 } from 'context/types'
 import { createContext } from 'react'
@@ -67,6 +68,14 @@ const reducer = (state: any, action: any) => {
   const { state: authState } = state
 
   switch (type) {
+    case SHOW_LOADING:
+      return {
+        ...state,
+        state: {
+          ...authState,
+          pageLoading: true
+        }
+      }
     case AUTH_SUBMIT:
       return {
         ...state,
@@ -119,6 +128,10 @@ const reducer = (state: any, action: any) => {
 const actions = (dispatch: React.Dispatch<any>) => ({
   userLoad: async () => {
     try {
+      dispatch({
+        type: SHOW_LOADING
+      })
+
       // 发送请求
       const res = await getCurrentUser()
 

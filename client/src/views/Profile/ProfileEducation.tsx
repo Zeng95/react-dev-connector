@@ -1,4 +1,3 @@
-import { ProfileSectionTitle } from 'components/Shared/Styles'
 import moment from 'moment'
 import React from 'react'
 import styled from 'styled-components'
