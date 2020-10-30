@@ -28,7 +28,7 @@ interface SocialType {
   facebook: string
   linkedin: string
   youtube: string
-  instgram: string
+  instagram: string
   weibo: string
 }
 
@@ -73,7 +73,9 @@ const JobLocation = styled.p``
 const SocialMediaIcons = styled.div.attrs({
   className: 'my-4'
 })``
-const IconStyled = styled(Icon)``
+const Link = styled.a.attrs({
+  className: 'mx-2'
+})``
 
 const ProfileTop: React.FC<ProfileTopProps> = ({ profile }) => {
   const {
@@ -88,39 +90,59 @@ const ProfileTop: React.FC<ProfileTopProps> = ({ profile }) => {
   return (
     <ProfileTopStyled>
       <UserAvatar src={avatar} />
+
       <UserName>{username}</UserName>
+
       <JobDescription>
         <span>{status}</span>
         {company && <span>at {company}</span>}
       </JobDescription>
+
       {location && <JobLocation>{location}</JobLocation>}
 
       {social || website ? (
         <SocialMediaIcons>
           {website && (
-            <a href={website} target="_blank" rel="noopener noreferrer">
+            <Link href={website} target="_blank">
               <Globe size="32" />
-            </a>
+            </Link>
           )}
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <Icon icon="twitter" size="2x" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <i className="fab fa-facebook fa-2x"></i>
-            <Icon icon="facebook-official" size="2x" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <Icon icon="linkedin-square" size="2x" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <Icon icon="youtube-play" size="2x" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <Icon icon="instagram" size="2x" />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <IconStyled icon={Weibo} size="2x" />
-          </a>
+
+          {social && social.twitter && (
+            <Link href={social.twitter} target="_blank">
+              <Icon icon="twitter" size="2x" />
+            </Link>
+          )}
+
+          {social && social.facebook && (
+            <Link href={social.facebook} target="_blank">
+              <Icon icon="facebook-official" size="2x" />
+            </Link>
+          )}
+
+          {social && social.linkedin && (
+            <Link href={social.linkedin} target="_blank">
+              <Icon icon="linkedin-square" size="2x" />
+            </Link>
+          )}
+
+          {social && social.youtube && (
+            <Link href={social.youtube} target="_blank">
+              <Icon icon="youtube-play" size="2x" />
+            </Link>
+          )}
+
+          {social && social.instagram && (
+            <Link href={social.instagram} target="_blank">
+              <Icon icon="instagram" size="2x" />
+            </Link>
+          )}
+
+          {social && social.weibo && (
+            <Link href={social.weibo} target="_blank">
+              <Icon icon="weibo" size="2x" />
+            </Link>
+          )}
         </SocialMediaIcons>
       ) : null}
     </ProfileTopStyled>

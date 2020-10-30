@@ -22,6 +22,15 @@ interface EducationType {
   degree: string
 }
 
+interface SocialType {
+  twitter: string
+  facebook: string
+  linkedin: string
+  youtube: string
+  instagram: string
+  weibo: string
+}
+
 interface ProfileType {
   _id: string
   status: string
@@ -31,13 +40,8 @@ interface ProfileType {
   skills: string[]
   githubusername: string
   bio: string
+  social?: SocialType
   user: UserType
-  twitter: string
-  facebook: string
-  linkedin: string
-  youtube: string
-  instgram: string
-  weibo: string
   experience: ExperienceType[]
   education: EducationType[]
 }
@@ -90,8 +94,8 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
     user: { _id, avatar, username }
   } = profile
 
-  const navigateToProfile = (profileId: string) => {
-    history.push(`/profile/${profileId}`)
+  const navigateToProfile = (userId: string) => {
+    history.push(`/profiles/${userId}`)
   }
 
   return (
@@ -100,10 +104,14 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
       <UserInfo>
         <UserName>{username}</UserName>
+
         <JobDescription>
-          {status} {company && <span>at {company}</span>}
+          <span>{status}</span>
+          {company && <span>at {company}</span>}
         </JobDescription>
+
         {location && <JobLocation>{location}</JobLocation>}
+
         <ButtonStyled
           appearance="primary"
           onClick={() => navigateToProfile(_id)}

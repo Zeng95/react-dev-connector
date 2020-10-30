@@ -5,7 +5,7 @@ import tw from 'twin.macro'
 const { HeaderCell } = Table
 
 export const AppContent = styled.main.attrs({
-  className: 'mt-24 mb-12'
+  className: 'mt-24 mb-12 min-h-screen'
 })``
 
 export const IconStyleWrapper = styled.span.attrs({

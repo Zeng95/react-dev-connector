@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
 
           <ProfileGrid>
             <ProfileTop profile={profile} />
-            <ProfileAbout />
+            <ProfileAbout profile={profile} />
           </ProfileGrid>
         </Fragment>
       ) : (

@@ -30,15 +30,15 @@ const Router: React.FC = () => (
         component={Register}
       />
       <PublicRoute
-        path="/profile/:userId"
-        restricted={false}
-        component={Profile}
-      />
-      <PublicRoute
         exact
         path="/profiles"
         restricted={false}
         component={Profiles}
+      />
+      <PublicRoute
+        path="/profiles/:userId"
+        restricted={false}
+        component={Profile}
       />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />

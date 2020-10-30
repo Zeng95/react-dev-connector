@@ -1,3 +1,5 @@
+export const SHOW_LOADING = 'SHOW_LOADING'
+
 // Auth
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'

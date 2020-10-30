@@ -15,6 +15,7 @@ import {
   GET_PROFILES,
   GET_REPOS,
   PROFILE_ERROR,
+  SHOW_LOADING,
   UPDATE_PROFILE
 } from 'context/types'
 import { createContext } from 'react'
@@ -36,6 +37,15 @@ type EducationType = {
   degree: string
 }
 
+interface SocialType {
+  twitter: string
+  facebook: string
+  linkedin: string
+  youtube: string
+  instagram: string
+  weibo: string
+}
+
 type ProfileType = {
   _id: string
   status: string
@@ -45,13 +55,8 @@ type ProfileType = {
   skills: string[]
   githubusername: string
   bio: string
+  social?: SocialType
   user: UserType
-  twitter: string
-  facebook: string
-  linkedin: string
-  youtube: string
-  instgram: string
-  weibo: string
   experience: ExperienceType[]
   education: EducationType[]
 }
@@ -116,6 +121,11 @@ const reducer = (state: any, action: any) => {
   const { state: profileState } = state
 
   switch (type) {
+    case SHOW_LOADING:
+      return {
+        ...state,
+        state: { ...profileState, pageLoading: true }
+      }
     case GET_PROFILES:
       return {
         ...state,
@@ -160,6 +170,10 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   },
   getAllUsersProfiles: async () => {
     try {
+      dispatch({
+        type: SHOW_LOADING
+      })
+
       const res = await getProfiles()
 
       dispatch({
@@ -190,6 +204,10 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   },
   getUserProfileByUserId: async (userId: string) => {
     try {
+      dispatch({
+        type: SHOW_LOADING
+      })
+
       const res = await getProfileById(userId)
 
       dispatch({
