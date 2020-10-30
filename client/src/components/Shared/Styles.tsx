@@ -79,3 +79,7 @@ export const HeaderCellStyled = styled(HeaderCell)`
     }
   }
 `
+
+export const ProfileSectionTitle = styled.h2.attrs({
+  className: 'text-primary font-bold text-2xl'
+})``

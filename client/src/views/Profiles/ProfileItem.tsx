@@ -51,14 +51,13 @@ interface ProfileItemProps {
 }
 
 const ProfileItemStyled = styled.li.attrs({
-  className: 'grid mb-6 bg-light'
+  className: 'grid mb-6 p-8 bg-light'
 })`
   grid-template-columns: 2fr 4fr 2fr;
   align-items: center;
   grid-gap: 2rem;
-  padding: 1rem;
   line-height: 1.8;
-  border: #ccc solid 1px;
+  border: 1px solid #ccc;
 `
 
 const UserAvatar = styled.img.attrs({

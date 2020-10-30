@@ -1,5 +1,4 @@
 import { Globe } from '@styled-icons/fa-solid'
-import Weibo from 'assets/images/weibo.svg'
 import { Description, Title } from 'components/Shared/Styles'
 import React from 'react'
 import { Icon } from 'rsuite'

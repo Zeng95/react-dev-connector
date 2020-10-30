@@ -20,21 +20,31 @@ import {
 } from 'context/types'
 import { createContext } from 'react'
 
-type UserType = {
+interface UserType {
   _id: string
   avatar: string
   email: string
   username: string
 }
 
-type ExperienceType = {
+interface ExperienceType {
+  _id: string
   title: string
   company: string
+  location: string
+  from: string
+  to: string
+  description: string
 }
 
-type EducationType = {
+interface EducationType {
+  _id: string
   school: string
   degree: string
+  fieldofstudy: string
+  from: string
+  to: string
+  description: string
 }
 
 interface SocialType {
@@ -46,7 +56,7 @@ interface SocialType {
   weibo: string
 }
 
-type ProfileType = {
+interface ProfileType {
   _id: string
   status: string
   company: string
@@ -61,18 +71,18 @@ type ProfileType = {
   education: EducationType[]
 }
 
-type RepositoryType = {
+interface RepositoryType {
   id: number
   name: string
   price: number
 }
 
-type ErrorType = {
+interface ErrorType {
   msg: string
   status: string
 }
 
-type InitialStateType = {
+interface InitialStateType {
   state: {
     profile: ProfileType | null
     profiles: ProfileType[]

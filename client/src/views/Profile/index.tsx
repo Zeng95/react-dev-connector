@@ -6,10 +6,15 @@ import { useHistory, useParams } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileAbout } from './ProfileAbout'
+import { ProfileEducation } from './ProfileEducation'
+import { ProfileExperience } from './ProfileExperience'
 import { ProfileTop } from './ProfileTop'
 
 const ProfileGrid = styled.div.attrs({
   className: 'my-4'
+})``
+const SectionContainer = styled.section.attrs({
+  className: 'flex mt-4'
 })``
 
 const Profile: React.FC = () => {
@@ -42,11 +47,17 @@ const Profile: React.FC = () => {
 
           <ProfileGrid>
             <ProfileTop profile={profile} />
+
             <ProfileAbout profile={profile} />
+
+            <SectionContainer>
+              <ProfileExperience experience={profile.experience} />
+              <ProfileEducation education={profile.education} />
+            </SectionContainer>
           </ProfileGrid>
         </Fragment>
       ) : (
-        <p>Not found</p>
+        <h4>No profile credentials</h4>
       )}
     </PageStyled>
   )

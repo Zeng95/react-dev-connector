@@ -1,5 +1,5 @@
 import { Check } from '@styled-icons/fa-solid'
-import { IconStyleWrapper } from 'components/Shared/Styles'
+import { IconStyleWrapper, ProfileSectionTitle } from 'components/Shared/Styles'
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
@@ -53,9 +53,6 @@ const ProfileAboutStyled = styled.div.attrs({
 })`
   border: #ccc solid 1px;
 `
-const Title = styled.h2.attrs({
-  className: 'text-primary font-bold text-2xl'
-})``
 const Line = styled.div.attrs({
   className: 'my-6'
 })`
@@ -80,12 +77,15 @@ const ProfileAbout: React.FC<ProfileTopProps> = ({ profile }) => {
     <ProfileAboutStyled>
       {bio && (
         <Fragment>
-          <Title>{username.split(' ')[0]}'s Bio</Title>
+          <ProfileSectionTitle>
+            {username.split(' ')[0]}'s Bio
+          </ProfileSectionTitle>
           <p>{bio}</p>
           <Line />
         </Fragment>
       )}
-      <Title>Skill Set</Title>
+
+      <ProfileSectionTitle>Skill Set</ProfileSectionTitle>
       <Skills>
         {skills.slice(0, 5).map((skill, index) => {
           return (
