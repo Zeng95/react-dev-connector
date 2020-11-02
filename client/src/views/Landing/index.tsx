@@ -9,7 +9,7 @@ type ButtonProps = {
 }
 
 const LandingStyled = styled.section.attrs({
-  className: 'absolute top-0 left-0 w-screen h-screen'
+  className: 'absolute top-0 left-0 w-full h-screen'
 })`
   background: url(${require('assets/images/showcase.jpg')}) no-repeat center;
   background-size: cover;

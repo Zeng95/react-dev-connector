@@ -6,37 +6,6 @@ const User = require('../models/User')
 const Profile = require('../models/Profile')
 
 /**
- * @route   GET api/profiles/me
- * @desc    Get the authenticated user's profile
- * @access  Private
- */
-router.get('/me', verifyToken, async (req, res) => {
-  try {
-    const profile = await Profile.findOne({ user: req.userId })
-      .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
-
-    if (!profile) {
-      return res.status(404).json({
-        success: false,
-        msg: 'There is no profile for this user'
-      })
-    }
-
-    res.status(200).json({
-      success: true,
-      msg: "Get the user's profile successfully",
-      profile
-    })
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      msg: `Server Error: ${err.message}`
-    })
-  }
-})
-
-/**
  * @route   GET api/profiles/all
  * @desc    Get all the profiles
  * @access  Public
@@ -101,6 +70,65 @@ router.get('/:userId', async (req, res) => {
       })
     }
 
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   GET api/profiles/github
+ * @desc    Get user repos from Github
+ * @access  Public
+ */
+router.get('/github', async (req, res) => {
+  try {
+    console.log(1)
+    const { username } = req.params
+    const options = {
+      uri: encodeURI(
+        `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`
+      ),
+      method: 'GET',
+      headers: {
+        'user-agent': 'node.js',
+        Authorization: `token ${config.get('githubToken')}`
+      }
+    }
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ *
+ * @route   GET api/profiles/me
+ * @desc    Get the authenticated user's profile
+ * @access  Private
+ */
+router.get('/me', verifyToken, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.userId })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v -date')
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        msg: 'There is no profile for this user'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: "Get the user's profile successfully",
+      profile
+    })
+  } catch (err) {
     res.status(500).json({
       success: false,
       msg: `Server Error: ${err.message}`

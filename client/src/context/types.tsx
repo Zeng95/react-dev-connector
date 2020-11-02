@@ -16,3 +16,8 @@ export const CREATE_PROFILE = 'CREATE_PROFILE'
 export const UPDATE_PROFILE = 'UPDATE_PROFILE'
 export const CLEAR_PROFILE = 'CLEAR_PROFILE'
 export const PROFILE_ERROR = 'PROFILE_ERROR'
+
+// Post
+export const GET_POSTS = 'GET_POSTS'
+export const GET_POST = 'GET_POST'
+export const POST_ERROR = 'POST_ERROR'

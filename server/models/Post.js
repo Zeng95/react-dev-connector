@@ -3,6 +3,7 @@ const { Schema, model } = mongoose
 const SchemaObjectId = Schema.Types.ObjectId
 
 const postSchema = new Schema({
+  // We have a user connected to a post
   user: {
     type: SchemaObjectId,
     ref: 'User'
@@ -11,9 +12,11 @@ const postSchema = new Schema({
     type: String,
     required: true
   },
+  // The name of the user
   name: {
     type: String
   },
+  // The avatar of the user
   avatar: {
     type: String
   },
@@ -31,6 +34,7 @@ const postSchema = new Schema({
         type: SchemaObjectId,
         ref: 'User'
       },
+      // The text of a comment
       text: {
         type: String,
         required: true

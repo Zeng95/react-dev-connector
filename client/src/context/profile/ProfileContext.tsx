@@ -20,14 +20,14 @@ import {
 } from 'context/types'
 import { createContext } from 'react'
 
-interface UserType {
+interface IUser {
   _id: string
   avatar: string
   email: string
   username: string
 }
 
-interface ExperienceType {
+interface IExperience {
   _id: string
   title: string
   company: string
@@ -37,7 +37,7 @@ interface ExperienceType {
   description: string
 }
 
-interface EducationType {
+interface IEducation {
   _id: string
   school: string
   degree: string
@@ -47,7 +47,7 @@ interface EducationType {
   description: string
 }
 
-interface SocialType {
+interface ISocial {
   twitter: string
   facebook: string
   linkedin: string
@@ -56,7 +56,7 @@ interface SocialType {
   weibo: string
 }
 
-interface ProfileType {
+interface IProfile {
   _id: string
   status: string
   company: string
@@ -65,29 +65,29 @@ interface ProfileType {
   skills: string[]
   githubusername: string
   bio: string
-  social?: SocialType
-  user: UserType
-  experience: ExperienceType[]
-  education: EducationType[]
+  social?: ISocial
+  user: IUser
+  experience: IExperience[]
+  education: IEducation[]
 }
 
-interface RepositoryType {
+interface IRepository {
   id: number
   name: string
   price: number
 }
 
-interface ErrorType {
+interface IError {
   msg: string
   status: string
 }
 
 interface InitialStateType {
   state: {
-    profile: ProfileType | null
-    profiles: ProfileType[]
-    repos: RepositoryType[]
-    error: ErrorType | {}
+    profile: IProfile | null
+    profiles: IProfile[]
+    repos: IRepository[]
+    error: IError | {}
     pageLoading: boolean
   }
   actions: {
