@@ -7,7 +7,7 @@ const Profile = require('../models/Profile')
 
 /**
  * @route   GET api/profiles/all
- * @desc    Get all the profiles
+ * @desc    Get all profiles
  * @access  Public
  */
 router.get('/all', async (req, res) => {
@@ -39,47 +39,8 @@ router.get('/all', async (req, res) => {
 })
 
 /**
- * @route   GET api/profiles/:userId
- * @desc    Get a profile by a user's id
- * @access  Public
- */
-router.get('/:userId', async (req, res) => {
-  try {
-    const userId = req.params.userId
-    const profile = await Profile.findOne({ user: userId })
-      .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
-
-    if (!profile) {
-      return res.status(404).json({
-        success: false,
-        msg: 'Profile not found'
-      })
-    }
-
-    res.status(200).json({
-      success: true,
-      msg: "Get the user's profile successfully",
-      profile
-    })
-  } catch (err) {
-    if (err.kind === 'ObjectId') {
-      return res.status(404).json({
-        success: false,
-        msg: 'Profile not found'
-      })
-    }
-
-    res.status(500).json({
-      success: false,
-      msg: `Server Error: ${err.message}`
-    })
-  }
-})
-
-/**
  * @route   GET api/profiles/github
- * @desc    Get user repos from Github
+ * @desc    Get a user's repos from Github
  * @access  Public
  */
 router.get('/github', async (req, res) => {
@@ -114,7 +75,7 @@ router.get('/me', verifyToken, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.userId })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     if (!profile) {
       return res.status(404).json({
@@ -129,6 +90,45 @@ router.get('/me', verifyToken, async (req, res) => {
       profile
     })
   } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route   GET api/profiles/:userId
+ * @desc    Get a profile by a user's id
+ * @access  Public
+ */
+router.get('/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId
+    const profile = await Profile.findOne({ user: userId })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v')
+
+    if (!profile) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Profile not found'
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      msg: "Get the user's profile successfully",
+      profile
+    })
+  } catch (err) {
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        success: false,
+        msg: 'Profile not found'
+      })
+    }
+
     res.status(500).json({
       success: false,
       msg: `Server Error: ${err.message}`
@@ -185,7 +185,7 @@ router.post('/', verifyToken, async (req, res) => {
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,
@@ -251,7 +251,7 @@ router.put('/', verifyToken, async (req, res) => {
       { new: true }
     )
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,
@@ -282,7 +282,7 @@ router.put('/experience', verifyToken, async (req, res) => {
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,
@@ -313,7 +313,7 @@ router.put('/education', verifyToken, async (req, res) => {
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,
@@ -355,7 +355,7 @@ router.delete('/experience/:id', verifyToken, async (req, res) => {
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,
@@ -397,7 +397,7 @@ router.delete('/education/:id', verifyToken, async (req, res) => {
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v -date')
+      .select('-__v')
 
     res.status(201).json({
       success: true,

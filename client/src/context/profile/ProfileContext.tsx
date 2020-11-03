@@ -11,6 +11,7 @@ import {
   updateProfileExperience
 } from 'api/profiles'
 import {
+  CLEAR_PROFILE,
   GET_PROFILE,
   GET_PROFILES,
   GET_REPOS,
@@ -22,9 +23,18 @@ import { createContext } from 'react'
 
 interface IUser {
   _id: string
-  avatar: string
   email: string
+  avatar: string
   username: string
+}
+
+interface ISocial {
+  twitter: string
+  facebook: string
+  linkedin: string
+  youtube: string
+  instagram: string
+  weibo: string
 }
 
 interface IExperience {
@@ -45,15 +55,6 @@ interface IEducation {
   from: string
   to: string
   description: string
-}
-
-interface ISocial {
-  twitter: string
-  facebook: string
-  linkedin: string
-  youtube: string
-  instagram: string
-  weibo: string
 }
 
 interface IProfile {
@@ -77,17 +78,11 @@ interface IRepository {
   price: number
 }
 
-interface IError {
-  msg: string
-  status: string
-}
-
 interface InitialStateType {
   state: {
     profile: IProfile | null
     profiles: IProfile[]
     repos: IRepository[]
-    error: IError | {}
     pageLoading: boolean
   }
   actions: {
@@ -100,6 +95,7 @@ interface InitialStateType {
     deleteUserProfileExperience: (experienceId: string) => any
     updateUserProfileEducation: (education: any) => any
     deleteUserProfileEducation: (educationId: string) => any
+    clearProfile: () => any
   }
 }
 
@@ -108,7 +104,6 @@ const initialProfile = {
     profile: null,
     profiles: [],
     repos: [],
-    error: {},
     pageLoading: true
   },
   actions: {
@@ -120,7 +115,8 @@ const initialProfile = {
     updateUserProfileExperience: () => {},
     deleteUserProfileExperience: () => {},
     updateUserProfileEducation: () => {},
-    deleteUserProfileEducation: () => {}
+    deleteUserProfileEducation: () => {},
+    clearProfile: () => {}
   }
 }
 
@@ -134,28 +130,50 @@ const reducer = (state: any, action: any) => {
     case SHOW_LOADING:
       return {
         ...state,
-        state: { ...profileState, pageLoading: true }
+        state: {
+          ...profileState,
+          pageLoading: true
+        }
       }
     case GET_PROFILES:
       return {
         ...state,
-        state: { ...profileState, profiles: payload, pageLoading: false }
+        state: {
+          ...profileState,
+          profiles: payload,
+          pageLoading: false
+        }
       }
     case GET_PROFILE:
     case UPDATE_PROFILE:
       return {
         ...state,
-        state: { ...profileState, profile: payload, pageLoading: false }
+        state: {
+          ...profileState,
+          profile: payload,
+          pageLoading: false
+        }
       }
+    case CLEAR_PROFILE:
     case PROFILE_ERROR:
       return {
         ...state,
-        state: { ...profileState, error: payload, pageLoading: false }
+        state: {
+          ...profileState,
+          profile: null,
+          profiles: [],
+          repos: [],
+          pageLoading: false
+        }
       }
     case GET_REPOS:
       return {
         ...state,
-        state: { ...profileState, repos: payload, pageLoading: false }
+        state: {
+          ...profileState,
+          repos: payload,
+          pageLoading: false
+        }
       }
     default:
       return state
@@ -192,8 +210,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -211,8 +228,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -230,8 +246,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -245,8 +260,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -260,8 +274,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -275,8 +288,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -290,8 +302,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -305,8 +316,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
@@ -320,10 +330,14 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
+  },
+  clearProfile: () => {
+    dispatch({
+      type: CLEAR_PROFILE
+    })
   }
 })
 

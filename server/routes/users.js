@@ -183,7 +183,7 @@ router.post(
 
           res.status(200).json({
             success: true,
-            msg: 'User logged in successfully',
+            msg: 'You have successfully logged in',
             token
           })
         }

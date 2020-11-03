@@ -22,6 +22,22 @@ import {
   InputGroup,
   Schema
 } from 'rsuite'
+import styled from 'styled-components'
+import tw from 'twin.macro'
+
+const ControlLabelStyled = styled(ControlLabel).attrs({
+  className: 'relative font-semibold'
+})`
+  &::after {
+    ${tw`absolute`}
+
+    content: '*';
+    top: 50%;
+    transform: translate3d(0, -9px, 0);
+    padding-left: 5px;
+    color: #cb2431;
+  }
+`
 
 const Register: React.FC = () => {
   const { state } = useContext(AuthContext)
@@ -41,19 +57,19 @@ const Register: React.FC = () => {
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
-      .isEmail('Please enter a valid email address.')
-      .isRequired('This field is required.'),
-    username: StringType().isRequired('This field is required.'),
+      .isEmail('Please enter a valid email address')
+      .isRequired('This field is required'),
+    username: StringType().isRequired('This field is required'),
     password: StringType()
       .minLength(6, 'Minimum 6 characters required')
-      .isRequired('This field is required.'),
+      .isRequired('This field is required'),
     confirmPassword: StringType()
       .addRule((value, data) => {
         if (value !== data.password) return false
 
         return true
       }, 'The two passwords do not match')
-      .isRequired('This field is required.')
+      .isRequired('This field is required')
   })
 
   return (
@@ -77,7 +93,7 @@ const Register: React.FC = () => {
         onChange={formValue => onChange(formValue)}
       >
         <FormGroup>
-          <ControlLabel>Username</ControlLabel>
+          <ControlLabelStyled>Username</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <UserCircle size="16" title="Username" />
@@ -92,7 +108,7 @@ const Register: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Email address</ControlLabel>
+          <ControlLabelStyled>Email address</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <Envelope size="16" title="Email address" />
@@ -115,7 +131,7 @@ const Register: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Password</ControlLabel>
+          <ControlLabelStyled>Password</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <Lock size="16" title="Password" />
@@ -132,7 +148,7 @@ const Register: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Confirm password</ControlLabel>
+          <ControlLabelStyled>Confirm password</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <Lock size="16" title="Confirm password" />
@@ -152,7 +168,6 @@ const Register: React.FC = () => {
           <ButtonToolbar>
             <Button
               appearance="primary"
-              size="lg"
               onClick={onSubmit}
               loading={submitLoading}
             >
@@ -160,7 +175,6 @@ const Register: React.FC = () => {
             </Button>
             <Button
               appearance="default"
-              size="lg"
               onClick={onReset}
               disabled={submitLoading}
             >

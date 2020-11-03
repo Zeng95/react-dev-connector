@@ -1,10 +1,19 @@
-import { ShareAlt } from '@styled-icons/fa-solid'
-import { Edit, SignOutAlt, TachometerAlt, Users } from '@styled-icons/fa-solid'
+import {
+  Pen,
+  ShareAlt,
+  SignOutAlt,
+  TachometerAlt,
+  UserFriends
+} from '@styled-icons/fa-solid'
 import { IconStyleWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+
+interface LinkProps {
+  readonly name: string
+}
 
 const AppHeaderStyled = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
@@ -34,7 +43,7 @@ const Logo = styled.h1.attrs({
   font-size: 1.5em;
 `
 const Menu = styled.ul.attrs({
-  className: 'flex mb-0'
+  className: 'flex items-center'
 })``
 const MenuItem = styled.li``
 const LinkStyled = styled(Link).attrs({
@@ -47,14 +56,6 @@ const AppHeader: React.FC = () => {
 
   const authLinks = (
     <Fragment>
-      <MenuItem>
-        <LinkStyled to="/posts">
-          <IconStyleWrapper>
-            <Edit size="16" title="User posts" />
-          </IconStyleWrapper>
-          <span>Posts</span>
-        </LinkStyled>
-      </MenuItem>
       <MenuItem>
         <LinkStyled to="/dashboard">
           <IconStyleWrapper>
@@ -77,10 +78,10 @@ const AppHeader: React.FC = () => {
   const guestLinks = (
     <Fragment>
       <MenuItem>
-        <LinkStyled to="/register">Register</LinkStyled>
+        <Link to="/login">Log in</Link>
       </MenuItem>
       <MenuItem>
-        <LinkStyled to="/login">Login</LinkStyled>
+        <Link to="/register">Sign up</Link>
       </MenuItem>
     </Fragment>
   )
@@ -91,7 +92,7 @@ const AppHeader: React.FC = () => {
         <Logo>
           <LinkStyled to="/">
             <IconStyleWrapper>
-              <ShareAlt size="24" title="Logo" />
+              <ShareAlt size="26" title="Logo" />
             </IconStyleWrapper>
             <span>DevConnector</span>
           </LinkStyled>
@@ -101,9 +102,17 @@ const AppHeader: React.FC = () => {
           <MenuItem>
             <LinkStyled to="/profiles">
               <IconStyleWrapper>
-                <Users size="16" title="User profiles" />
+                <UserFriends size="18" title="User profiles" />
               </IconStyleWrapper>
               <span>Developers</span>
+            </LinkStyled>
+          </MenuItem>
+          <MenuItem>
+            <LinkStyled to="/posts">
+              <IconStyleWrapper>
+                <Pen size="14" title="User posts" />
+              </IconStyleWrapper>
+              <span>Posts</span>
             </LinkStyled>
           </MenuItem>
           {isAuthenticated || token ? authLinks : guestLinks}

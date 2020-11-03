@@ -65,13 +65,14 @@ const LinkStyled = styled(Link).attrs({
     ${tw`absolute top-0 left-0 w-full h-full pointer-events-none`}
 
     content: '';
-    transition: 0.2s ease;
+    border-radius: 6px;
+    transition: 0.3s ease;
   }
 
   &::before {
     ${tw`opacity-100`}
 
-    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 1px 0 rgba(20, 23, 28, 0.1);
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 2px 0 rgba(20, 23, 28, 0.1);
   }
 
   &::after {
@@ -106,7 +107,7 @@ const JobLocation = styled.p.attrs({
   className: 'mb-4'
 })``
 const ButtonStyled = styled(Button)`
-  padding: 0.5rem 1.3rem;
+  padding: 0.5rem 1.25rem;
 `
 
 const UserSkills = styled.ul``

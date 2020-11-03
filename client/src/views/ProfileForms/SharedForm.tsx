@@ -355,13 +355,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button appearance="primary" size="lg" onClick={() => onSubmit(edit)}>
+          <Button appearance="primary" onClick={() => onSubmit(edit)}>
             Submit
           </Button>
-          <Button appearance="default" size="lg" onClick={onReset}>
+          <Button appearance="default" onClick={onReset}>
             Clear
           </Button>
-          <Button appearance="ghost" size="lg" onClick={navigateToDashboard}>
+          <Button appearance="subtle" onClick={navigateToDashboard}>
             Go Back
           </Button>
         </ButtonToolbar>

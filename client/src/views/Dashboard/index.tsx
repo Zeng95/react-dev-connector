@@ -24,13 +24,13 @@ const Dashboard: React.FC = () => {
   const { profile, pageLoading: profilePageLoading } = profileContext.state
   const { getCurrentUserProfile } = profileContext.actions
 
-  const getUser = useCallback(userLoad, [])
-  const getProfile = useCallback(getCurrentUserProfile, [])
+  const getCurrentUser = useCallback(userLoad, [])
+  const getCurrentProfile = useCallback(getCurrentUserProfile, [])
 
   useEffect(() => {
-    getUser()
-    getProfile()
-  }, [getUser, getProfile])
+    getCurrentUser()
+    getCurrentProfile()
+  }, [getCurrentUser, getCurrentProfile])
 
   return authPageLoading || profilePageLoading || user === null ? (
     <AppLoader />

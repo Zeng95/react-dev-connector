@@ -1,4 +1,4 @@
-import { getCurrentUser, login, register } from 'api/users'
+import { getUser, login, register } from 'api/users'
 import {
   AUTH_ERROR,
   AUTH_SUBMIT,
@@ -133,7 +133,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
 
       // 发送请求
-      const res = await getCurrentUser()
+      const res = await getUser()
 
       dispatch({
         type: USER_LOADED,
@@ -204,7 +204,9 @@ const actions = (dispatch: React.Dispatch<any>) => ({
     }
   },
   userLogout: () => {
-    dispatch({ type: 'LOGOUT' })
+    dispatch({
+      type: LOGOUT
+    })
   }
 })
 

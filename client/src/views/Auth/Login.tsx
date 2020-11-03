@@ -21,10 +21,23 @@ import {
   InputGroup,
   Schema
 } from 'rsuite'
+import styled from 'styled-components'
+import tw from 'twin.macro'
+
+const ControlLabelStyled = styled(ControlLabel).attrs({
+  className: 'font-semibold'
+})``
+const Callout = styled.p.attrs({
+  className: 'my-4'
+})`
+  > a {
+    ${tw`ml-1`}
+  }
+`
 
 const Login: React.FC = () => {
-  const { state } = useContext(AuthContext)
-  const { submitLoading } = state
+  const authContext = useContext(AuthContext)
+  const { submitLoading } = authContext.state
 
   const {
     formEl,
@@ -40,14 +53,14 @@ const Login: React.FC = () => {
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
-      .isEmail('Please enter a valid email address.')
-      .isRequired('This field is required.'),
-    password: StringType().isRequired('This field is required.')
+      .isEmail('Please enter a valid email address')
+      .isRequired('This field is required'),
+    password: StringType().isRequired('This field is required')
   })
 
   return (
     <PageStyled>
-      <Title>Log In</Title>
+      <Title>Log in</Title>
 
       <Description>
         <IconStyleWrapper>
@@ -66,7 +79,7 @@ const Login: React.FC = () => {
         onChange={formValue => onChange(formValue)}
       >
         <FormGroup>
-          <ControlLabel>Email address</ControlLabel>
+          <ControlLabelStyled>Email address</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <Envelope size="16" title="Email Address" />
@@ -85,7 +98,7 @@ const Login: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabel>Password</ControlLabel>
+          <ControlLabelStyled>Password</ControlLabelStyled>
           <InputGroup style={{ width: '100%' }}>
             <InputGroup.Addon>
               <Lock size="16" title="Password" />
@@ -105,7 +118,6 @@ const Login: React.FC = () => {
           <ButtonToolbar>
             <Button
               appearance="primary"
-              size="lg"
               onClick={onSubmit}
               loading={submitLoading}
             >
@@ -113,7 +125,6 @@ const Login: React.FC = () => {
             </Button>
             <Button
               appearance="default"
-              size="lg"
               onClick={onReset}
               disabled={submitLoading}
             >
@@ -123,14 +134,12 @@ const Login: React.FC = () => {
         </FormGroup>
       </Form>
 
-      <p className="my-4">
-        Don't have an account?{' '}
-        <strong>
-          <Link to="/register" className="text-primary">
-            Register now
-          </Link>
-        </strong>
-      </p>
+      <Callout>
+        New to DevConnector?
+        <Link to="/register" className="text-primary">
+          <strong>Create an account</strong>
+        </Link>
+      </Callout>
     </PageStyled>
   )
 }

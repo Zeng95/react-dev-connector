@@ -12,12 +12,12 @@ const postSchema = new Schema({
     type: String,
     required: true
   },
-  // The name of the user
-  name: {
-    type: String
-  },
   // The avatar of the user
   avatar: {
+    type: String
+  },
+  // The name of the user
+  username: {
     type: String
   },
   likes: [
@@ -39,7 +39,7 @@ const postSchema = new Schema({
         type: String,
         required: true
       },
-      name: {
+      username: {
         type: String
       },
       avatar: {

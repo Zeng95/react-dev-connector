@@ -8,6 +8,7 @@ import {
   CheckboxStyled,
   DatePickerStyled,
   Description,
+  IconStyleWrapper,
   Instruction,
   PageStyled,
   Title
@@ -43,7 +44,9 @@ const AddEducation: React.FC = () => {
       <Title>Education</Title>
 
       <Description>
-        <GraduationCap size="24" title="Add Experience" />
+        <IconStyleWrapper>
+          <GraduationCap size="24" title="Add Experience" />
+        </IconStyleWrapper>
         <span>Add any school, bootcamp, etc that you have attended</span>
       </Description>
 

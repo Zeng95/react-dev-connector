@@ -1,3 +1,4 @@
+// Global
 export const SHOW_LOADING = 'SHOW_LOADING'
 
 // Auth

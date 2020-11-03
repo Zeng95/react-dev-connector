@@ -7,6 +7,7 @@ import { Register } from 'views/Auth/Register'
 import { Dashboard } from 'views/Dashboard'
 import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
+import { Posts } from 'views/Posts'
 import { Profile } from 'views/Profile'
 import { AddEducation } from 'views/ProfileForms/AddEducation'
 import { AddExperience } from 'views/ProfileForms/AddExperience'
@@ -40,6 +41,7 @@ const Router: React.FC = () => (
         restricted={false}
         component={Profile}
       />
+      <PublicRoute exact path="/posts" restricted={false} component={Posts} />
 
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute path="/create-profile" component={CreateProfile} />

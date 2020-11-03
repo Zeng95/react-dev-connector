@@ -4,12 +4,12 @@ import { Link, useHistory } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import tw from 'twin.macro'
 
-type ButtonProps = {
-  readonly btnName: string
+interface LinkProps {
+  readonly name: string
 }
 
 const LandingStyled = styled.section.attrs({
-  className: 'absolute top-0 left-0 w-full h-screen'
+  className: 'absolute top-0 left-0 w-full h-full'
 })`
   background: url(${require('assets/images/showcase.jpg')}) no-repeat center;
   background-size: cover;
@@ -31,37 +31,32 @@ const Title = styled.h1.attrs({
 const Description = styled.p.attrs({
   className: 'my-4 text-2xl'
 })``
-const BasicButton = styled.button.attrs({
-  className: 'inline-block rounded-sm bg-light text-base outline-none'
-})<ButtonProps>`
+const AuthLink = styled(Link).attrs({
+  className: 'inline-block py-2 px-5 rounded-md'
+})<LinkProps>`
   width: 100px;
-  color: #333;
-  margin-right: 0.5rem;
   transition: opacity 0.3s ease-in;
-
-  a {
-    ${tw`block`}
-
-    padding: 0.4rem 0;
-    color: inherit;
-  }
 
   &:hover {
     opacity: 0.8;
   }
 
   ${props =>
-    props.btnName === 'register' &&
+    props.name === 'login' &&
     css`
-      background: #17a2b8;
-      color: #fff;
+      ${tw`mr-2`}
+
+      color: #333;
+      background-color: #f4f4f4;
     `}
 
   ${props =>
-    props.btnName === 'login' &&
+    props.name === 'register' &&
     css`
-      margin-right: 0;
-      background: #f4f4f4;
+      ${tw`mr-0`}
+
+      color: #fff;
+      background-color: #17a2b8;
     `}
 `
 
@@ -86,12 +81,12 @@ const Landing: React.FC = () => {
           </Description>
 
           <div className="actions">
-            <BasicButton btnName="register">
-              <Link to="register">Register</Link>
-            </BasicButton>
-            <BasicButton btnName="login">
-              <Link to="login">Login</Link>
-            </BasicButton>
+            <AuthLink to="login" name="login">
+              Log in
+            </AuthLink>
+            <AuthLink to="register" name="register">
+              Sign up
+            </AuthLink>
           </div>
         </Content>
       </OverLay>

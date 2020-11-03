@@ -3,6 +3,7 @@ import {
   CheckboxStyled,
   DatePickerStyled,
   Description,
+  IconStyleWrapper,
   Instruction,
   PageStyled,
   Title
@@ -46,7 +47,9 @@ const AddExperience: React.FC = () => {
       <Title>Experience</Title>
 
       <Description>
-        <CodeBranch size="24" title="Add Experience" />
+        <IconStyleWrapper>
+          <CodeBranch size="24" title="Add Experience" />
+        </IconStyleWrapper>
         <span>
           Add any developer/programming positions that you have had in the past
         </span>

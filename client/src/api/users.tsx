@@ -3,8 +3,10 @@ import { setAuthToken } from 'utils'
 
 const END_POINT = '/users'
 
-const getCurrentUser = () => {
-  return httpClient.get(`${END_POINT}/me`, { headers: setAuthToken() })
+const getUser = () => {
+  return httpClient.get(`${END_POINT}/me`, {
+    headers: setAuthToken()
+  })
 }
 
 const login = (formData: any) => {
@@ -15,4 +17,4 @@ const register = (formData: any) => {
   return httpClient.post(`${END_POINT}/register`, formData)
 }
 
-export { getCurrentUser, login, register }
+export { getUser, login, register }
