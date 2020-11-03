@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
       ) : (
         <div>
           <p>You have not set up a profile yet, please add some info</p>
-          <Link to="create-profile" className="inline-block mt-4">
+          <Link to="/user/create-profile" className="inline-block mt-4">
             <Button appearance="primary">Create profile</Button>
           </Link>
         </div>

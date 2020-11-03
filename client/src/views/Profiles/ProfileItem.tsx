@@ -102,7 +102,13 @@ const UserName = styled.h2.attrs({
 })``
 const JobDescription = styled.p.attrs({
   className: 'mb-4'
-})``
+})`
+  > span {
+    &:first-of-type {
+      ${tw`mr-1`}
+    }
+  }
+`
 const JobLocation = styled.p.attrs({
   className: 'mb-4'
 })``

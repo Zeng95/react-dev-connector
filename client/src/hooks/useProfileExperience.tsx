@@ -72,7 +72,7 @@ function useProfileExperience() {
 
   const navigateToEditExperience = (experienceId: string) => {
     console.log(experienceId)
-    history.push('/edit-experience')
+    history.push('/user/edit-experience')
   }
 
   return {

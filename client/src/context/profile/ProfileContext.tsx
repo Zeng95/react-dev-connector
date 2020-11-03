@@ -86,8 +86,8 @@ interface InitialStateType {
     pageLoading: boolean
   }
   actions: {
-    getCurrentUserProfile: () => any
     getAllUsersProfiles: () => any
+    getCurrentUserProfile: () => any
     getUserProfileByUserId: (userId: string) => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
@@ -107,8 +107,8 @@ const initialProfile = {
     pageLoading: true
   },
   actions: {
-    getCurrentUserProfile: () => {},
     getAllUsersProfiles: () => {},
+    getCurrentUserProfile: () => {},
     getUserProfileByUserId: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
@@ -196,24 +196,6 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getCurrentUserProfile: async () => {
-    try {
-      dispatch({
-        type: SHOW_LOADING
-      })
-
-      const res = await getProfile()
-
-      dispatch({
-        type: GET_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
-  },
   getAllUsersProfiles: async () => {
     try {
       dispatch({
@@ -225,6 +207,24 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       dispatch({
         type: GET_PROFILES,
         payload: res.data.profiles
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR
+      })
+    }
+  },
+  getCurrentUserProfile: async () => {
+    try {
+      dispatch({
+        type: SHOW_LOADING
+      })
+
+      const res = await getProfile()
+
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data.profile
       })
     } catch (err) {
       dispatch({

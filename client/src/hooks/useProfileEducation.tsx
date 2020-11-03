@@ -79,7 +79,7 @@ function useProfileEducation() {
 
   const navigateToEditEducation = (educationId: string) => {
     console.log(educationId)
-    history.push('/edit-education')
+    history.push('/user/edit-education')
   }
 
   return {

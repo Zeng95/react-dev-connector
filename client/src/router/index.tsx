@@ -43,14 +43,30 @@ const Router: React.FC = () => (
       />
       <PublicRoute exact path="/posts" restricted={false} component={Posts} />
 
-      <PrivateRoute path="/dashboard" component={Dashboard} />
-      <PrivateRoute path="/create-profile" component={CreateProfile} />
-      <PrivateRoute path="/edit-profile" component={EditProfile} />
-      <PrivateRoute path="/add-experience" component={AddExperience} />
-      <PrivateRoute path="/edit-experience" component={EditExperience} />
-      <PrivateRoute path="/add-education" component={AddEducation} />
-      <PrivateRoute path="/edit-education" component={EditEducation} />
-      <PrivateRoute path="/logout" component={Logout} />
+      <PrivateRoute exact path="/dashboard" component={Dashboard} />
+      <PrivateRoute
+        exact
+        path="/user/create-profile"
+        component={CreateProfile}
+      />
+      <PrivateRoute exact path="/user/edit-profile" component={EditProfile} />
+      <PrivateRoute
+        exact
+        path="/user/add-experience"
+        component={AddExperience}
+      />
+      <PrivateRoute
+        exact
+        path="/user/edit-experience"
+        component={EditExperience}
+      />
+      <PrivateRoute exact path="/user/add-education" component={AddEducation} />
+      <PrivateRoute
+        exact
+        path="/user/edit-education"
+        component={EditEducation}
+      />
+      <PrivateRoute exact path="/logout" component={Logout} />
 
       <Route path="*" component={NoMatch} />
     </Switch>

@@ -18,7 +18,7 @@ import {
 } from 'rsuite'
 import styled, { css } from 'styled-components'
 
-type ProfileFormProps = {
+interface ProfileFormProps {
   edit: boolean
 }
 
@@ -79,9 +79,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
-    status: StringType().isRequired('This field is required.'),
+    status: StringType().isRequired('This field is required'),
     skills: StringType()
-      .isRequired('This field is required.')
+      .isRequired('This field is required')
       .addRule(value => {
         const skills = value.split(',').filter(skill => skill.trim() !== '')
 
@@ -94,7 +94,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
         }
 
         return true
-      }, 'Please enter at least two skills with one comma separated.')
+      }, 'Please enter at least two skills with one comma separated')
   })
 
   const status = [

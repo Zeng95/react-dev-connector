@@ -161,7 +161,7 @@ const AddExperience: React.FC = () => {
             <Button appearance="default" onClick={onReset}>
               Clear
             </Button>
-            <Button appearance="ghost" onClick={navigateToDashboard}>
+            <Button appearance="subtle" onClick={navigateToDashboard}>
               Go Back
             </Button>
           </ButtonToolbar>

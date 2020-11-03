@@ -1,5 +1,5 @@
 import { User } from '@styled-icons/fa-solid'
-import { ProfileForm } from 'views/ProfileForms/SharedForm'
+import { AppLoader } from 'components/Loader'
 import {
   Description,
   IconStyleWrapper,
@@ -7,23 +7,39 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
-import React from 'react'
+import { ProfileContext } from 'context/profile/ProfileContext'
+import React, { useCallback, useContext, useEffect } from 'react'
+import { ProfileForm } from 'views/ProfileForms/SharedForm'
 
-const EditProfile: React.FC = () => (
-  <PageStyled>
-    <Title>Edit Your Profile</Title>
+const EditProfile: React.FC = () => {
+  const { state, actions } = useContext(ProfileContext)
+  const { pageLoading } = state
+  const { getCurrentUserProfile } = actions
 
-    <Description>
-      <IconStyleWrapper>
-        <User size="24" title="User" />
-      </IconStyleWrapper>
-      <span>Let's get some information to make your profile stand out</span>
-    </Description>
+  const getCurrentProfile = useCallback(getCurrentUserProfile, [])
 
-    <Instruction>* = required field</Instruction>
+  useEffect(() => {
+    getCurrentProfile()
+  }, [getCurrentProfile])
 
-    <ProfileForm edit={true} />
-  </PageStyled>
-)
+  return pageLoading ? (
+    <AppLoader />
+  ) : (
+    <PageStyled>
+      <Title>Edit Your Profile</Title>
+
+      <Description>
+        <IconStyleWrapper>
+          <User size="24" title="User" />
+        </IconStyleWrapper>
+        <span>Let's get some information to make your profile stand out</span>
+      </Description>
+
+      <Instruction>* = required field</Instruction>
+
+      <ProfileForm edit={true} />
+    </PageStyled>
+  )
+}
 
 export { EditProfile }

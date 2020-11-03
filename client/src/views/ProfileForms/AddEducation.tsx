@@ -156,7 +156,7 @@ const AddEducation: React.FC = () => {
             </Button>
             <Button
               disabled={submitting}
-              appearance="ghost"
+              appearance="subtle"
               onClick={education.navigateToDashboard}
             >
               Go Back
