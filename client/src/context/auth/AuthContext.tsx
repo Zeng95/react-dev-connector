@@ -13,8 +13,8 @@ import { openAlert, openNotification } from 'utils'
 
 interface IUser {
   _id: string
-  avatar: string
   email: string
+  avatar: string
   username: string
 }
 
@@ -29,7 +29,7 @@ interface IUserRegisterProps {
   password: string
 }
 
-interface IContextProps {
+interface InitialStateType {
   state: {
     token: string | null
     user: IUser | null
@@ -61,7 +61,7 @@ const initialAuth = {
   }
 }
 
-const AuthContext = createContext<IContextProps>(initialAuth)
+const AuthContext = createContext<InitialStateType>(initialAuth)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action

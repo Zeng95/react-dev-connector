@@ -94,35 +94,28 @@ const Register: React.FC = () => {
       >
         <FormGroup>
           <ControlLabelStyled>Username</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
+          <InputGroup inside style={{ width: '100%' }}>
+            <FormControl name="username" onKeyPress={onKeyUp} />
             <InputGroup.Addon>
               <UserCircle size="16" title="Username" />
             </InputGroup.Addon>
-            <FormControl
-              size="lg"
-              name="username"
-              placeholder="Username"
-              onKeyPress={onKeyUp}
-            />
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ControlLabelStyled>Email address</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <Envelope size="16" title="Email address" />
-            </InputGroup.Addon>
+          <InputGroup inside style={{ width: '100%' }}>
             <FormControl
-              size="lg"
               name="email"
               type="email"
-              placeholder="Email address"
               accepter={AutoComplete}
               data={email}
               onKeyPress={onKeyUp}
               onChange={onEmailChange}
             />
+            <InputGroup.Addon>
+              <Envelope size="16" title="Email address" />
+            </InputGroup.Addon>
           </InputGroup>
           <HelpBlock>
             This site uses Gravatar so if you want a profile image, use a
@@ -132,35 +125,31 @@ const Register: React.FC = () => {
 
         <FormGroup>
           <ControlLabelStyled>Password</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <Lock size="16" title="Password" />
-            </InputGroup.Addon>
+          <InputGroup inside style={{ width: '100%' }}>
             <FormControl
-              size="lg"
               name="password"
               type="password"
-              placeholder="Password"
               autoComplete="on"
               onKeyPress={onKeyUp}
             />
+            <InputGroup.Addon>
+              <Lock size="16" title="Password" />
+            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ControlLabelStyled>Confirm password</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <Lock size="16" title="Confirm password" />
-            </InputGroup.Addon>
+          <InputGroup inside style={{ width: '100%' }}>
             <FormControl
-              size="lg"
               name="confirmPassword"
               type="password"
-              placeholder="Confirm password"
               autoComplete="on"
               onKeyPress={onKeyUp}
             />
+            <InputGroup.Addon>
+              <Lock size="16" title="Confirm password" />
+            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 

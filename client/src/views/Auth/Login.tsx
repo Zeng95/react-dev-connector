@@ -25,8 +25,18 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 const ControlLabelStyled = styled(ControlLabel).attrs({
-  className: 'font-semibold'
-})``
+  className: 'relative font-semibold'
+})`
+  &::after {
+    ${tw`absolute`}
+
+    content: '*';
+    top: 50%;
+    transform: translate3d(0, -9px, 0);
+    padding-left: 5px;
+    color: #cb2431;
+  }
+`
 const Callout = styled.p.attrs({
   className: 'my-4'
 })`
@@ -80,37 +90,33 @@ const Login: React.FC = () => {
       >
         <FormGroup>
           <ControlLabelStyled>Email address</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <Envelope size="16" title="Email Address" />
-            </InputGroup.Addon>
+          <InputGroup inside style={{ width: '100%' }}>
             <FormControl
-              size="lg"
               name="email"
               type="email"
-              placeholder="Email address"
               accepter={AutoComplete}
               data={email}
               onKeyPress={onKeyUp}
               onChange={onEmailChange}
             />
+            <InputGroup.Addon>
+              <Envelope size="16" title="Email Address" />
+            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 
         <FormGroup>
           <ControlLabelStyled>Password</ControlLabelStyled>
-          <InputGroup style={{ width: '100%' }}>
-            <InputGroup.Addon>
-              <Lock size="16" title="Password" />
-            </InputGroup.Addon>
+          <InputGroup inside style={{ width: '100%' }}>
             <FormControl
-              size="lg"
               name="password"
               type="password"
-              placeholder="Password"
               autoComplete="on"
               onKeyPress={onKeyUp}
             />
+            <InputGroup.Addon>
+              <Lock size="16" title="Password" />
+            </InputGroup.Addon>
           </InputGroup>
         </FormGroup>
 

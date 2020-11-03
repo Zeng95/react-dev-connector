@@ -72,7 +72,7 @@ const LinkStyled = styled(Link).attrs({
   &::before {
     ${tw`opacity-100`}
 
-    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 2px 0 rgba(20, 23, 28, 0.1);
+    box-shadow: 0 0 1px 1px rgba(20, 23, 28, 0.1), 0 3px 4px 0 rgba(20, 23, 28, 0.1);
   }
 
   &::after {

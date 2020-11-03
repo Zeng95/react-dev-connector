@@ -253,7 +253,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <Button appearance="default" size="lg" onClick={toggleSocialInputs}>
+        <Button appearance="default" onClick={toggleSocialInputs}>
           Add Social Network Links
         </Button>
         <span className="ml-2">Optional</span>

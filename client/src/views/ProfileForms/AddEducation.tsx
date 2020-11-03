@@ -143,7 +143,6 @@ const AddEducation: React.FC = () => {
               disabled={submitting}
               loading={submitting}
               appearance="primary"
-              size="lg"
               onClick={education.onSubmit}
             >
               Submit
@@ -151,7 +150,6 @@ const AddEducation: React.FC = () => {
             <Button
               disabled={submitting}
               appearance="default"
-              size="lg"
               onClick={education.onReset}
             >
               Clear
@@ -159,7 +157,6 @@ const AddEducation: React.FC = () => {
             <Button
               disabled={submitting}
               appearance="ghost"
-              size="lg"
               onClick={education.navigateToDashboard}
             >
               Go Back

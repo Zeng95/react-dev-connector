@@ -30,7 +30,7 @@ router.get('/me', verifyToken, async (req, res) => {
     res.status(200).json({
       success: true,
       msg: 'Authentication successful',
-      user: user.transform()
+      user
     })
   } catch (err) {
     res.status(500).json({

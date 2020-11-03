@@ -16,10 +16,11 @@ interface LinkProps {
 }
 
 const AppHeaderStyled = styled.header.attrs({
-  className: 'fixed top-0 left-0 right-0 w-full bg-dark z-20'
+  className: 'fixed top-0 left-0 right-0 w-full z-20'
 })`
+  height: 74px;
   border-bottom: solid 1px #17a2b8;
-  opacity: 0.9;
+  background-color: rgba(52, 58, 64, 0.9);
 
   a {
     color: white;

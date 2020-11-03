@@ -155,13 +155,13 @@ const AddExperience: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar className="my-4">
-            <Button appearance="primary" size="lg" onClick={onSubmit}>
+            <Button appearance="primary" onClick={onSubmit}>
               Submit
             </Button>
-            <Button appearance="default" size="lg" onClick={onReset}>
+            <Button appearance="default" onClick={onReset}>
               Clear
             </Button>
-            <Button appearance="ghost" size="lg" onClick={navigateToDashboard}>
+            <Button appearance="ghost" onClick={navigateToDashboard}>
               Go Back
             </Button>
           </ButtonToolbar>

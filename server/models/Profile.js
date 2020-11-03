@@ -117,14 +117,4 @@ const profileSchema = new Schema({
   }
 })
 
-profileSchema.methods.transform = function () {
-  let obj = this.toObject()
-
-  //Rename fields
-  obj.id = obj['_id']
-  delete obj['_id']
-
-  return obj
-}
-
 module.exports = model('Profile', profileSchema)
