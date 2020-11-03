@@ -1,5 +1,5 @@
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
@@ -30,17 +30,21 @@ function useProfile() {
     weibo: ''
   })
 
-  const fetchProfile = useCallback(() => {
+  useEffect(() => {
     if (profile !== null) {
-      if (location.pathname === '/create-profile') {
-        history.push('/edit-profile')
+      if (location.pathname === '/user/edit-profile') {
+        setProfileForm(profileForm => ({
+          ...profileForm,
+          ...profile,
+          skills: profile.skills.join(',')
+        }))
+      } else if (location.pathname === '/user/create-profile') {
+        history.push('/dashboard')
       }
-
-      setProfileForm(profileForm => ({
-        ...profileForm,
-        ...profile,
-        skills: profile.skills.join(',')
-      }))
+    } else {
+      if (location.pathname === '/user/edit-profile') {
+        history.push('/dashboard')
+      }
     }
   }, [profile, history, location])
 
@@ -99,13 +103,10 @@ function useProfile() {
     history.push('/dashboard')
   }
 
-  useEffect(fetchProfile, [fetchProfile])
-
   return {
     formEl,
     profileForm,
     showSocialInputs,
-    fetchProfile,
     onSubmit,
     onKeyUp,
     onChange,
