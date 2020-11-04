@@ -38,6 +38,13 @@ const ControlLabelStyled = styled(ControlLabel).attrs({
     color: #cb2431;
   }
 `
+const Callout = styled.p.attrs({
+  className: 'my-4'
+})`
+  > a {
+    ${tw`ml-1`}
+  }
+`
 
 const Register: React.FC = () => {
   const { state } = useContext(AuthContext)
@@ -173,14 +180,12 @@ const Register: React.FC = () => {
         </FormGroup>
       </Form>
 
-      <p className="my-4">
-        Already have an account?{' '}
-        <strong>
-          <Link to="/login" className="text-primary">
-            Log in
-          </Link>
-        </strong>
-      </p>
+      <Callout>
+        Already have an account?
+        <Link to="/login" className="text-primary">
+          <strong>Log in</strong>
+        </Link>
+      </Callout>
     </PageStyled>
   )
 }

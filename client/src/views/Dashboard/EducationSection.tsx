@@ -1,46 +1,46 @@
 import {
-  HeaderCellStyled,
-  SectionContent,
-  SectionStyled,
-  SectionTitle
+  DashboardSection,
+  DashboardSectionContent as SectionContent,
+  DashboardSectionTitle as SectionTitle,
+  HeaderCellStyled
 } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { useProfileExperience } from 'hooks/useProfileExperience'
+import { useProfileEducation } from 'hooks/useProfileEducation'
 import moment from 'moment'
 import React, { Fragment, useContext } from 'react'
 import { Icon, IconButton, Table } from 'rsuite'
 
 const { Column, Cell } = Table
 
-const ExperienceSection: React.FC = () => {
-  const profileState = useContext(ProfileContext).state
-  const { profile } = profileState
+const EducationSection: React.FC = () => {
+  const profileContext = useContext(ProfileContext)
+  const { profile } = profileContext.state
 
-  const experience = useProfileExperience()
-  const { onDelete, navigateToEditExperience } = experience
+  const education = useProfileEducation()
+  const { submitting, onDelete, navigateToEditEducation } = education
 
   return (
-    <SectionStyled>
-      <SectionTitle>Experience Credentials</SectionTitle>
+    <DashboardSection>
+      <SectionTitle>Education Credentials</SectionTitle>
 
       {profile ? (
         <SectionContent>
           <Table
-            data={profile.experience}
+            data={profile.education}
             autoHeight={true}
             headerHeight={60}
             rowHeight={70}
           >
-            {/* Company */}
+            {/* School */}
             <Column sortable flexGrow={1} verticalAlign="middle">
-              <HeaderCellStyled>Company</HeaderCellStyled>
-              <Cell dataKey="company" />
+              <HeaderCellStyled>School</HeaderCellStyled>
+              <Cell dataKey="school" />
             </Column>
 
-            {/* Title */}
+            {/* Degree */}
             <Column sortable flexGrow={1} verticalAlign="middle">
-              <HeaderCellStyled>Title</HeaderCellStyled>
-              <Cell dataKey="title" />
+              <HeaderCellStyled>Degree</HeaderCellStyled>
+              <Cell dataKey="degree" />
             </Column>
 
             {/* Years */}
@@ -70,14 +70,16 @@ const ExperienceSection: React.FC = () => {
                 {(rowData: any) => (
                   <Fragment>
                     <IconButton
+                      disabled={submitting}
                       className="mr-2"
                       icon={<Icon icon="pencil" />}
                       appearance="primary"
                       size="lg"
                       title="edit"
-                      onClick={() => navigateToEditExperience(rowData['_id'])}
+                      onClick={() => navigateToEditEducation(rowData['_id'])}
                     />
                     <IconButton
+                      loading={submitting}
                       icon={<Icon icon="trash" />}
                       color="red"
                       size="lg"
@@ -91,8 +93,8 @@ const ExperienceSection: React.FC = () => {
           </Table>
         </SectionContent>
       ) : null}
-    </SectionStyled>
+    </DashboardSection>
   )
 }
 
-export { ExperienceSection }
+export { EducationSection }

@@ -217,7 +217,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           </InputGroup.Addon>
         </InputGroup>
         <HelpBlock>
-          Please use comma separated values (eg. HTML,CSS,JavaScript,PHP)
+          Please use comma separated values (eg. HTML, CSS, JavaScript, PHP)
         </HelpBlock>
       </FormGroup>
 

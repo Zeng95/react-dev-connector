@@ -11,9 +11,9 @@ import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from 'rsuite'
-import { DashboardActions } from 'views/Dashboard/Actions'
-import { EducationSection } from './Education'
-import { ExperienceSection } from './Experience'
+import { ActionsSection } from 'views/Dashboard/ActionsSection'
+import { EducationSection } from './EducationSection'
+import { ExperienceSection } from './ExperienceSection'
 
 const Dashboard: React.FC = () => {
   const authContext = useContext(AuthContext)
@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
 
       {profile !== null ? (
         <Fragment>
-          <DashboardActions />
+          <ActionsSection />
           <ExperienceSection />
           <EducationSection />
         </Fragment>

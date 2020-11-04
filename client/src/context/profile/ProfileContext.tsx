@@ -45,6 +45,7 @@ interface IExperience {
   from: string
   to: string
   description: string
+  current: boolean
 }
 
 interface IEducation {
@@ -53,8 +54,9 @@ interface IEducation {
   degree: string
   fieldofstudy: string
   from: string
-  to: string
+  to: string | null
   description: string
+  current: boolean
 }
 
 interface IProfile {

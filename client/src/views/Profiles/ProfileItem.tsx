@@ -15,13 +15,23 @@ interface IUser {
 }
 
 interface IExperience {
+  _id: string
   title: string
   company: string
+  location: string
+  from: string
+  to: string | null
+  description: string
 }
 
 interface IEducation {
+  _id: string
   school: string
   degree: string
+  fieldofstudy: string
+  from: string
+  to: string | null
+  description: string
 }
 
 interface ISocial {

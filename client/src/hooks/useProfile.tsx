@@ -31,18 +31,20 @@ function useProfile() {
   })
 
   useEffect(() => {
+    const { pathname } = location
+
     if (profile !== null) {
-      if (location.pathname === '/user/edit-profile') {
+      if (pathname === '/user/edit-profile') {
         setProfileForm(profileForm => ({
           ...profileForm,
           ...profile,
-          skills: profile.skills.join(',')
+          skills: profile.skills.join(', ')
         }))
-      } else if (location.pathname === '/user/create-profile') {
+      } else if (pathname === '/user/create-profile') {
         history.push('/dashboard')
       }
     } else {
-      if (location.pathname === '/user/edit-profile') {
+      if (pathname === '/user/edit-profile') {
         history.push('/dashboard')
       }
     }

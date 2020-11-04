@@ -14,7 +14,7 @@ interface EducationType {
   degree: string
   fieldofstudy: string
   from: string
-  to: string
+  to: string | null
   description: string
 }
 

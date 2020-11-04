@@ -9,7 +9,7 @@ import {
 } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { useCallback, useContext, useEffect } from 'react'
-import { ProfileForm } from 'views/ProfileForms/SharedForm'
+import { ProfileForm } from 'views/ProfileForms/SharedProfileForm'
 
 const EditProfile: React.FC = () => {
   const { state, actions } = useContext(ProfileContext)

@@ -17,15 +17,12 @@ export const PageStyled = styled.section.attrs({
 })`
   max-width: 1100px;
 `
-
 export const Title = styled.h1.attrs({
   className: 'mb-4 text-primary text-5xl leading-tight'
 })``
-
 export const Description = styled.p.attrs({
   className: 'flex items-center mb-4 text-2xl'
 })``
-
 export const Instruction = styled.small.attrs({
   className: 'block my-5'
 })``
@@ -36,7 +33,6 @@ export const DatePickerStyled = styled(DatePicker)`
     color: #575757;
   }
 `
-
 export const CheckboxStyled = styled(Checkbox)`
   label {
     line-height: normal;
@@ -49,17 +45,15 @@ export const CheckboxStyled = styled(Checkbox)`
     `}
 `
 
-export const SectionStyled = styled.section``
-
-export const SectionTitle = styled.h2.attrs({
-  className: 'flex items-center my-8 text-2xl font-bold'
+export const DashboardSection = styled.section``
+export const DashboardSectionTitle = styled.h2.attrs({
+  className: 'flex items-center py-8 text-2xl font-bold'
 })`
   span {
     ${tw`ml-2`}
   }
 `
-
-export const SectionContent = styled.div``
+export const DashboardSectionContent = styled.div``
 
 export const HeaderCellStyled = styled(HeaderCell)`
   .rs-table-cell {
