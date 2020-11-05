@@ -18,15 +18,19 @@ interface LocationState {
 }
 
 function useProfileExperience() {
-  const context = useContext(ProfileContext)
-  const { profile } = context.state
+  const profileContext = useContext(ProfileContext)
+  const { profile } = profileContext.state
   const {
+    createUserProfileExperience,
     updateUserProfileExperience,
     deleteUserProfileExperience
-  } = context.actions
+  } = profileContext.actions
 
   const history = useHistory()
   const location = useLocation<LocationState>()
+  const { pathname, state } = location
+  const hsaLocationState = typeof state === 'object' && state !== null
+
   const formEl = useRef<HTMLFormElement>(null)
 
   const [toDateDisabled, toggleDisbaled] = useState(false)
@@ -41,9 +45,6 @@ function useProfileExperience() {
   })
 
   useEffect(() => {
-    const { pathname, state } = location
-    const hsaLocationState = typeof state === 'object' && state !== null
-
     if (profile !== null) {
       if (pathname === '/user/edit-experience') {
         const experienceArr = profile.experience
@@ -74,13 +75,13 @@ function useProfileExperience() {
         history.push('/dashboard')
       }
     }
-  }, [profile, history, location])
+  }, [history, profile, pathname, state, hsaLocationState])
 
   const onDelete = (experienceId: string) => {
     deleteUserProfileExperience(experienceId)
   }
 
-  const onSubmit = () => {
+  const onSubmit = (edit: boolean) => {
     if (formEl.current !== null && !formEl.current.check()) return false
 
     const formData =
@@ -88,15 +89,23 @@ function useProfileExperience() {
         ? { ...experienceForm, current: true }
         : { ...experienceForm, current: false }
 
-    updateUserProfileExperience(formData)
+    if (edit && hsaLocationState) {
+      updateUserProfileExperience(state.experienceId, formData)
+      Alert.success('Experience Updated', 2000)
+    } else {
+      createUserProfileExperience(formData)
+      Alert.success('Experience Created', 2000)
 
-    Alert.success('Experience Added', 2000)
-    navigateToDashboard()
+      navigateToDashboard()
+    }
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyUp = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    edit: boolean
+  ) => {
     if (event.key === 'Enter') {
-      onSubmit()
+      onSubmit(edit)
     }
   }
 

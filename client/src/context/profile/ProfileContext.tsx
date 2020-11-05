@@ -1,5 +1,7 @@
 import {
   createProfile,
+  createProfileEducation,
+  createProfileExperience,
   deleteProfileEducation,
   deleteProfileExperience,
   getGithubReposByUsername,
@@ -93,9 +95,11 @@ interface InitialStateType {
     getUserProfileByUserId: (userId: string) => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
-    updateUserProfileExperience: (experience: any) => any
+    createUserProfileExperience: (experience: any) => any
+    updateUserProfileExperience: (experienceId: string, experience: any) => any
     deleteUserProfileExperience: (experienceId: string) => any
-    updateUserProfileEducation: (education: any) => any
+    createUserProfileEducation: (education: any) => any
+    updateUserProfileEducation: (educationId: string, education: any) => any
     deleteUserProfileEducation: (educationId: string) => any
     clearProfile: () => any
   }
@@ -114,8 +118,10 @@ const initialProfile = {
     getUserProfileByUserId: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
+    createUserProfileExperience: () => {},
     updateUserProfileExperience: () => {},
     deleteUserProfileExperience: () => {},
+    createUserProfileEducation: () => {},
     updateUserProfileEducation: () => {},
     deleteUserProfileEducation: () => {},
     clearProfile: () => {}
@@ -280,9 +286,26 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  updateUserProfileExperience: async (experience: any) => {
+  createUserProfileExperience: async (experience: any) => {
     try {
-      const res = await updateProfileExperience(experience)
+      const res = await createProfileExperience(experience)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR
+      })
+    }
+  },
+  updateUserProfileExperience: async (
+    experienceId: string,
+    experience: any
+  ) => {
+    try {
+      const res = await updateProfileExperience(experienceId, experience)
 
       dispatch({
         type: UPDATE_PROFILE,
@@ -308,9 +331,23 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  updateUserProfileEducation: async (education: any) => {
+  createUserProfileEducation: async (education: any) => {
     try {
-      const res = await updateProfileEducation(education)
+      const res = await createProfileEducation(education)
+
+      dispatch({
+        type: UPDATE_PROFILE,
+        payload: res.data.profile
+      })
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR
+      })
+    }
+  },
+  updateUserProfileEducation: async (educationId: string, education: any) => {
+    try {
+      const res = await updateProfileEducation(educationId, education)
 
       dispatch({
         type: UPDATE_PROFILE,

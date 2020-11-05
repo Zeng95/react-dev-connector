@@ -1,19 +1,27 @@
 import { ProfileContext } from 'context/profile/ProfileContext'
 import { useContext, useRef, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Alert } from 'rsuite'
 
+interface LocationState {
+  educationId: string
+}
+
 function useProfileEducation() {
-  const context = useContext(ProfileContext)
+  const profileContext = useContext(ProfileContext)
   const {
+    createUserProfileEducation,
     updateUserProfileEducation,
     deleteUserProfileEducation
-  } = context.actions
+  } = profileContext.actions
 
   const history = useHistory()
+  const location = useLocation<LocationState>()
+  const { pathname, state } = location
+  const hsaLocationState = typeof state === 'object' && state !== null
+
   const formEl = useRef<HTMLFormElement>(null)
 
-  const [submitting, setSubmitting] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
   const [educationForm, setEducationForm] = useState({
     school: '',
@@ -30,27 +38,31 @@ function useProfileEducation() {
     Alert.success('Education Deleted', 2000)
   }
 
-  const onSubmit = () => {
+  const onSubmit = (edit: boolean) => {
     if (formEl.current !== null && !formEl.current.check()) return false
 
-    setSubmitting(true)
-
-    let formData
-
-    formData =
+    const formData =
       educationForm.current.length > 0
         ? { ...educationForm, current: true }
         : { ...educationForm, current: false }
 
-    updateUserProfileEducation(formData)
-    Alert.success('Education Added', 2000)
+    if (edit && hsaLocationState) {
+      updateUserProfileEducation(state.educationId, formData)
+      Alert.success('Education Updated', 2000)
+    } else {
+      createUserProfileEducation(formData)
+      Alert.success('Education Created', 2000)
 
-    navigateToDashboard()
+      navigateToDashboard()
+    }
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyUp = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    edit: boolean
+  ) => {
     if (event.key === 'Enter') {
-      onSubmit()
+      onSubmit(edit)
     }
   }
 
@@ -70,7 +82,6 @@ function useProfileEducation() {
       description: '',
       current: []
     })
-    setSubmitting(false)
   }
 
   const navigateToDashboard = () => {
@@ -78,8 +89,12 @@ function useProfileEducation() {
   }
 
   const navigateToEditEducation = (educationId: string) => {
-    console.log(educationId)
-    history.push('/user/edit-education')
+    const location = {
+      pathname: '/user/edit-education',
+      state: { educationId }
+    }
+
+    history.push(location)
   }
 
   return {
@@ -87,7 +102,6 @@ function useProfileEducation() {
     educationForm,
     toDateDisabled,
     toggleDisbaled,
-    submitting,
     onDelete,
     onSubmit,
     onKeyUp,

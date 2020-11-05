@@ -11,14 +11,14 @@ const getProfiles = () => {
   return httpClient.get(`${END_POINT}/all`)
 }
 
-const getProfileById = (userId: string) => {
-  return httpClient.get(`${END_POINT}/${userId}`)
-}
-
 const getProfile = () => {
   return httpClient.get(`${END_POINT}/me`, {
     headers: setAuthToken()
   })
+}
+
+const getProfileById = (userId: string) => {
+  return httpClient.get(`${END_POINT}/${userId}`)
 }
 
 const createProfile = (profile: any) => {
@@ -33,20 +33,32 @@ const updateProfile = (profile: any) => {
   })
 }
 
-const updateProfileExperience = (experience: any) => {
-  return httpClient.put(`${END_POINT}/experience`, experience, {
+const createProfileExperience = (experience: any) => {
+  return httpClient.post(`${END_POINT}/experience`, experience, {
     headers: setAuthToken()
   })
 }
 
-const updateProfileEducation = (education: any) => {
-  return httpClient.put(`${END_POINT}/education`, education, {
+const updateProfileExperience = (experienceId: string, experience: any) => {
+  return httpClient.put(`${END_POINT}/experience/${experienceId}`, experience, {
     headers: setAuthToken()
   })
 }
 
 const deleteProfileExperience = (experienceId: string) => {
   return httpClient.delete(`${END_POINT}/experience/${experienceId}`, {
+    headers: setAuthToken()
+  })
+}
+
+const createProfileEducation = (education: any) => {
+  return httpClient.post(`${END_POINT}/education`, education, {
+    headers: setAuthToken()
+  })
+}
+
+const updateProfileEducation = (educationId: string, education: any) => {
+  return httpClient.put(`${END_POINT}/education/${educationId}`, education, {
     headers: setAuthToken()
   })
 }
@@ -60,12 +72,14 @@ const deleteProfileEducation = (educationId: string) => {
 export {
   getGithubReposByUsername,
   getProfiles,
-  getProfileById,
   getProfile,
+  getProfileById,
   createProfile,
   updateProfile,
+  createProfileExperience,
   updateProfileExperience,
   deleteProfileExperience,
+  createProfileEducation,
   updateProfileEducation,
   deleteProfileEducation
 }

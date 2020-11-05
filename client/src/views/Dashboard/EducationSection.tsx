@@ -17,7 +17,7 @@ const EducationSection: React.FC = () => {
   const { profile } = profileContext.state
 
   const education = useProfileEducation()
-  const { submitting, onDelete, navigateToEditEducation } = education
+  const { onDelete, navigateToEditEducation } = education
 
   return (
     <DashboardSection>
@@ -70,20 +70,18 @@ const EducationSection: React.FC = () => {
                 {(rowData: any) => (
                   <Fragment>
                     <IconButton
-                      disabled={submitting}
                       className="mr-2"
                       icon={<Icon icon="pencil" />}
                       appearance="primary"
                       size="lg"
-                      title="edit"
+                      title="Edit"
                       onClick={() => navigateToEditEducation(rowData['_id'])}
                     />
                     <IconButton
-                      loading={submitting}
                       icon={<Icon icon="trash" />}
                       color="red"
                       size="lg"
-                      title="delete"
+                      title="Delete"
                       onClick={() => onDelete(rowData['_id'])}
                     />
                   </Fragment>

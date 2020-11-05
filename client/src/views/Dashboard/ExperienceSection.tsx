@@ -13,8 +13,8 @@ import { Icon, IconButton, Table } from 'rsuite'
 const { Column, Cell } = Table
 
 const ExperienceSection: React.FC = () => {
-  const profileState = useContext(ProfileContext).state
-  const { profile } = profileState
+  const profileContext = useContext(ProfileContext)
+  const { profile } = profileContext.state
 
   const experience = useProfileExperience()
   const { onDelete, navigateToEditExperience } = experience
@@ -74,14 +74,14 @@ const ExperienceSection: React.FC = () => {
                       icon={<Icon icon="pencil" />}
                       appearance="primary"
                       size="lg"
-                      title="edit"
+                      title="Edit"
                       onClick={() => navigateToEditExperience(rowData['_id'])}
                     />
                     <IconButton
                       icon={<Icon icon="trash" />}
                       color="red"
                       size="lg"
-                      title="delete"
+                      title="Delete"
                       onClick={() => onDelete(rowData['_id'])}
                     />
                   </Fragment>

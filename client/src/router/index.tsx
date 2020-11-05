@@ -9,8 +9,8 @@ import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
 import { Posts } from 'views/Posts'
 import { Profile } from 'views/Profile'
-import { AddEducation } from 'views/ProfileForms/CreateEducation'
-import { AddExperience } from 'views/ProfileForms/CreateExperience'
+import { CreateEducation } from 'views/ProfileForms/CreateEducation'
+import { CreateExperience } from 'views/ProfileForms/CreateExperience'
 import { CreateProfile } from 'views/ProfileForms/CreateProfile'
 import { EditEducation } from 'views/ProfileForms/EditEducation'
 import { EditExperience } from 'views/ProfileForms/EditExperience'
@@ -53,7 +53,7 @@ const Router: React.FC = () => (
       <PrivateRoute
         exact
         path="/user/create-experience"
-        component={AddExperience}
+        component={CreateExperience}
       />
       <PrivateRoute
         exact
@@ -63,7 +63,7 @@ const Router: React.FC = () => (
       <PrivateRoute
         exact
         path="/user/create-education"
-        component={AddEducation}
+        component={CreateEducation}
       />
       <PrivateRoute
         exact

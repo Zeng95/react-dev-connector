@@ -1,24 +1,24 @@
 import { Briefcase, Building, MapPin } from '@styled-icons/fa-solid'
-import { DatePickerStyled, CheckboxStyled } from 'components/Shared/Styles'
+import { CheckboxStyled, DatePickerStyled } from 'components/Shared/Styles'
 import { useProfileExperience } from 'hooks/useProfileExperience'
 import React from 'react'
 import {
-  Schema,
-  Form,
-  FormGroup,
-  ControlLabel,
-  InputGroup,
-  FormControl,
-  CheckboxGroup,
+  Button,
   ButtonToolbar,
-  Button
+  CheckboxGroup,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
+  InputGroup,
+  Schema
 } from 'rsuite'
 
 interface ExperienceFormProps {
   edit: boolean
 }
 
-const ExperienceForm: React.FC<ExperienceFormProps> = () => {
+const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
   const experience = useProfileExperience()
   const {
     formEl,
@@ -54,7 +54,9 @@ const ExperienceForm: React.FC<ExperienceFormProps> = () => {
           <FormControl
             name="title"
             placeholder="* Job title"
-            onKeyPress={onKeyUp}
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
           />
           <InputGroup.Addon>
             <Briefcase size="16" title="Job title" />
@@ -68,7 +70,9 @@ const ExperienceForm: React.FC<ExperienceFormProps> = () => {
           <FormControl
             name="company"
             placeholder="* Company"
-            onKeyPress={onKeyUp}
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
           />
           <InputGroup.Addon>
             <Building size="16" title="Company" />
@@ -82,7 +86,9 @@ const ExperienceForm: React.FC<ExperienceFormProps> = () => {
           <FormControl
             name="location"
             placeholder="* Location"
-            onKeyPress={onKeyUp}
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              onKeyUp(event, edit)
+            }
           />
           <InputGroup.Addon>
             <MapPin size="16" title="Location" />
@@ -131,13 +137,15 @@ const ExperienceForm: React.FC<ExperienceFormProps> = () => {
           rows={5}
           name="description"
           placeholder="Job description"
-          onKeyPress={onKeyUp}
+          onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+            onKeyUp(event, edit)
+          }
         />
       </FormGroup>
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button appearance="primary" onClick={onSubmit}>
+          <Button appearance="primary" onClick={() => onSubmit(edit)}>
             Submit
           </Button>
           <Button appearance="default" onClick={onReset}>
