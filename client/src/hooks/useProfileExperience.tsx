@@ -56,14 +56,15 @@ function useProfileExperience() {
           })
 
           if (experience !== undefined) {
-            if (experience.current) {
+            if (experience.current || experience.to === null) {
               toggleDisbaled(true)
             }
 
             setExperienceForm(experienceForm => ({
               ...experienceForm,
               ...experience,
-              current: experience.current ? ['current'] : []
+              current:
+                experience.current || experience.to === null ? ['current'] : []
             }))
           }
         } else {
@@ -79,6 +80,12 @@ function useProfileExperience() {
 
   const onDelete = (experienceId: string) => {
     deleteUserProfileExperience(experienceId)
+      .then(() => {
+        Alert.success('Experience Successfully Deleted', 2000)
+      })
+      .catch(() => {
+        Alert.error('Experience Unsuccessfully Deleted', 2000)
+      })
   }
 
   const onSubmit = (edit: boolean) => {
@@ -91,12 +98,21 @@ function useProfileExperience() {
 
     if (edit && hsaLocationState) {
       updateUserProfileExperience(state.experienceId, formData)
-      Alert.success('Experience Updated', 2000)
+        .then(() => {
+          Alert.success('Experience Successfully Updated', 2000)
+        })
+        .catch(() => {
+          Alert.error('Experience Unsuccessfully Updated', 2000)
+        })
     } else {
       createUserProfileExperience(formData)
-      Alert.success('Experience Created', 2000)
-
-      navigateToDashboard()
+        .then(() => {
+          navigateToDashboard()
+          Alert.success('Experience Successfully Created', 2000)
+        })
+        .catch(() => {
+          Alert.error('Experience Unsuccessfully Created', 2000)
+        })
     }
   }
 

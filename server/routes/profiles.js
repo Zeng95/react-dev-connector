@@ -278,7 +278,7 @@ router.post('/experience', verifyToken, async (req, res) => {
 
     profile.experience.unshift(experienceFields)
 
-    // Update
+    // Create
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
       .populate('user', ['avatar', 'email', 'username'])
@@ -286,7 +286,7 @@ router.post('/experience', verifyToken, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      msg: 'You have successfully added an experience to your profile',
+      msg: 'You have successfully created an experience to your profile',
       profile: foundProfile
     })
   } catch (err) {
@@ -304,10 +304,21 @@ router.post('/experience', verifyToken, async (req, res) => {
  */
 router.put('/experience/:id', verifyToken, async (req, res) => {
   try {
+    const experienceId = req.params.id
     const experienceFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
+    const updateIndex = profile.experience.findIndex(item => {
+      return experienceId === item['_id'].toString()
+    })
 
-    profile.experience.unshift(experienceFields)
+    if (updateIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Please send a correct experience id'
+      })
+    }
+
+    profile.experience.splice(updateIndex, 1, experienceFields)
 
     // Update
     const savedProfile = await profile.save()
@@ -317,7 +328,7 @@ router.put('/experience/:id', verifyToken, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      msg: 'You have successfully added an experience to your profile',
+      msg: 'You have successfully updated an experience to your profile',
       profile: foundProfile
     })
   } catch (err) {
@@ -344,7 +355,7 @@ router.delete('/experience/:id', verifyToken, async (req, res) => {
     if (removeIndex === -1) {
       return res.status(404).json({
         success: false,
-        msg: 'Please send correct experience id'
+        msg: 'Please send a correct experience id'
       })
     }
 

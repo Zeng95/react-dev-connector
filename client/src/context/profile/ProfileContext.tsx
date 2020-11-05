@@ -286,50 +286,65 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  createUserProfileExperience: async (experience: any) => {
-    try {
-      const res = await createProfileExperience(experience)
+  createUserProfileExperience: (experience: any) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await createProfileExperience(experience)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: res.data.profile
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
-  updateUserProfileExperience: async (
-    experienceId: string,
-    experience: any
-  ) => {
-    try {
-      const res = await updateProfileExperience(experienceId, experience)
+  updateUserProfileExperience: (experienceId: string, experience: any) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await updateProfileExperience(experienceId, experience)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: res.data.profile
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
-  deleteUserProfileExperience: async (experienceId: string) => {
-    try {
-      const res = await deleteProfileExperience(experienceId)
+  deleteUserProfileExperience: (experienceId: string) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await deleteProfileExperience(experienceId)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: res.data.profile
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
   createUserProfileEducation: async (education: any) => {
     try {
