@@ -7,6 +7,7 @@ import {
   Animation,
   Button,
   ButtonToolbar,
+  ControlLabel,
   Form,
   FormControl,
   FormGroup,
@@ -17,6 +18,7 @@ import {
   Schema
 } from 'rsuite'
 import styled, { css } from 'styled-components'
+import tw from 'twin.macro'
 
 interface ProfileFormProps {
   edit: boolean
@@ -62,6 +64,23 @@ const IconStyled = styled(Icon)`
 `
 const InputStyled = styled(FormControl)`
   padding-left: 2.8rem !important;
+`
+const ControlLabelStyled = styled(ControlLabel).attrs({
+  className: 'relative font-semibold'
+})`
+  ${props =>
+    props.required &&
+    css`
+      &::after {
+        ${tw`absolute`}
+
+        content: '*';
+        top: 50%;
+        transform: translate3d(0, -9px, 0);
+        padding-left: 5px;
+        color: #cb2431;
+      }
+    `}
 `
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
@@ -143,9 +162,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       onChange={formValue => profile.onChange(formValue)}
     >
       <FormGroup>
+        <ControlLabelStyled required={true}>
+          Professional Status
+        </ControlLabelStyled>
         <FormControl
           name="status"
-          placeholder="* Select Professional Status"
           data={status}
           block={true}
           accepter={InputPickerStyled}
@@ -156,10 +177,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled>Company</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="company"
-            placeholder="Company"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -172,10 +193,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled>Website</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="website"
-            placeholder="Website"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -188,10 +209,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled>Location</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="location"
-            placeholder="Location"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -204,10 +225,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled required={true}>Skills</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="skills"
-            placeholder="* Skills"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -222,10 +243,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled>Github Username</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="githubusername"
-            placeholder="Github Username"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -240,11 +261,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        <ControlLabelStyled>Bio</ControlLabelStyled>
         <FormControl
           rows={2}
           componentClass="textarea"
           name="bio"
-          placeholder="A short bio of yourself"
           onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
             onKeyUp(event, edit)
           }

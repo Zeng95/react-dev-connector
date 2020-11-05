@@ -1,22 +1,42 @@
-import { University, Book, Certificate } from '@styled-icons/fa-solid'
-import { DatePickerStyled, CheckboxStyled } from 'components/Shared/Styles'
+import { Book, Certificate, University } from '@styled-icons/fa-solid'
+import { CheckboxStyled, DatePickerStyled } from 'components/Shared/Styles'
 import { useProfileEducation } from 'hooks/useProfileEducation'
 import React from 'react'
 import {
-  Schema,
-  Form,
-  FormGroup,
-  ControlLabel,
-  InputGroup,
-  FormControl,
-  CheckboxGroup,
+  Button,
   ButtonToolbar,
-  Button
+  CheckboxGroup,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
+  InputGroup,
+  Schema
 } from 'rsuite'
+import styled, { css } from 'styled-components'
+import tw from 'twin.macro'
 
 interface EducationFormProps {
   edit: boolean
 }
+
+const ControlLabelStyled = styled(ControlLabel).attrs({
+  className: 'relative font-semibold'
+})`
+  ${props =>
+    props.required &&
+    css`
+      &::after {
+        ${tw`absolute`}
+
+        content: '*';
+        top: 50%;
+        transform: translate3d(0, -9px, 0);
+        padding-left: 5px;
+        color: #cb2431;
+      }
+    `}
+`
 
 const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
   const education = useProfileEducation()
@@ -48,9 +68,11 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       onChange={formValue => education.onChange(formValue)}
     >
       <FormGroup>
-        <ControlLabel>School or bootcamp</ControlLabel>
+        <ControlLabelStyled required={true}>
+          School or bootcamp
+        </ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="school" placeholder="* School or bootcamp" />
+          <FormControl name="school" />
           <InputGroup.Addon>
             <University size="16" title="School or bootcamp" />
           </InputGroup.Addon>
@@ -58,9 +80,11 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Degree or certificate</ControlLabel>
+        <ControlLabelStyled required={true}>
+          Degree or certificate
+        </ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="degree" placeholder="* Degree or certificate" />
+          <FormControl name="degree" />
           <InputGroup.Addon>
             <Certificate size="16" title="Degree or certificate" />
           </InputGroup.Addon>
@@ -68,9 +92,9 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Field of study</ControlLabel>
+        <ControlLabelStyled required={true}>Field of study</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="fieldofstudy" placeholder="* Field of study" />
+          <FormControl name="fieldofstudy" />
           <InputGroup.Addon>
             <Book size="16" title="Field of study" />
           </InputGroup.Addon>
@@ -78,7 +102,7 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>From date</ControlLabel>
+        <ControlLabelStyled required={true}>From date</ControlLabelStyled>
         <FormControl
           block
           size="lg"
@@ -102,7 +126,7 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>To date</ControlLabel>
+        <ControlLabelStyled>To date</ControlLabelStyled>
         <FormControl
           block
           disabled={toDateDisabled}
@@ -114,13 +138,8 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Program description</ControlLabel>
-        <FormControl
-          name="description"
-          componentClass="textarea"
-          rows={5}
-          placeholder="Program description"
-        />
+        <ControlLabelStyled>Program description</ControlLabelStyled>
+        <FormControl name="description" componentClass="textarea" rows={5} />
       </FormGroup>
 
       <FormGroup>

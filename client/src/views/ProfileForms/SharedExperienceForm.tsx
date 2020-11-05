@@ -13,10 +13,30 @@ import {
   InputGroup,
   Schema
 } from 'rsuite'
+import styled, { css } from 'styled-components'
+import tw from 'twin.macro'
 
 interface ExperienceFormProps {
   edit: boolean
 }
+
+const ControlLabelStyled = styled(ControlLabel).attrs({
+  className: 'relative font-semibold'
+})`
+  ${props =>
+    props.required &&
+    css`
+      &::after {
+        ${tw`absolute`}
+
+        content: '*';
+        top: 50%;
+        transform: translate3d(0, -9px, 0);
+        padding-left: 5px;
+        color: #cb2431;
+      }
+    `}
+`
 
 const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
   const experience = useProfileExperience()
@@ -49,11 +69,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       onChange={formValue => experience.onChange(formValue)}
     >
       <FormGroup>
-        <ControlLabel>Job title</ControlLabel>
+        <ControlLabelStyled required={true}>Job title</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="title"
-            placeholder="* Job title"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -65,11 +84,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Company</ControlLabel>
+        <ControlLabelStyled required={true}>Company</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="company"
-            placeholder="* Company"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -81,11 +99,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Location</ControlLabel>
+        <ControlLabelStyled required={true}>Location</ControlLabelStyled>
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="location"
-            placeholder="* Location"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
               onKeyUp(event, edit)
             }
@@ -97,7 +114,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>From date</ControlLabel>
+        <ControlLabelStyled required={true}>From date</ControlLabelStyled>
         <FormControl
           block
           size="lg"
@@ -119,7 +136,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>To date</ControlLabel>
+        <ControlLabelStyled>To date</ControlLabelStyled>
         <FormControl
           block
           disabled={toDateDisabled}
@@ -131,12 +148,11 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
-        <ControlLabel>Job description</ControlLabel>
+        <ControlLabelStyled>Job description</ControlLabelStyled>
         <FormControl
           componentClass="textarea"
           rows={5}
           name="description"
-          placeholder="Job description"
           onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
             onKeyUp(event, edit)
           }
