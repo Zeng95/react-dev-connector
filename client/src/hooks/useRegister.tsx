@@ -24,6 +24,7 @@ function RegisterPage() {
 
   const emailSuggestions = [
     '@gmail.com',
+    '@foxmail.com',
     '@yahoo.com',
     '@sina.com',
     '@sina.cn',

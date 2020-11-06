@@ -8,7 +8,11 @@ const postSchema = new Schema({
     type: SchemaObjectId,
     ref: 'User'
   },
-  text: {
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
     type: String,
     required: true
   },
@@ -39,10 +43,10 @@ const postSchema = new Schema({
         type: String,
         required: true
       },
-      username: {
+      avatar: {
         type: String
       },
-      avatar: {
+      username: {
         type: String
       },
       date: {

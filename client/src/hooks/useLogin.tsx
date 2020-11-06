@@ -16,6 +16,7 @@ function LoginPage() {
 
   const emailSuggestions = [
     '@gmail.com',
+    '@foxmail.com',
     '@yahoo.com',
     '@sina.com',
     '@sina.cn',

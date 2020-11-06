@@ -4,8 +4,8 @@ const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
-const config = require('config')
 const { verifyToken } = require('../middlewares/auth')
+const config = require('config')
 
 const UserModel = require('../models/User')
 
@@ -83,7 +83,10 @@ router.post(
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() })
+        return res.status(400).json({
+          success: false,
+          errors: errors.array()
+        })
       }
 
       // Get user default gravatr
@@ -114,7 +117,7 @@ router.post(
 
           res.status(200).json({
             success: true,
-            msg: 'You have successfully created your account',
+            msg: 'Signed up successfully',
             token
           })
         }
@@ -183,7 +186,7 @@ router.post(
 
           res.status(200).json({
             success: true,
-            msg: 'You have successfully logged in',
+            msg: 'Logged in successfully',
             token
           })
         }

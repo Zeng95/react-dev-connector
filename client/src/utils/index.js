@@ -5,11 +5,11 @@ const setAuthToken = () => {
   return token ? { 'x-auth-token': token } : {}
 }
 
-const openAlert = (funcName, description) => {
-  Alert[funcName](description, 3000)
+const openAlert = (funcName, content, duration = 2000) => {
+  Alert[funcName](content, duration)
 }
 
-const openNotification = (funcName, description) => {
+const openNotification = (funcName, description = 2000) => {
   Notification[funcName]({ title: funcName, description })
 }
 

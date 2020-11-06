@@ -12,11 +12,11 @@ const Profile = require('../models/Profile')
  */
 router.get('/all', async (req, res) => {
   try {
-    const profiles = await Profile.find().populate('user', [
-      'avatar',
-      'email',
-      'username'
-    ])
+    // Descending: the sort will be the most recent dates to the oldest/earliest dates.
+    const profiles = await Profile.find()
+      .sort({ date: -1 })
+      .populate('user', ['avatar', 'email', 'username'])
+      .select('-__v')
 
     if (!profiles) {
       return res.status(404).json({
@@ -27,7 +27,7 @@ router.get('/all', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: 'Get all the profiles successfully',
+      msg: 'Get all profiles successfully',
       profiles
     })
   } catch (err) {
@@ -189,7 +189,7 @@ router.post('/', verifyToken, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      msg: 'You have successfully created your profile',
+      msg: 'Created a new profile successfully',
       profile: foundProfile
     })
   } catch (err) {

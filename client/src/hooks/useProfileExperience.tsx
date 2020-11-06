@@ -1,7 +1,7 @@
 import { ProfileContext } from 'context/profile/ProfileContext'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Alert } from 'rsuite'
+import { openAlert } from 'utils'
 
 interface IExperience {
   title: string
@@ -29,10 +29,11 @@ function useProfileExperience() {
   const history = useHistory()
   const location = useLocation<LocationState>()
   const { pathname, state } = location
-  const hsaLocationState = typeof state === 'object' && state !== null
+  const hasLocationState = typeof state === 'object' && state !== null
 
   const formEl = useRef<HTMLFormElement>(null)
 
+  const [tableLoading, setTableLoading] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
   const [experienceForm, setExperienceForm] = useState<IExperience>({
     title: '',
@@ -49,7 +50,7 @@ function useProfileExperience() {
       if (pathname === '/user/edit-experience') {
         const experienceArr = profile.experience
 
-        if (hsaLocationState) {
+        if (hasLocationState) {
           const experienceId = state.experienceId
           const experience = experienceArr.find(item => {
             return item['_id'] === experienceId
@@ -76,15 +77,20 @@ function useProfileExperience() {
         history.push('/dashboard')
       }
     }
-  }, [history, profile, pathname, state, hsaLocationState])
+  }, [history, profile, pathname, state, hasLocationState])
 
   const onDelete = (experienceId: string) => {
+    setTableLoading(true)
+
     deleteUserProfileExperience(experienceId)
       .then(() => {
-        Alert.success('Experience Successfully Deleted', 2000)
+        openAlert('success', 'Experience Successfully Deleted')
       })
       .catch(() => {
-        Alert.error('Experience Unsuccessfully Deleted', 2000)
+        openAlert('error', 'Experience Unsuccessfully Deleted')
+      })
+      .finally(() => {
+        setTableLoading(false)
       })
   }
 
@@ -96,22 +102,22 @@ function useProfileExperience() {
         ? { ...experienceForm, current: true }
         : { ...experienceForm, current: false }
 
-    if (edit && hsaLocationState) {
+    if (edit && hasLocationState) {
       updateUserProfileExperience(state.experienceId, formData)
         .then(() => {
-          Alert.success('Experience Successfully Updated', 2000)
+          openAlert('success', 'Experience Successfully Updated')
         })
         .catch(() => {
-          Alert.error('Experience Unsuccessfully Updated', 2000)
+          openAlert('error', 'Experience Unsuccessfully Updated')
         })
     } else {
       createUserProfileExperience(formData)
         .then(() => {
           navigateToDashboard()
-          Alert.success('Experience Successfully Created', 2000)
+          openAlert('success', 'Experience Successfully Created')
         })
         .catch(() => {
-          Alert.error('Experience Unsuccessfully Created', 2000)
+          openAlert('error', 'Experience Unsuccessfully Created')
         })
     }
   }
@@ -158,6 +164,7 @@ function useProfileExperience() {
 
   return {
     formEl,
+    tableLoading,
     experienceForm,
     toDateDisabled,
     toggleDisbaled,

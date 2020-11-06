@@ -17,7 +17,7 @@ const ExperienceSection: React.FC = () => {
   const { profile } = profileContext.state
 
   const experience = useProfileExperience()
-  const { onDelete, navigateToEditExperience } = experience
+  const { tableLoading, onDelete, navigateToEditExperience } = experience
 
   return (
     <DashboardSection>
@@ -26,6 +26,7 @@ const ExperienceSection: React.FC = () => {
       {profile ? (
         <SectionContent>
           <Table
+            loading={tableLoading}
             data={profile.experience}
             autoHeight={true}
             headerHeight={60}
