@@ -18,7 +18,7 @@ router.get('/all', async (req, res) => {
       .populate('user', ['avatar', 'email', 'username'])
       .select('-__v')
 
-    if (!profiles) {
+    if (profiles.length === 0) {
       return res.status(404).json({
         success: false,
         msg: 'There are no profiles existing'

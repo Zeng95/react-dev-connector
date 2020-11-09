@@ -20,7 +20,7 @@ const postSchema = new Schema({
   avatar: {
     type: String
   },
-  // The name of the user
+  // The username of the user
   username: {
     type: String
   },
@@ -29,6 +29,10 @@ const postSchema = new Schema({
       user: {
         type: SchemaObjectId,
         ref: 'User'
+      },
+      date: {
+        type: Date,
+        default: Date.now
       }
     }
   ],

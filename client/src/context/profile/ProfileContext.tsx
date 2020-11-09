@@ -105,7 +105,7 @@ interface InitialStateType {
   }
 }
 
-const initialProfile = {
+const initialState = {
   state: {
     profile: null,
     profiles: [],
@@ -128,7 +128,7 @@ const initialProfile = {
   }
 }
 
-const ProfileContext = createContext<InitialStateType>(initialProfile)
+const ProfileContext = createContext<InitialStateType>(initialState)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -395,4 +395,4 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   }
 })
 
-export { ProfileContext, initialProfile, reducer, actions }
+export { ProfileContext, initialState, reducer, actions }

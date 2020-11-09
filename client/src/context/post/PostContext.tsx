@@ -1,21 +1,20 @@
 import { getPosts } from 'api/posts'
-import { initialProfile } from 'context/profile/ProfileContext'
 import { GET_POST, GET_POSTS, POST_ERROR, SHOW_LOADING } from 'context/types'
 import { createContext } from 'react'
-import { openAlert, openNotification } from 'utils'
 
-const initialPost = {
+const initialState = {
   state: {
     post: null,
     posts: [],
     pageLoading: true
   },
   actions: {
-    getAllPosts: () => {}
+    getAllPosts: () => {},
+    getSinglePost: () => {}
   }
 }
 
-const PostContext = createContext(initialPost)
+const PostContext = createContext(initialState)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -77,14 +76,24 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: res.data.posts
       })
     } catch (err) {
-      const { errors, msg } = err.response.data
+      dispatch({
+        type: POST_ERROR
+      })
+    }
+  },
+  getSinglePost: async () => {
+    try {
+      dispatch({
+        type: SHOW_LOADING
+      })
 
-      if (errors) {
-        errors.forEach((error: any) => openAlert('error', error.msg))
-      } else {
-        openNotification('error', msg)
-      }
+      const res = await getPosts()
 
+      dispatch({
+        type: GET_POSTS,
+        payload: res.data.posts
+      })
+    } catch (err) {
       dispatch({
         type: POST_ERROR
       })
@@ -92,4 +101,4 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   }
 })
 
-export { PostContext, initialProfile, reducer, actions }
+export { PostContext, initialState, reducer, actions }

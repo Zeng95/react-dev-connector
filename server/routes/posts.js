@@ -14,12 +14,9 @@ const User = require('../models/User')
 router.get('/all', async (req, res) => {
   try {
     // Descending: the sort will be the most recent dates to the oldest/earliest dates.
-    const posts = await Post.find()
-      .sort({ date: -1 })
-      .populate('user', ['avatar', 'email', 'username'])
-      .select('-__v')
+    const posts = await Post.find().sort({ date: -1 }).select('-__v')
 
-    if (!posts) {
+    if (posts.length === 0) {
       return res.status(404).json({
         success: false,
         msg: 'There are no posts existing'

@@ -1,8 +1,8 @@
 import React, { useReducer } from 'react'
-import { actions, initialProfile, PostContext, reducer } from './PostContext'
+import { actions, initialState, PostContext, reducer } from './PostContext'
 
-const ProfileProvider: React.FC = props => {
-  const [post, dispatch] = useReducer(reducer, initialProfile)
+const PostProvider: React.FC = props => {
+  const [post, dispatch] = useReducer(reducer, initialState)
 
   const reducerState = post.state
   const reducerActions = actions(dispatch)
@@ -16,4 +16,4 @@ const ProfileProvider: React.FC = props => {
   )
 }
 
-export { ProfileProvider }
+export { PostProvider }
