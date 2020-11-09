@@ -81,7 +81,7 @@ const Register: React.FC = () => {
 
   return (
     <PageStyled>
-      <Title>Register</Title>
+      <Title>Welcome</Title>
 
       <Description>
         <IconStyleWrapper>

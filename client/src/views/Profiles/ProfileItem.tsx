@@ -62,9 +62,15 @@ interface ProfileItemProps {
   profile: IProfile
 }
 
-const ProfileItemStyled = styled.li``
+const ProfileItemStyled = styled.li`
+  &:last-of-type {
+    > a {
+      margin-bottom: 0;
+    }
+  }
+`
 const LinkStyled = styled(Link).attrs({
-  className: 'relative grid items-center mb-6 p-8 bg-white cursor-pointer'
+  className: 'relative grid items-center mb-6 p-8 bg-white'
 })`
   grid-template-columns: 2fr 4fr 2fr;
   grid-gap: 2rem;
@@ -101,10 +107,6 @@ const LinkStyled = styled(Link).attrs({
     }
   }
 `
-
-// const ProfilePhoto = styled.img.attrs({
-//   className: 'rounded-full w-full'
-// })``
 
 const UserInfo = styled.div``
 const UserName = styled.h2.attrs({

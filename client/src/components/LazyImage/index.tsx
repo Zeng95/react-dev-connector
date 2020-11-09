@@ -1,39 +1,26 @@
+import Spinner from 'assets/images/spinner.gif'
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
 import LazyLoad from 'react-lazyload'
+import styled from 'styled-components'
 
 interface LazyImageProps {
   src: string
   alt: string
 }
 
-const loadingAnimation = keyframes`
-  0% {
-    background-color: #fff;
-  }
-
-  50% {
-    background-color: #ccc;
-  }
-
-  100% {
-    background-color: #fff;
-  }
-`
-
 const ImageWrapper = styled.div.attrs({
   className: 'relative w-full h-full'
 })``
-
 const Placeholder = styled.div.attrs({
   className: 'absolute inset-0'
 })`
-  animation: ${loadingAnimation} 1s infinite;
+  background: #eeedeb url(${Spinner}) no-repeat center/22px;
 `
-
 const ImageStyled = styled.img.attrs({
-  className: 'absolute w-full h-full rounded-full'
-})``
+  className: 'rounded-full'
+})`
+  margin: 0 auto;
+`
 
 const AppLazyImage: React.FC<LazyImageProps> = ({ src, alt }) => {
   const placeholderRef = React.useRef<HTMLDivElement>(null)
@@ -47,6 +34,7 @@ const AppLazyImage: React.FC<LazyImageProps> = ({ src, alt }) => {
   return (
     <ImageWrapper>
       <Placeholder ref={placeholderRef} />
+
       <LazyLoad>
         <ImageStyled
           onLoad={removePlaceholder}

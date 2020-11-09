@@ -21,7 +21,7 @@ export const Title = styled.h1.attrs({
   className: 'mb-4 text-primary text-5xl leading-tight'
 })``
 export const Description = styled.p.attrs({
-  className: 'flex items-center mb-4 text-2xl'
+  className: 'flex items-center mb-8 text-2xl'
 })``
 export const Instruction = styled.small.attrs({
   className: 'block my-5'

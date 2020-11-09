@@ -82,7 +82,7 @@ const AppHeader: React.FC = () => {
         <Link to="/login">Log in</Link>
       </MenuItem>
       <MenuItem>
-        <Link to="/register">Sign up</Link>
+        <Link to="/register">Create account</Link>
       </MenuItem>
     </Fragment>
   )

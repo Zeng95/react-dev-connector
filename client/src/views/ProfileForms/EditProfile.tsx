@@ -3,7 +3,6 @@ import { AppLoader } from 'components/Loader'
 import {
   Description,
   IconStyleWrapper,
-  Instruction,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -34,8 +33,6 @@ const EditProfile: React.FC = () => {
         </IconStyleWrapper>
         <span>Let's get some information to make your profile stand out</span>
       </Description>
-
-      <Instruction>* = required field</Instruction>
 
       <ProfileForm edit={true} />
     </PageStyled>

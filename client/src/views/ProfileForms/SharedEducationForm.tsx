@@ -44,7 +44,6 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
     educationForm,
     toDateDisabled,
     onSubmit,
-    onKeyUp,
     onReset,
     navigateToDashboard
   } = education

@@ -70,7 +70,7 @@ const Login: React.FC = () => {
 
   return (
     <PageStyled>
-      <Title>Log in</Title>
+      <Title>Welcome</Title>
 
       <Description>
         <IconStyleWrapper>

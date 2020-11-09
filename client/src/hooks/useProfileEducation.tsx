@@ -17,7 +17,7 @@ function useProfileEducation() {
 
   const history = useHistory()
   const location = useLocation<LocationState>()
-  const { pathname, state } = location
+  const { state } = location
   const hsaLocationState = typeof state === 'object' && state !== null
 
   const formEl = useRef<HTMLFormElement>(null)

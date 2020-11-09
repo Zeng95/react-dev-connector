@@ -11,6 +11,7 @@ import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { PostItem } from './PostItem'
 
+const PostList = styled.ul``
 const PostsNotFound = styled.h4``
 
 const Posts: React.FC = () => {
@@ -39,9 +40,11 @@ const Posts: React.FC = () => {
 
       {/* Check to make sure that there are posts */}
       {posts.length > 0 ? (
-        posts.map(post => {
-          return <PostItem key={post['_id']} post={post} />
-        })
+        <PostList>
+          {posts.map(post => {
+            return <PostItem key={post['_id']} post={post} />
+          })}
+        </PostList>
       ) : (
         <PostsNotFound>No posts found...</PostsNotFound>
       )}
