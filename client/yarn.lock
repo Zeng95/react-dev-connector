@@ -1788,6 +1788,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-lazyload@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/@types/react-lazyload/download/@types/react-lazyload-3.0.0.tgz#7b43b45b5db7ead73ca9ccaf93d1c24397706d01"
+  integrity sha1-e0O0W1236tc8qcyvk9HCQ5dwbQE=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native@*":
   version "0.63.18"
   resolved "https://registry.npm.taobao.org/@types/react-native/download/@types/react-native-0.63.18.tgz#748d82c6453befe97285393ad9530472d8de56af"
