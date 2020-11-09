@@ -16,12 +16,12 @@
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.2",
+    "react-lazyload": "^3.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-transition-group": "^4.4.1",
     "rsuite": "^4.8.2",
-    "styled-components": "^5.2.0",
-    "uuid": "^8.3.0"
+    "styled-components": "^5.2.0"
   },
   "scripts": {
     "build:css": "postcss src/tailwind.css -o src/assets/styles/index.css",
