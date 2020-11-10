@@ -38,6 +38,11 @@ const ControlLabelStyled = styled(ControlLabel).attrs({
     color: #cb2431;
   }
 `
+const FormButton = styled(Button).attrs({
+  className: 'mr-3'
+})`
+  margin-left: 0 !important;
+`
 const Callout = styled.p.attrs({
   className: 'my-4'
 })`
@@ -159,20 +164,20 @@ const Register: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar>
-            <Button
+            <FormButton
               appearance="primary"
               onClick={onSubmit}
               loading={submitLoading}
             >
               Submit
-            </Button>
-            <Button
+            </FormButton>
+            <FormButton
               appearance="default"
               onClick={onReset}
               disabled={submitLoading}
             >
               Clear
-            </Button>
+            </FormButton>
           </ButtonToolbar>
         </FormGroup>
       </Form>

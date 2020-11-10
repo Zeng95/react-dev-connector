@@ -44,7 +44,7 @@ const AuthLink = styled(Link).attrs({
   ${props =>
     props.name === 'login' &&
     css`
-      ${tw`mr-2`}
+      ${tw`mr-3`}
 
       color: #333;
       background-color: #f4f4f4;
