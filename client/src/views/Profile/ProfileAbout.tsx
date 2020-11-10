@@ -1,5 +1,8 @@
 import { Check } from '@styled-icons/fa-solid'
-import { IconStyleWrapper, ProfileSectionTitle } from 'components/Shared/Styles'
+import {
+  IconStyledWrapper,
+  ProfileSectionTitle
+} from 'components/Shared/Styles'
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
@@ -90,9 +93,9 @@ const ProfileAbout: React.FC<ProfileTopProps> = ({ profile }) => {
         {skills.slice(0, 5).map((skill, index) => {
           return (
             <Skill key={index}>
-              <IconStyleWrapper>
+              <IconStyledWrapper>
                 <Check size="18" />
-              </IconStyleWrapper>
+              </IconStyledWrapper>
               <span>{skill}</span>
             </Skill>
           )

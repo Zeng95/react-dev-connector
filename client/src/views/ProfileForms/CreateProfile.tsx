@@ -2,7 +2,7 @@ import { User } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   Instruction,
   PageStyled,
   Title
@@ -29,9 +29,9 @@ const CreateProfile: React.FC = () => {
       <Title>Create Your Profile</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <User size="24" title="User" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Let's get some information to make your profile stand out</span>
       </Description>
 

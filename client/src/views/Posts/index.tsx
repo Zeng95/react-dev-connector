@@ -2,7 +2,7 @@ import { User } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -32,9 +32,9 @@ const Posts: React.FC = () => {
       <Title>Posts</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <User size="24" title="User" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Welcome to the community!</span>
       </Description>
 

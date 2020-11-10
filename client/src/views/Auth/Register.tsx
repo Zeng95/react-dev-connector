@@ -2,7 +2,7 @@ import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock, UserCircle } from '@styled-icons/fa-solid'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -84,9 +84,9 @@ const Register: React.FC = () => {
       <Title>Welcome</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <ReactLogo size="24" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Sign up for free and experience DevConnector today</span>
       </Description>
 

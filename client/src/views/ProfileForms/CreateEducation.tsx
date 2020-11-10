@@ -1,7 +1,7 @@
 import { GraduationCap } from '@styled-icons/fa-solid'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   Instruction,
   PageStyled,
   Title
@@ -15,9 +15,9 @@ const CreateEducation: React.FC = () => {
       <Title>Education</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <GraduationCap size="24" title="Add Experience" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Add any school, bootcamp, etc that you have attended</span>
       </Description>
 

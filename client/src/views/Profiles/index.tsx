@@ -2,7 +2,7 @@ import { Globe } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -32,9 +32,9 @@ const Profiles: React.FC = () => {
       <Title>Developers</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <Globe size="24" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Browse and connect with developers</span>
       </Description>
 

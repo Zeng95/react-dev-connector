@@ -5,7 +5,7 @@ import {
   TachometerAlt,
   UserFriends
 } from '@styled-icons/fa-solid'
-import { IconStyleWrapper } from 'components/Shared/Styles'
+import { IconStyledWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
@@ -59,17 +59,17 @@ const AppHeader: React.FC = () => {
     <Fragment>
       <MenuItem>
         <LinkStyled to="/dashboard">
-          <IconStyleWrapper>
+          <IconStyledWrapper>
             <TachometerAlt size="16" title="Dashboard" />
-          </IconStyleWrapper>
+          </IconStyledWrapper>
           <span>Dashboard</span>
         </LinkStyled>
       </MenuItem>
       <MenuItem>
         <LinkStyled to="/logout">
-          <IconStyleWrapper>
+          <IconStyledWrapper>
             <SignOutAlt size="16" title="Logout account" />
-          </IconStyleWrapper>
+          </IconStyledWrapper>
           <span>Logout</span>
         </LinkStyled>
       </MenuItem>
@@ -92,9 +92,9 @@ const AppHeader: React.FC = () => {
       <NavBar>
         <Logo>
           <LinkStyled to="/">
-            <IconStyleWrapper>
+            <IconStyledWrapper>
               <ShareAlt size="26" title="Logo" />
-            </IconStyleWrapper>
+            </IconStyledWrapper>
             <span>DevConnector</span>
           </LinkStyled>
         </Logo>
@@ -102,17 +102,17 @@ const AppHeader: React.FC = () => {
         <Menu>
           <MenuItem>
             <LinkStyled to="/profiles">
-              <IconStyleWrapper>
+              <IconStyledWrapper>
                 <UserFriends size="18" title="User profiles" />
-              </IconStyleWrapper>
+              </IconStyledWrapper>
               <span>Developers</span>
             </LinkStyled>
           </MenuItem>
           <MenuItem>
             <LinkStyled to="/posts">
-              <IconStyleWrapper>
+              <IconStyledWrapper>
                 <Pen size="14" title="User posts" />
-              </IconStyleWrapper>
+              </IconStyledWrapper>
               <span>Posts</span>
             </LinkStyled>
           </MenuItem>

@@ -8,7 +8,7 @@ export const AppContent = styled.main.attrs({
   className: 'flex-1 relative pt-24 pb-12'
 })``
 
-export const IconStyleWrapper = styled.span.attrs({
+export const IconStyledWrapper = styled.span.attrs({
   className: 'inline-flex mr-1'
 })``
 

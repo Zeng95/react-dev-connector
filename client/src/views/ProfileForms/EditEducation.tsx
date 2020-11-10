@@ -3,7 +3,7 @@ import {
   PageStyled,
   Title,
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   Instruction
 } from 'components/Shared/Styles'
 import React from 'react'
@@ -15,9 +15,9 @@ const EditEducation: React.FC = () => {
       <Title>Education</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <GraduationCap size="24" title="Add Experience" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Edit any school, bootcamp, etc that you have attended</span>
       </Description>
 

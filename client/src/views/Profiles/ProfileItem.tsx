@@ -1,6 +1,6 @@
 import { Check } from '@styled-icons/fa-solid'
 import { AppLazyImage } from 'components/LazyImage'
-import { IconStyleWrapper } from 'components/Shared/Styles'
+import { IconStyledWrapper } from 'components/Shared/Styles'
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
@@ -62,15 +62,8 @@ interface ProfileItemProps {
   profile: IProfile
 }
 
-const ProfileItemStyled = styled.li`
-  &:last-of-type {
-    > a {
-      margin-bottom: 0;
-    }
-  }
-`
-const LinkStyled = styled(Link).attrs({
-  className: 'relative grid items-center mb-6 p-8 bg-white'
+const ProfileItemStyled = styled.li.attrs({
+  className: 'relative grid items-center mb-4 p-8 bg-white'
 })`
   grid-template-columns: 2fr 4fr 2fr;
   grid-gap: 2rem;
@@ -94,7 +87,7 @@ const LinkStyled = styled(Link).attrs({
   &::after {
     ${tw`opacity-0`}
 
-    box-shadow: 0 2px 8px 2px rgba(20, 23, 28, 0.15);
+    box-shadow: 0 2px 12px 2px rgba(20, 23, 28, 0.15);
   }
 
   &:hover {
@@ -106,7 +99,18 @@ const LinkStyled = styled(Link).attrs({
       ${tw`opacity-100`}
     }
   }
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 `
+
+const UserAvatarLink = styled(Link).attrs({
+  className: 'inline-block'
+})``
+const ImageStyled = styled.img.attrs({
+  className: 'rounded-full'
+})``
 
 const UserInfo = styled.div``
 const UserName = styled.h2.attrs({
@@ -149,40 +153,42 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
   return (
     <ProfileItemStyled>
-      <LinkStyled to={`/profiles/${_id}`}>
-        <AppLazyImage src={avatar} alt="User Avatar" />
+      <AppLazyImage>
+        <UserAvatarLink to={`/profiles/${_id}`}>
+          <ImageStyled src={avatar} alt={`${username} profile image`} />
+        </UserAvatarLink>
+      </AppLazyImage>
 
-        <UserInfo>
-          <UserName>{username}</UserName>
+      <UserInfo>
+        <UserName>{username}</UserName>
 
-          <JobDescription>
-            <span>{status}</span>
-            {company && <span>at {company}</span>}
-          </JobDescription>
+        <JobDescription>
+          <span>{status}</span>
+          {company && <span>at {company}</span>}
+        </JobDescription>
 
-          {location && <JobLocation>{location}</JobLocation>}
+        {location && <JobLocation>{location}</JobLocation>}
 
-          <ButtonStyled
-            appearance="primary"
-            onClick={() => navigateToProfile(_id)}
-          >
-            View Profile
-          </ButtonStyled>
-        </UserInfo>
+        <ButtonStyled
+          appearance="primary"
+          onClick={() => navigateToProfile(_id)}
+        >
+          View Profile
+        </ButtonStyled>
+      </UserInfo>
 
-        <UserSkills>
-          {skills.slice(0, 5).map((skill, index) => {
-            return (
-              <SkillItem key={index}>
-                <IconStyleWrapper>
-                  <Check size="18" />
-                </IconStyleWrapper>
-                <span>{skill}</span>
-              </SkillItem>
-            )
-          })}
-        </UserSkills>
-      </LinkStyled>
+      <UserSkills>
+        {skills.slice(0, 5).map((skill, index) => {
+          return (
+            <SkillItem key={index}>
+              <IconStyledWrapper>
+                <Check size="18" />
+              </IconStyledWrapper>
+              <span>{skill}</span>
+            </SkillItem>
+          )
+        })}
+      </UserSkills>
     </ProfileItemStyled>
   )
 }

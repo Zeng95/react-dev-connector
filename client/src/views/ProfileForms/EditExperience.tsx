@@ -1,7 +1,7 @@
 import { CodeBranch } from '@styled-icons/fa-solid'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   Instruction,
   PageStyled,
   Title
@@ -15,9 +15,9 @@ const EditExperience: React.FC = () => {
       <Title>Experience</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <CodeBranch size="24" title="Add Experience" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>
           Edit any developer/programming positions that you have had in the past
         </span>

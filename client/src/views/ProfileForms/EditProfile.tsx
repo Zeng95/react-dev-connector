@@ -2,7 +2,7 @@ import { User } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -28,9 +28,9 @@ const EditProfile: React.FC = () => {
       <Title>Edit Your Profile</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <User size="24" title="User" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Let's get some information to make your profile stand out</span>
       </Description>
 

@@ -2,7 +2,7 @@ import { ReactLogo } from '@styled-icons/fa-brands'
 import { Envelope, Lock } from '@styled-icons/fa-solid'
 import {
   Description,
-  IconStyleWrapper,
+  IconStyledWrapper,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -73,9 +73,9 @@ const Login: React.FC = () => {
       <Title>Welcome</Title>
 
       <Description>
-        <IconStyleWrapper>
+        <IconStyledWrapper>
           <ReactLogo size="24" />
-        </IconStyleWrapper>
+        </IconStyledWrapper>
         <span>Log in to your account</span>
       </Description>
 
