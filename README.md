@@ -5,7 +5,7 @@ A full-stack social network web app built with TypeScript, React Router, React C
 ### 前端开发（Frontend）
 * React + React Router + React Hooks + React Context
 
-* React Suite
+* React Suite + React Lazyload
 
 * TypeScript
 
