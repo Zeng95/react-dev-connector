@@ -124,10 +124,7 @@ const Register: React.FC = () => {
               <Envelope size="16" title="Email address" />
             </InputGroup.Addon>
           </InputGroup>
-          <HelpBlock>
-            This site uses Gravatar so if you want a profile image, use a
-            Gravatar email
-          </HelpBlock>
+          <HelpBlock>This site uses Gravatar for a profile image</HelpBlock>
         </FormGroup>
 
         <FormGroup>

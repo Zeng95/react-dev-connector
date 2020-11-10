@@ -42,6 +42,12 @@ const Router: React.FC = () => (
         component={Profile}
       />
       <PublicRoute exact path="/posts" restricted={false} component={Posts} />
+      <PublicRoute
+        exact
+        path="/posts/:username/:id"
+        restricted={false}
+        component={Posts}
+      />
 
       <PrivateRoute exact path="/dashboard" component={Dashboard} />
       <PrivateRoute

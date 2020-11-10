@@ -1,8 +1,8 @@
 import {
-  Pen,
   ShareAlt,
   SignOutAlt,
   TachometerAlt,
+  UserEdit,
   UserFriends
 } from '@styled-icons/fa-solid'
 import { IconStyledWrapper } from 'components/Shared/Styles'
@@ -111,7 +111,7 @@ const AppHeader: React.FC = () => {
           <MenuItem>
             <LinkStyled to="/posts">
               <IconStyledWrapper>
-                <Pen size="14" title="User posts" />
+                <UserEdit size="18" title="User posts" />
               </IconStyledWrapper>
               <span>Posts</span>
             </LinkStyled>

@@ -2,7 +2,7 @@ import { Check } from '@styled-icons/fa-solid'
 import { AppLazyImage } from 'components/LazyImage'
 import { IconStyledWrapper } from 'components/Shared/Styles'
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
@@ -105,13 +105,6 @@ const ProfileItemStyled = styled.li.attrs({
   }
 `
 
-const UserAvatarLink = styled(Link).attrs({
-  className: 'inline-block'
-})``
-const ImageStyled = styled.img.attrs({
-  className: 'rounded-full'
-})``
-
 const UserInfo = styled.div``
 const UserName = styled.h2.attrs({
   className: 'mb-2 font-bold text-2xl'
@@ -153,11 +146,11 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
   return (
     <ProfileItemStyled>
-      <AppLazyImage>
-        <UserAvatarLink to={`/profiles/${_id}`}>
-          <ImageStyled src={avatar} alt={`${username} profile image`} />
-        </UserAvatarLink>
-      </AppLazyImage>
+      <AppLazyImage
+        linkPath={`profiles/${_id}`}
+        src={avatar}
+        alt={`${username} profile image`}
+      />
 
       <UserInfo>
         <UserName>{username}</UserName>
