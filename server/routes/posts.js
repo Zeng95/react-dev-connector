@@ -62,7 +62,7 @@ router.get('/:id', async (req, res) => {
     if (err.kind === 'ObjectId') {
       return res.status(404).json({
         success: false,
-        msg: 'Post  not found'
+        msg: 'Post not found'
       })
     }
 
@@ -118,7 +118,7 @@ router.post(
 
       res.status(200).json({
         success: true,
-        msg: 'Created a new post successfully',
+        msg: 'Create a new post successfully',
         post: foundPost
       })
     } catch (err) {
@@ -129,6 +129,54 @@ router.post(
     }
   }
 )
+
+/**
+ * @route    Put api/articles/likes/:id
+ * @desc     Like a post
+ * @access   Private
+ */
+router.put('/likes/:id', verifyToken, async (req, res) => {
+  try {
+    const userId = req.userId
+    const postId = req.params.id
+    const foundPost = await Post.findById(postId)
+
+    // Check if the post has already been liked
+    const result = foundPost.likes.findIndex(like => {
+      return like.user.toString() === userId
+    })
+
+    if (result !== -1) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Post has already been liked'
+      })
+    }
+
+    foundPost.likes.unshift({ user: userId })
+
+    await Post.findByIdAndUpdate(postId, foundPost)
+
+    res.status(200).json({
+      success: true,
+      msg: 'Like a post successfully',
+      likes: foundPost.likes
+    })
+  } catch (err) {
+    console.log(err)
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
 
 /**
  * @route    POST api/articles/:id
