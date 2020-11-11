@@ -180,7 +180,7 @@ router.put('/like/:id', verifyToken, async (req, res) => {
 })
 
 /**
- * @route    Put api/articles/likes/:id
+ * @route    Put api/articles/unlike/:id
  * @desc     Unlike a post
  * @access   Private
  */
