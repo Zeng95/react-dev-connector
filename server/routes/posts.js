@@ -83,17 +83,13 @@ router.post(
   [
     verifyToken,
     [
-      check('title', 'The title is required').not().isEmpty().trim().escape(),
-
-      check('content', 'The content is required')
-        .not()
-        .isEmpty()
-        .trim()
-        .escape()
+      check('title', 'Title is required').not().isEmpty().trim().escape(),
+      check('content', 'Content is required').not().isEmpty().trim().escape()
     ]
   ],
   async (req, res) => {
     try {
+      const userId = req.userId
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
@@ -103,7 +99,7 @@ router.post(
         })
       }
 
-      const foundUser = await User.findById(req.userId).select('-password')
+      const foundUser = await User.findById(userId).select('-password')
       const postFields = {
         ...req.body,
         user: foundUser['_id'],
@@ -112,13 +108,11 @@ router.post(
       }
       const post = new Post(postFields)
       const savedPost = await post.save()
-      const foundPost = await Post.findOne({ user: savedPost.user }).select(
-        '-__v -user'
-      )
+      const foundPost = await Post.findById(savedPost['_id']).select('-__v')
 
       res.status(200).json({
         success: true,
-        msg: 'Create a new post successfully',
+        msg: 'Created a new post successfully',
         post: foundPost
       })
     } catch (err) {

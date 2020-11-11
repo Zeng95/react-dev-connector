@@ -16,15 +16,14 @@ const UserModel = require('../models/User')
  */
 router.get('/me', verifyToken, async (req, res) => {
   try {
-    const user = await UserModel.findById(req.userId, {
-      _id: true,
-      email: true,
-      avatar: true,
-      username: true
-    })
+    const userId = req.userId
+    const user = await UserModel.findById(userId).select('-__v -password')
 
     if (!user) {
-      res.status(404).json({ success: true, msg: 'Authentication failure' })
+      res.status(404).json({
+        success: true,
+        msg: 'Authentication failure'
+      })
     }
 
     res.status(200).json({
@@ -57,7 +56,7 @@ router.post(
         })
       }),
 
-    check('username', 'The username is required')
+    check('username', 'Username is required')
       .not()
       .isEmpty()
       .trim()
@@ -79,7 +78,6 @@ router.post(
   async (req, res) => {
     try {
       const { email, username, password } = req.body
-      // Finds the validation errors in this request and wraps them in an object with handy functions
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
@@ -107,7 +105,7 @@ router.post(
       const savedUser = await newUser.save()
       const payload = { userId: savedUser['_id'] }
 
-      // Generate a signed JSON web token with the contents of user object and return it in the response
+      // Generate a signed JSON web token with the user id and return it in the response
       jwt.sign(
         payload,
         config.get('jwtSecret'),
@@ -160,7 +158,10 @@ router.post(
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
-        return res.status(400).json({ success: false, errors: errors.array() })
+        return res.status(400).json({
+          success: false,
+          errors: errors.array()
+        })
       }
 
       const user = await UserModel.findOne({ email })
@@ -176,7 +177,6 @@ router.post(
 
       const payload = { userId: user['_id'] }
 
-      // Generate a signed JSON web token with the contents of user object and return it in the response
       jwt.sign(
         payload,
         config.get('jwtSecret'),
