@@ -131,22 +131,23 @@ router.post(
 )
 
 /**
- * @route    Put api/articles/likes/:id
+ * @route    Put api/articles/like/:id
  * @desc     Like a post
  * @access   Private
  */
-router.put('/likes/:id', verifyToken, async (req, res) => {
+router.put('/like/:id', verifyToken, async (req, res) => {
   try {
     const userId = req.userId
     const postId = req.params.id
+
     const foundPost = await Post.findById(postId)
 
     // Check if the post has already been liked
-    const result = foundPost.likes.findIndex(like => {
+    const index = foundPost.likes.findIndex(like => {
       return like.user.toString() === userId
     })
 
-    if (result !== -1) {
+    if (index !== -1) {
       return res.status(400).json({
         success: false,
         msg: 'Post has already been liked'
@@ -159,7 +160,7 @@ router.put('/likes/:id', verifyToken, async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: 'Like a post successfully',
+      msg: 'Liked a post successfully',
       likes: foundPost.likes
     })
   } catch (err) {
@@ -179,32 +180,44 @@ router.put('/likes/:id', verifyToken, async (req, res) => {
 })
 
 /**
- * @route    POST api/articles/:id
- * @desc     Delete a single published post given its id
+ * @route    Put api/articles/likes/:id
+ * @desc     Unlike a post
  * @access   Private
  */
-router.delete('/:id', verifyToken, async (req, res) => {
+router.put('/unlike/:id', verifyToken, async (req, res) => {
   try {
+    const userId = req.userId
     const postId = req.params.id
-    const post = await Post.findById(postId)
 
-    if (!post) {
-      return res.status(404).json({
+    const foundPost = await Post.findById(postId)
+
+    // Check if the post has not been liked
+    const index = foundPost.likes.findIndex(like => {
+      return like.user.toString() === userId
+    })
+
+    if (index === -1) {
+      return res.status(400).json({
         success: false,
-        msg: 'Post not found'
+        msg: 'Post has not yet been liked'
       })
     }
 
+    foundPost.likes.splice(index, 1)
+
+    await Post.findByIdAndUpdate(postId, foundPost)
+
     res.status(200).json({
       success: true,
-      msg: 'Get the post successfully',
-      profiles
+      msg: 'Unliked a post successfully',
+      likes: foundPost.likes
     })
   } catch (err) {
+    console.log(err)
     if (err.kind === 'ObjectId') {
       return res.status(404).json({
         success: false,
-        msg: 'Post  not found'
+        msg: 'Post not found'
       })
     }
 
