@@ -8,8 +8,12 @@ const getPosts = () => {
   return httpClient.get(`${END_POINT}/all`)
 }
 
+const getPostById = (postId: string) => {
+  return httpClient.get(`${END_POINT}/${postId}`)
+}
+
 const createPost = () => {
   return httpClient.post(`${END_POINT}`)
 }
 
-export { getPosts, createPost }
+export { getPosts, getPostById, createPost }

@@ -125,6 +125,74 @@ router.post(
 )
 
 /**
+ * @route    Put api/articles/comment/:id
+ * @desc     Comment on a post
+ * @access   Private
+ */
+router.post(
+  '/comment/:id',
+  [
+    verifyToken,
+    [check('text', 'Text is required').not().isEmpty().trim().escape()]
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req)
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          success: false,
+          errors: errors.array()
+        })
+      }
+
+      const userId = req.userId
+      const postId = req.params.id
+
+      const foundUser = await User.findById(userId).select('-password')
+      const foundPost = await Post.findById(postId)
+
+      if (foundPost === null) {
+        return res.status(404).json({
+          success: false,
+          msg: 'Post not found'
+        })
+      }
+
+      const commentFields = {
+        user: foundUser['_id'],
+        avatar: foundUser.avatar,
+        username: foundUser.username,
+        text: req.body.text
+      }
+      foundPost.comments.unshift(commentFields)
+
+      const updatedPost = await Post.findByIdAndUpdate(postId, foundPost, {
+        new: true
+      })
+
+      res.status(200).json({
+        success: true,
+        msg: 'Created a new comment successfully',
+        post: updatedPost
+      })
+    } catch (err) {
+      if (err.kind === 'ObjectId') {
+        return res.status(404).json({
+          success: false,
+          msg: 'Post not found'
+        })
+      }
+
+      res.status(500).json({
+        success: false,
+        msg: `Server Error: ${err.message}`
+      })
+    }
+  }
+)
+
+/**
  * @route    Put api/articles/like/:id
  * @desc     Like a post
  * @access   Private
@@ -158,7 +226,6 @@ router.put('/like/:id', verifyToken, async (req, res) => {
       likes: foundPost.likes
     })
   } catch (err) {
-    console.log(err)
     if (err.kind === 'ObjectId') {
       return res.status(404).json({
         success: false,
@@ -207,7 +274,6 @@ router.put('/unlike/:id', verifyToken, async (req, res) => {
       likes: foundPost.likes
     })
   } catch (err) {
-    console.log(err)
     if (err.kind === 'ObjectId') {
       return res.status(404).json({
         success: false,
