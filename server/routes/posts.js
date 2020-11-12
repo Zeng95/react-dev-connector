@@ -204,6 +204,13 @@ router.put('/like/:id', verifyToken, async (req, res) => {
 
     const foundPost = await Post.findById(postId)
 
+    if (foundPost === null) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
     // Check if the post has already been liked
     const index = foundPost.likes.findIndex(like => {
       return like.user.toString() === userId
@@ -218,12 +225,14 @@ router.put('/like/:id', verifyToken, async (req, res) => {
 
     foundPost.likes.unshift({ user: userId })
 
-    await Post.findByIdAndUpdate(postId, foundPost)
+    const updatedPost = await Post.findByIdAndUpdate(postId, foundPost, {
+      new: true
+    })
 
     res.status(200).json({
       success: true,
       msg: 'Liked a post successfully',
-      likes: foundPost.likes
+      post: updatedPost
     })
   } catch (err) {
     if (err.kind === 'ObjectId') {
@@ -252,6 +261,13 @@ router.put('/unlike/:id', verifyToken, async (req, res) => {
 
     const foundPost = await Post.findById(postId)
 
+    if (foundPost === null) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
     // Check if the post has not been liked
     const index = foundPost.likes.findIndex(like => {
       return like.user.toString() === userId
@@ -266,12 +282,14 @@ router.put('/unlike/:id', verifyToken, async (req, res) => {
 
     foundPost.likes.splice(index, 1)
 
-    await Post.findByIdAndUpdate(postId, foundPost)
+    const updatedPost = await Post.findByIdAndUpdate(postId, foundPost, {
+      new: true
+    })
 
     res.status(200).json({
       success: true,
       msg: 'Unliked a post successfully',
-      likes: foundPost.likes
+      post: updatedPost
     })
   } catch (err) {
     if (err.kind === 'ObjectId') {
@@ -318,6 +336,77 @@ router.delete('/:id', verifyToken, async (req, res) => {
     res.status(200).json({
       success: true,
       msg: 'Deleted the post successfully'
+    })
+  } catch (err) {
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route    Delete api/articles/comment/:id/:comment_id
+ * @desc     Delete a comment
+ * @access   Private
+ */
+router.delete('/comment/:id/:comment_id', verifyToken, async (req, res) => {
+  try {
+    const userId = req.userId
+    const postId = req.params.id
+    const commentId = req.params.comment_id
+
+    const foundPost = await Post.findById(postId)
+
+    if (foundPost === null) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
+    const comment = foundPost.comments.find(item => {
+      return item['_id'].toString() === commentId
+    })
+
+    // Make sure omment exists
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Comment not found'
+      })
+    }
+
+    // Check user
+    if (comment.user.toString() !== userId) {
+      return res.status(401).json({
+        success: false,
+        msg: 'User not authorized'
+      })
+    }
+
+    const removeIndex = foundPost.comments.findIndex(item => {
+      return item.user.toString() === userId
+    })
+
+    // Delete the comment
+    foundPost.comments.splice(removeIndex, 1)
+
+    const updatedPost = await Post.findByIdAndUpdate(postId, foundPost, {
+      new: true
+    })
+
+    res.status(200).json({
+      success: true,
+      msg: 'Deleted the comment successfully',
+      post: updatedPost
     })
   } catch (err) {
     if (err.kind === 'ObjectId') {

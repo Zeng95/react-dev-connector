@@ -160,7 +160,9 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
 
         <ControlButton appearance="primary">
           <span>Comments</span>
-          {comments.length > 0 && <span className="comment-count">2</span>}
+          {comments.length > 0 && (
+            <span className="comment-count">{comments.length}</span>
+          )}
         </ControlButton>
 
         <ControlButton color="red">
