@@ -125,7 +125,7 @@ router.post(
 )
 
 /**
- * @route    Put api/articles/comment/:id
+ * @route    Post api/articles/comment/:id
  * @desc     Comment on a post
  * @access   Private
  */
