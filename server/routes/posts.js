@@ -19,13 +19,13 @@ router.get('/all', async (req, res) => {
     if (posts.length === 0) {
       return res.status(404).json({
         success: false,
-        msg: 'There are no posts existing'
+        msg: 'Posts not found'
       })
     }
 
     res.status(200).json({
       success: true,
-      msg: 'Get all posts successfully',
+      msg: 'Got all posts successfully',
       posts
     })
   } catch (err) {
@@ -44,9 +44,9 @@ router.get('/all', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const postId = req.params.id
-    const post = await Post.findById(postId)
+    const foundPost = await Post.findById(postId).select('-__v')
 
-    if (!post) {
+    if (foundPost === null) {
       return res.status(404).json({
         success: false,
         msg: 'Post not found'
@@ -55,8 +55,8 @@ router.get('/:id', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: 'Get the post successfully',
-      profiles
+      msg: 'Got the post successfully',
+      post: foundPost
     })
   } catch (err) {
     if (err.kind === 'ObjectId') {
@@ -89,7 +89,6 @@ router.post(
   ],
   async (req, res) => {
     try {
-      const userId = req.userId
       const errors = validationResult(req)
 
       if (!errors.isEmpty()) {
@@ -99,6 +98,7 @@ router.post(
         })
       }
 
+      const userId = req.userId
       const foundUser = await User.findById(userId).select('-password')
       const postFields = {
         ...req.body,
