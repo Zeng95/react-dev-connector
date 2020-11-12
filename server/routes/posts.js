@@ -222,4 +222,50 @@ router.put('/unlike/:id', verifyToken, async (req, res) => {
   }
 })
 
+/**
+ * @route    Delete api/articles/:id
+ * @desc     Delete a single published post given its id
+ * @access   Private
+ */
+router.delete('/:id', verifyToken, async (req, res) => {
+  try {
+    const userId = req.userId
+    const postId = req.params.id
+    const foundPost = await Post.findById(postId)
+
+    if (foundPost === null) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
+    if (foundPost.user.toString() !== userId) {
+      return res.status(401).json({
+        success: false,
+        msg: 'User not authorized'
+      })
+    }
+
+    await foundPost.remove()
+
+    res.status(200).json({
+      success: true,
+      msg: 'Deleted the post successfully'
+    })
+  } catch (err) {
+    if (err.kind === 'ObjectId') {
+      return res.status(404).json({
+        success: false,
+        msg: 'Post not found'
+      })
+    }
+
+    res.status(500).json({
+      success: false,
+      msg: `Server Error: ${err.message}`
+    })
+  }
+})
+
 module.exports = router
