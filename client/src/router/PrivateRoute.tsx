@@ -1,7 +1,7 @@
 import { AppLayout } from 'components/App/AppLayout'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { useContext } from 'react'
-import { Redirect, Route, RouteProps } from 'react-router-dom'
+import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom'
 
 interface PrivateRouteProps extends Omit<RouteProps, 'component'> {
   component: React.ElementType
@@ -11,6 +11,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   component: Component,
   ...rest
 }) => {
+  const location = useLocation()
   const { state } = useContext(AuthContext)
   const { isAuthenticated, token } = state
 
@@ -20,7 +21,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
         <Component />
       </AppLayout>
     ) : (
-      <Redirect to="/login" />
+      <Redirect
+        to={{
+          pathname: '/login',
+          search: `?next=${location.pathname}`,
+          state: { from: location }
+        }}
+      />
     )
   }
 

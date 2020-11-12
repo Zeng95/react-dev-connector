@@ -268,19 +268,26 @@ router.put('/unlike/:id', verifyToken, async (req, res) => {
       })
     }
 
-    // Check if the post has not been liked
-    const index = foundPost.likes.findIndex(like => {
-      return like.user.toString() === userId
-    })
-
-    if (index === -1) {
+    if (foundPost.likes.length === 0) {
       return res.status(400).json({
         success: false,
         msg: 'Post has not yet been liked'
       })
     }
 
-    foundPost.likes.splice(index, 1)
+    // Check if the post has not been liked
+    const removeIndex = foundPost.likes.findIndex(like => {
+      return like.user.toString() === userId
+    })
+
+    if (removeIndex === -1) {
+      return res.status(400).json({
+        success: false,
+        msg: 'Post has not yet been liked'
+      })
+    }
+
+    foundPost.likes.splice(removeIndex, 1)
 
     const updatedPost = await Post.findByIdAndUpdate(postId, foundPost, {
       new: true
@@ -372,6 +379,13 @@ router.delete('/comment/:id/:comment_id', verifyToken, async (req, res) => {
       })
     }
 
+    if (foundPost.comments.length === 0) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Comment not found'
+      })
+    }
+
     const comment = foundPost.comments.find(item => {
       return item['_id'].toString() === commentId
     })
@@ -393,7 +407,7 @@ router.delete('/comment/:id/:comment_id', verifyToken, async (req, res) => {
     }
 
     const removeIndex = foundPost.comments.findIndex(item => {
-      return item.user.toString() === userId
+      return item['_id'].toString() === commentId
     })
 
     // Delete the comment

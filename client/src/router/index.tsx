@@ -22,61 +22,93 @@ import { PublicRoute } from './PublicRoute'
 const Router: React.FC = () => (
   <BrowserRouter>
     <Switch>
-      <PublicRoute exact path="/" restricted={true} component={Landing} />
-      <PublicRoute exact path="/login" restricted={true} component={Login} />
       <PublicRoute
         exact
+        sensitive
+        path="/"
+        restricted={true}
+        component={Landing}
+      />
+      <PublicRoute
+        exact
+        sensitive
+        path="/login"
+        restricted={true}
+        component={Login}
+      />
+      <PublicRoute
+        exact
+        sensitive
         path="/register"
         restricted={true}
         component={Register}
       />
       <PublicRoute
         exact
+        sensitive
         path="/profiles"
         restricted={false}
         component={Profiles}
       />
       <PublicRoute
+        sensitive
         path="/profiles/:userId"
         restricted={false}
         component={Profile}
       />
-      <PublicRoute exact path="/posts" restricted={false} component={Posts} />
       <PublicRoute
         exact
+        sensitive
+        path="/posts"
+        restricted={false}
+        component={Posts}
+      />
+      <PublicRoute
+        exact
+        sensitive
         path="/posts/:username/:id"
         restricted={false}
         component={Posts}
       />
 
-      <PrivateRoute exact path="/dashboard" component={Dashboard} />
+      <PrivateRoute exact sensitive path="/dashboard" component={Dashboard} />
       <PrivateRoute
         exact
+        sensitive
         path="/user/create-profile"
         component={CreateProfile}
       />
-      <PrivateRoute exact path="/user/edit-profile" component={EditProfile} />
       <PrivateRoute
         exact
+        sensitive
+        path="/user/edit-profile"
+        component={EditProfile}
+      />
+      <PrivateRoute
+        exact
+        sensitive
         path="/user/create-experience"
         component={CreateExperience}
       />
       <PrivateRoute
         exact
+        sensitive
         path="/user/edit-experience"
         component={EditExperience}
       />
       <PrivateRoute
         exact
+        sensitive
         path="/user/create-education"
         component={CreateEducation}
       />
       <PrivateRoute
         exact
+        sensitive
         path="/user/edit-education"
         component={EditEducation}
       />
-      <PrivateRoute exact path="/logout" component={Logout} />
+      <PrivateRoute exact sensitive path="/logout" component={Logout} />
 
       <Route path="*" component={NoMatch} />
     </Switch>
