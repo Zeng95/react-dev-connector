@@ -20,13 +20,13 @@ const createPost = () => {
 }
 
 const likePost = (postId: string) => {
-  return httpClient.put(`${END_POINT}/like/${postId}`, {
+  return httpClient.put(`${END_POINT}/like/${postId}`, null, {
     headers: setAuthToken()
   })
 }
 
 const unlikePost = (postId: string) => {
-  return httpClient.put(`${END_POINT}/unlike/${postId}`, {
+  return httpClient.put(`${END_POINT}/unlike/${postId}`, null, {
     headers: setAuthToken()
   })
 }

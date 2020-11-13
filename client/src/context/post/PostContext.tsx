@@ -7,6 +7,48 @@ import {
   UPDATE_LIKES
 } from 'context/types'
 import { createContext } from 'react'
+import { openAlert } from 'utils'
+
+interface ILike {
+  _id: string
+  user: string
+  date: string
+}
+
+interface IComment {
+  _id: string
+  user: string
+  text: string
+  avatar: string
+  username: string
+  date: string
+}
+
+interface IPost {
+  _id: string
+  user: string
+  title: string
+  content: string
+  avatar: string
+  username: string
+  likes: ILike[]
+  comments: IComment[]
+  date: string
+}
+
+interface InitialStateType {
+  state: {
+    post: IPost | null
+    posts: IPost[]
+    pageLoading: boolean
+  }
+  actions: {
+    getAllPosts: () => any
+    getSinglePost: () => any
+    addLike: (postId: string) => any
+    removeLike: (postId: string) => any
+  }
+}
 
 const initialState = {
   state: {
@@ -16,11 +58,13 @@ const initialState = {
   },
   actions: {
     getAllPosts: () => {},
-    getSinglePost: () => {}
+    getSinglePost: () => {},
+    addLike: () => {},
+    removeLike: () => {}
   }
 }
 
-const PostContext = createContext(initialState)
+const PostContext = createContext<InitialStateType>(initialState)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -51,6 +95,16 @@ const reducer = (state: any, action: any) => {
           ...postState,
           post: payload,
           pageLoading: false
+        }
+      }
+    case UPDATE_LIKES:
+      return {
+        ...state,
+        state: {
+          ...postState,
+          posts: postState.posts.map((item: IPost) => {
+            return item['_id'] === payload.postId ? payload.post : item
+          })
         }
       }
     case POST_ERROR:
@@ -114,9 +168,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: { postId, post: res.data.post }
       })
     } catch (err) {
-      dispatch({
-        type: POST_ERROR
-      })
+      openAlert('warning', err.response.data.msg)
     }
   },
   removeLike: async (postId: string) => {
@@ -128,9 +180,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: { postId, post: res.data.post }
       })
     } catch (err) {
-      dispatch({
-        type: POST_ERROR
-      })
+      openAlert('warning', err.response.data.msg)
     }
   }
 })

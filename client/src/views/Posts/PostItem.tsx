@@ -2,6 +2,7 @@ import { ThumbsDown, ThumbsUp, Times } from '@styled-icons/fa-solid'
 import { AppLazyImage } from 'components/LazyImage'
 import { IconStyledWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
+import { PostContext } from 'context/post/PostContext'
 import moment from 'moment'
 import React, { useContext } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
@@ -142,39 +143,41 @@ const CommentCount = styled.span.attrs({
 `
 const LikeCount = styled.span``
 
-const PostItem: React.FC<PostItemProps> = ({ post }) => {
-  const { title, user, avatar, username, likes, comments, date } = post
+const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
+  const {
+    _id,
+    title,
+    user,
+    avatar,
+    username,
+    likes,
+    comments,
+    date
+  } = singlePost
 
   const auth = useContext(AuthContext)
   const { user: loggedInUser } = auth.state
 
+  const post = useContext(PostContext)
+  const { addLike, removeLike } = post.actions
+
   const history = useHistory()
   const location = useLocation()
 
-  const linkLocation = {
+  const toProfile = {
     pathname: `/profiles/${removeChar(username)}`,
     state: { userId: user }
   }
 
-  const likePost = () => {
+  const updateLikes = (like: boolean) => {
     if (loggedInUser === null) {
-      console.log(1)
       history.push({
         pathname: '/login',
         search: `?next=${location.pathname}`,
         state: { from: location }
       })
-    }
-  }
-
-  const unlikePost = () => {
-    if (loggedInUser === null) {
-      console.log(1)
-      history.push({
-        pathname: '/login',
-        search: `?next=${location.pathname}`,
-        state: { from: location }
-      })
+    } else {
+      like ? addLike(_id) : removeLike(_id)
     }
   }
 
@@ -183,7 +186,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
       <CardHeader>
         {/* 图片懒加载 */}
         <AppLazyImage
-          linkPath={linkLocation}
+          linkPath={toProfile}
           src={avatar}
           alt={`${username} profile image`}
           width={'40px'}
@@ -193,7 +196,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         {/* 用户信息 */}
         <UserInfo>
           <UserName>
-            <Link to={linkLocation}>{username}</Link>
+            <Link to={toProfile}>{username}</Link>
           </UserName>
           <PostDate>
             <Link to={`/posts/${removeChar(username)}/${removeChar(title)}`}>
@@ -210,14 +213,14 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           </Link>
         </CardBodyTitle>
 
-        <ControlButton onClick={likePost}>
+        <ControlButton onClick={() => updateLikes(true)}>
           <IconStyledWrapper>
             <ThumbsUp size="16" />
           </IconStyledWrapper>
           {likes.length > 0 && <LikeCount>{likes.length}</LikeCount>}
         </ControlButton>
 
-        <ControlButton onClick={unlikePost}>
+        <ControlButton onClick={() => updateLikes(false)}>
           <ThumbsDown size="16" />
         </ControlButton>
 
