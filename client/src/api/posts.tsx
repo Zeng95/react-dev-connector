@@ -1,3 +1,4 @@
+import { setAuthToken } from 'utils'
 import httpClient from './httpClient'
 
 // "Articles" are all the posts that users create. They can be a blog post, a discussion question, a help thread etc.
@@ -13,7 +14,21 @@ const getPostById = (postId: string) => {
 }
 
 const createPost = () => {
-  return httpClient.post(`${END_POINT}`)
+  return httpClient.post(`${END_POINT}`, {
+    headers: setAuthToken()
+  })
 }
 
-export { getPosts, getPostById, createPost }
+const likePost = (postId: string) => {
+  return httpClient.put(`${END_POINT}/like/${postId}`, {
+    headers: setAuthToken()
+  })
+}
+
+const unlikePost = (postId: string) => {
+  return httpClient.put(`${END_POINT}/unlike/${postId}`, {
+    headers: setAuthToken()
+  })
+}
+
+export { getPosts, getPostById, createPost, likePost, unlikePost }

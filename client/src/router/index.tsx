@@ -7,6 +7,7 @@ import { Register } from 'views/Auth/Register'
 import { Dashboard } from 'views/Dashboard'
 import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
+import { Post } from 'views/Post'
 import { Posts } from 'views/Posts'
 import { Profile } from 'views/Profile'
 import { CreateEducation } from 'views/ProfileForms/CreateEducation'
@@ -52,7 +53,7 @@ const Router: React.FC = () => (
       />
       <PublicRoute
         sensitive
-        path="/profiles/:userId"
+        path="/profiles/:username"
         restricted={false}
         component={Profile}
       />
@@ -66,9 +67,9 @@ const Router: React.FC = () => (
       <PublicRoute
         exact
         sensitive
-        path="/posts/:username/:id"
+        path="/posts/:username/:postname"
         restricted={false}
-        component={Posts}
+        component={Post}
       />
 
       <PrivateRoute exact sensitive path="/dashboard" component={Dashboard} />

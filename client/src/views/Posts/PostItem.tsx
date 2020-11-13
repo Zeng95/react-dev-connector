@@ -1,12 +1,14 @@
 import { ThumbsDown, ThumbsUp, Times } from '@styled-icons/fa-solid'
 import { AppLazyImage } from 'components/LazyImage'
 import { IconStyledWrapper } from 'components/Shared/Styles'
+import { AuthContext } from 'context/auth/AuthContext'
 import moment from 'moment'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Button } from 'rsuite'
+import React, { useContext } from 'react'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { Button, Icon, IconButton } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+import { removeChar } from 'utils'
 
 interface ILike {
   user: string
@@ -85,6 +87,10 @@ const UserName = styled.h4.attrs({
   className: 'text-sm font-medium'
 })`
   color: #4d5760;
+
+  &:hover {
+    color: #08090a;
+  }
 `
 const PostDate = styled.time.attrs({
   className: 'text-xs'
@@ -113,16 +119,71 @@ const ControlButton = styled(Button).attrs({
   height: 40px;
   padding: 0.5rem 1.25rem;
 `
+const IconButtonStyled = styled(IconButton).attrs({
+  className: 'items-center mr-3'
+})`
+  display: inline-flex;
+  height: 40px !important;
+  padding: 0.5rem 1.25rem;
+  padding-left: 40px !important;
+
+  > .rs-icon {
+    width: auto !important;
+    height: auto !important;
+    padding: 8px !important;
+  }
+`
+const CommentCount = styled.span.attrs({
+  className: 'inline-block ml-2 bg-light text-primary'
+})`
+  padding: 0.1rem 0.2rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+`
+const LikeCount = styled.span``
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
-  const { title, avatar, username, likes, comments, date } = post
+  const { title, user, avatar, username, likes, comments, date } = post
+
+  const auth = useContext(AuthContext)
+  const { user: loggedInUser } = auth.state
+
+  const history = useHistory()
+  const location = useLocation()
+
+  const linkLocation = {
+    pathname: `/profiles/${removeChar(username)}`,
+    state: { userId: user }
+  }
+
+  const likePost = () => {
+    if (loggedInUser === null) {
+      console.log(1)
+      history.push({
+        pathname: '/login',
+        search: `?next=${location.pathname}`,
+        state: { from: location }
+      })
+    }
+  }
+
+  const unlikePost = () => {
+    if (loggedInUser === null) {
+      console.log(1)
+      history.push({
+        pathname: '/login',
+        search: `?next=${location.pathname}`,
+        state: { from: location }
+      })
+    }
+  }
 
   return (
     <Card>
       <CardHeader>
         {/* 图片懒加载 */}
         <AppLazyImage
-          linkPath={`profiles`}
+          linkPath={linkLocation}
           src={avatar}
           alt={`${username} profile image`}
           width={'40px'}
@@ -132,44 +193,52 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         {/* 用户信息 */}
         <UserInfo>
           <UserName>
-            <Link to={`profiles`}>{username}</Link>
+            <Link to={linkLocation}>{username}</Link>
           </UserName>
-          <Link to="profiles">
-            <PostDate>{moment(date).format("MMM D 'YY")}</PostDate>
-          </Link>
+          <PostDate>
+            <Link to={`/posts/${removeChar(username)}/${removeChar(title)}`}>
+              {moment(date).format("MMM D 'YY")}
+            </Link>
+          </PostDate>
         </UserInfo>
       </CardHeader>
 
       <CardBody>
         <CardBodyTitle>
-          <Link to="profiles">{title}</Link>
+          <Link to={`/posts/${removeChar(username)}/${removeChar(title)}`}>
+            {title}
+          </Link>
         </CardBodyTitle>
 
-        <ControlButton>
+        <ControlButton onClick={likePost}>
           <IconStyledWrapper>
             <ThumbsUp size="16" />
           </IconStyledWrapper>
-          {likes.length > 0 && <span>{likes.length}</span>}
+          {likes.length > 0 && <LikeCount>{likes.length}</LikeCount>}
         </ControlButton>
 
-        <ControlButton>
-          <IconStyledWrapper>
-            <ThumbsDown size="16" />
-          </IconStyledWrapper>
+        <ControlButton onClick={unlikePost}>
+          <ThumbsDown size="16" />
         </ControlButton>
 
-        <ControlButton appearance="primary">
+        <IconButtonStyled
+          appearance="primary"
+          icon={<Icon icon="comments" />}
+          placement="left"
+        >
           <span>Comments</span>
           {comments.length > 0 && (
-            <span className="comment-count">{comments.length}</span>
+            <CommentCount>{comments.length}</CommentCount>
           )}
-        </ControlButton>
+        </IconButtonStyled>
 
-        <ControlButton color="red">
-          <IconStyledWrapper>
-            <Times size="16" />
-          </IconStyledWrapper>
-        </ControlButton>
+        {loggedInUser !== null && loggedInUser['_id'] === user && (
+          <ControlButton color="red">
+            <IconStyledWrapper>
+              <Times size="16" />
+            </IconStyledWrapper>
+          </ControlButton>
+        )}
       </CardBody>
     </Card>
   )

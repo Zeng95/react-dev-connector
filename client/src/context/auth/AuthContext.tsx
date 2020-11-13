@@ -140,9 +140,6 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: res.data.user
       })
     } catch (err) {
-      const { msg } = err.response.data
-      openNotification('error', msg)
-
       dispatch({
         type: AUTH_ERROR
       })

@@ -2,13 +2,17 @@ import { AppLoader } from 'components/Loader'
 import { PageStyled } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useCallback, useContext, useEffect } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileAbout } from './ProfileAbout'
 import { ProfileEducation } from './ProfileEducation'
 import { ProfileExperience } from './ProfileExperience'
 import { ProfileTop } from './ProfileTop'
+
+interface LocationState {
+  userId: string
+}
 
 const ProfileGrid = styled.div.attrs({
   className: 'my-4'
@@ -19,11 +23,12 @@ const SectionContainer = styled.section.attrs({
 
 const Profile: React.FC = () => {
   const history = useHistory()
-  const { userId } = useParams()
+  const location = useLocation<LocationState>()
+  const { userId } = location.state
 
-  const { state, actions } = useContext(ProfileContext)
-  const { pageLoading, profile } = state
-  const { getUserProfileByUserId } = actions
+  const profile = useContext(ProfileContext)
+  const { pageLoading, profile: singleProfile } = profile.state
+  const { getUserProfileByUserId } = profile.actions
 
   const getPorfileById = useCallback(getUserProfileByUserId, [])
 
@@ -39,20 +44,20 @@ const Profile: React.FC = () => {
     <AppLoader />
   ) : (
     <PageStyled>
-      {profile !== null ? (
+      {singleProfile !== null ? (
         <Fragment>
           <Button appearance="ghost" onClick={navigateToProfiles}>
             Back To Profiles
           </Button>
 
           <ProfileGrid>
-            <ProfileTop profile={profile} />
+            <ProfileTop profile={singleProfile} />
 
-            <ProfileAbout profile={profile} />
+            <ProfileAbout profile={singleProfile} />
 
             <SectionContainer>
-              <ProfileExperience experience={profile.experience} />
-              <ProfileEducation education={profile.education} />
+              <ProfileExperience experience={singleProfile.experience} />
+              <ProfileEducation education={singleProfile.education} />
             </SectionContainer>
           </ProfileGrid>
         </Fragment>

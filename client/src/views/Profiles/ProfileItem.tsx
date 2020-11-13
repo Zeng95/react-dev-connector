@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+import { removeChar } from 'utils'
 
 interface IUser {
   _id: string
@@ -140,14 +141,19 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
     user: { _id, avatar, username }
   } = profile
 
-  const navigateToProfile = (userId: string) => {
-    history.push(`/profiles/${userId}`)
+  const linkLocation = {
+    pathname: `/profiles/${removeChar(username)}`,
+    state: { userId: _id }
+  }
+
+  const navigateToProfile = () => {
+    history.push(linkLocation)
   }
 
   return (
     <ProfileItemStyled>
       <AppLazyImage
-        linkPath={`profiles/${_id}`}
+        linkPath={linkLocation}
         src={avatar}
         alt={`${username} profile image`}
       />
@@ -162,10 +168,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
         {location && <JobLocation>{location}</JobLocation>}
 
-        <ButtonStyled
-          appearance="primary"
-          onClick={() => navigateToProfile(_id)}
-        >
+        <ButtonStyled appearance="primary" onClick={navigateToProfile}>
           View Profile
         </ButtonStyled>
       </UserInfo>

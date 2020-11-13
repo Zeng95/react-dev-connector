@@ -5,6 +5,10 @@ const setAuthToken = () => {
   return token ? { 'x-auth-token': token } : {}
 }
 
+const removeChar = str => {
+  return str.trim().replace(/\s+/g, '-').toLowerCase()
+}
+
 const openAlert = (funcName, content, duration = 2000) => {
   Alert[funcName](content, duration)
 }
@@ -13,4 +17,4 @@ const openNotification = (funcName, description = 2000) => {
   Notification[funcName]({ title: funcName, description })
 }
 
-export { setAuthToken, openAlert, openNotification }
+export { setAuthToken, removeChar, openAlert, openNotification }

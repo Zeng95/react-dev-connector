@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 interface LazyImageProps {
-  linkPath: string
+  linkPath: {
+    pathname: string
+    state: { userId: string }
+  }
   src: string
   alt: string
   width?: string

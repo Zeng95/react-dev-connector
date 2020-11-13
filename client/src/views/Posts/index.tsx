@@ -6,6 +6,7 @@ import {
   PageStyled,
   Title
 } from 'components/Shared/Styles'
+import { AuthContext } from 'context/auth/AuthContext'
 import { PostContext } from 'context/post/PostContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
@@ -15,17 +16,23 @@ const PostList = styled.ul``
 const PostsNotFound = styled.h4``
 
 const Posts: React.FC = () => {
-  const { state, actions } = useContext(PostContext)
-  const { posts, pageLoading } = state
-  const { getAllPosts } = actions
+  const auth = useContext(AuthContext)
+  const { pageLoading: authPageLoading } = auth.state
+  const { userLoad } = auth.actions
 
+  const post = useContext(PostContext)
+  const { posts, pageLoading: profilePageLoading } = post.state
+  const { getAllPosts } = post.actions
+
+  const getCurrentUser = useCallback(userLoad, [])
   const getPosts = useCallback(getAllPosts, [])
 
   useEffect(() => {
+    getCurrentUser()
     getPosts()
-  }, [getPosts])
+  }, [getCurrentUser, getPosts])
 
-  return pageLoading ? (
+  return authPageLoading || profilePageLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

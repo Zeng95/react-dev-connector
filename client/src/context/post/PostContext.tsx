@@ -1,5 +1,11 @@
-import { getPosts } from 'api/posts'
-import { GET_POST, GET_POSTS, POST_ERROR, SHOW_LOADING } from 'context/types'
+import { getPosts, likePost, unlikePost } from 'api/posts'
+import {
+  GET_POST,
+  GET_POSTS,
+  POST_ERROR,
+  SHOW_LOADING,
+  UPDATE_LIKES
+} from 'context/types'
 import { createContext } from 'react'
 
 const initialState = {
@@ -92,6 +98,34 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       dispatch({
         type: GET_POSTS,
         payload: res.data.posts
+      })
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR
+      })
+    }
+  },
+  addLike: async (postId: string) => {
+    try {
+      const res = await likePost(postId)
+
+      dispatch({
+        type: UPDATE_LIKES,
+        payload: { postId, post: res.data.post }
+      })
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR
+      })
+    }
+  },
+  removeLike: async (postId: string) => {
+    try {
+      const res = await unlikePost(postId)
+
+      dispatch({
+        type: UPDATE_LIKES,
+        payload: { postId, post: res.data.post }
       })
     } catch (err) {
       dispatch({
