@@ -76,7 +76,7 @@ const ProfileItemStyled = styled.li.attrs({
 
     content: '';
     border-radius: 6px;
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   &::before {

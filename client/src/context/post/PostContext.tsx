@@ -1,5 +1,6 @@
-import { getPosts, likePost, unlikePost } from 'api/posts'
+import { deletePost, getPosts, likePost, unlikePost } from 'api/posts'
 import {
+  DELETE_POST,
   GET_POST,
   GET_POSTS,
   POST_ERROR,
@@ -45,6 +46,7 @@ interface InitialStateType {
   actions: {
     getAllPosts: () => any
     getSinglePost: () => any
+    deleteSinglePost: (postId: string) => any
     addLike: (postId: string) => any
     removeLike: (postId: string) => any
   }
@@ -59,6 +61,7 @@ const initialState = {
   actions: {
     getAllPosts: () => {},
     getSinglePost: () => {},
+    deleteSinglePost: () => {},
     addLike: () => {},
     removeLike: () => {}
   }
@@ -84,7 +87,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...postState,
-          posts: payload,
+          posts: payload.posts,
           pageLoading: false
         }
       }
@@ -93,8 +96,18 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...postState,
-          post: payload,
+          post: payload.post,
           pageLoading: false
+        }
+      }
+    case DELETE_POST:
+      return {
+        ...state,
+        state: {
+          ...postState,
+          posts: postState.posts.filter((item: IPost) => {
+            return item['_id'] !== payload.postId
+          })
         }
       }
     case UPDATE_LIKES:
@@ -133,7 +146,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: GET_POSTS,
-        payload: res.data.posts
+        payload: { posts: res.data.posts }
       })
     } catch (err) {
       dispatch({
@@ -151,12 +164,26 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: GET_POSTS,
-        payload: res.data.posts
+        payload: { post: res.data.post }
       })
     } catch (err) {
       dispatch({
         type: POST_ERROR
       })
+    }
+  },
+  deleteSinglePost: async (postId: string) => {
+    try {
+      const res = await deletePost(postId)
+
+      dispatch({
+        type: DELETE_POST,
+        payload: { postId }
+      })
+
+      openAlert('success', res.data.msg)
+    } catch (err) {
+      openAlert('error', err.response.data.msg)
     }
   },
   addLike: async (postId: string) => {

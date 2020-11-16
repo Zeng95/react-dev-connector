@@ -31,4 +31,10 @@ const unlikePost = (postId: string) => {
   })
 }
 
-export { getPosts, getPostById, createPost, likePost, unlikePost }
+const deletePost = (postId: string) => {
+  return httpClient.delete(`${END_POINT}/${postId}`, {
+    headers: setAuthToken()
+  })
+}
+
+export { getPosts, getPostById, createPost, likePost, unlikePost, deletePost }

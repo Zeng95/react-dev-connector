@@ -105,9 +105,12 @@ const CardBody = styled.div.attrs({
 const CardBodyTitle = styled.h2.attrs({
   className: 'mb-2 text-2xl font-bold'
 })`
-  color: #08090a;
-
   > a {
+    ${tw`inline-block`}
+
+    color: #08090a;
+    transition: color 0.3s;
+
     &:hover {
       color: #17a2b8;
     }
@@ -159,7 +162,7 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
   const { user: loggedInUser } = auth.state
 
   const post = useContext(PostContext)
-  const { addLike, removeLike } = post.actions
+  const { addLike, removeLike, deleteSinglePost } = post.actions
 
   const history = useHistory()
   const location = useLocation()
@@ -213,6 +216,7 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
           </Link>
         </CardBodyTitle>
 
+        {/* 喜欢 */}
         <ControlButton onClick={() => updateLikes(true)}>
           <IconStyledWrapper>
             <ThumbsUp size="16" />
@@ -220,10 +224,12 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
           {likes.length > 0 && <LikeCount>{likes.length}</LikeCount>}
         </ControlButton>
 
+        {/* 不喜欢 */}
         <ControlButton onClick={() => updateLikes(false)}>
           <ThumbsDown size="16" />
         </ControlButton>
 
+        {/* 留言 */}
         <IconButtonStyled
           appearance="primary"
           icon={<Icon icon="comments" />}
@@ -235,8 +241,9 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
           )}
         </IconButtonStyled>
 
+        {/* 删除 */}
         {loggedInUser !== null && loggedInUser['_id'] === user && (
-          <ControlButton color="red">
+          <ControlButton color="red" onClick={() => deleteSinglePost(_id)}>
             <IconStyledWrapper>
               <Times size="16" />
             </IconStyledWrapper>
