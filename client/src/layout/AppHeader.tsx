@@ -6,11 +6,15 @@ import {
 } from '@styled-icons/fa-solid'
 import { IconStyledWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Whisper } from 'rsuite'
-import styled from 'styled-components'
-import { HeaderMenuPopover } from './AppHeaderMenu'
+import styled, { css } from 'styled-components'
+import { AvatarDropdown } from './AvatarDropdown'
+
+interface MenuItemProps {
+  name?: string
+}
 
 const AppHeaderStyled = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full z-20'
@@ -43,19 +47,34 @@ const Logo = styled.h1.attrs({
 const Menu = styled.ul.attrs({
   className: 'flex items-center'
 })``
-const MenuItem = styled.li``
+const MenuItem = styled.li<MenuItemProps>`
+  ${props =>
+    props.name === 'popover' &&
+    css`
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    `}
+`
 const LinkStyled = styled(Link).attrs({
   className: 'flex items-center'
 })``
 
 const AppHeader: React.FC = () => {
   const auth = useContext(AuthContext)
-  const { isAuthenticated, token } = auth.state
+  const { user, isAuthenticated, token } = auth.state
+  const { userLoad } = auth.actions
+
+  const getCurrentUser = useCallback(userLoad, [])
 
   const triggerRef = React.createRef()
   const handleSelectMenu = (eventKey: any, event: any) => {
     console.log(eventKey)
   }
+
+  useEffect(() => {
+    getCurrentUser()
+  }, [getCurrentUser])
 
   const authLinks = (
     <Fragment>
@@ -64,18 +83,27 @@ const AppHeader: React.FC = () => {
           <IconStyledWrapper>
             <PenSquare size="16" title="Dashboard" />
           </IconStyledWrapper>
-          <span>Write a post</span>
+          <span>Write a Post</span>
         </LinkStyled>
       </MenuItem>
-      <MenuItem>
-        <Whisper
-          placement="bottomEnd"
-          trigger="click"
-          triggerRef={triggerRef}
-          speaker={<HeaderMenuPopover onSelect={handleSelectMenu} />}
-        >
-          <Avatar>RS</Avatar>
-        </Whisper>
+      <MenuItem name="popover">
+        {user !== null ? (
+          <Whisper
+            placement="bottomEnd"
+            trigger="click"
+            triggerRef={triggerRef}
+            speaker={<AvatarDropdown user={user} onSelect={handleSelectMenu} />}
+          >
+            <Avatar
+              circle
+              size="sm"
+              src={user.avatar}
+              alt={`${user.username} profile image`}
+            />
+          </Whisper>
+        ) : (
+          <Avatar circle size="sm" />
+        )}
       </MenuItem>
     </Fragment>
   )

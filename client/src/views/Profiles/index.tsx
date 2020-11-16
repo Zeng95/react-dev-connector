@@ -15,9 +15,9 @@ const ProfileList = styled.ul``
 const ProfilesNotFound = styled.h4``
 
 const Profiles: React.FC = () => {
-  const { state, actions } = useContext(ProfileContext)
-  const { profiles, pageLoading } = state
-  const { getAllUsersProfiles } = actions
+  const profile = useContext(ProfileContext)
+  const { profiles, pageLoading } = profile.state
+  const { getAllUsersProfiles } = profile.actions
 
   const getPorfiles = useCallback(getAllUsersProfiles, [])
 

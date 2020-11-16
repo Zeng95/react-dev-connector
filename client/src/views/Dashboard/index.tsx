@@ -16,21 +16,21 @@ import { EducationSection } from './EducationSection'
 import { ExperienceSection } from './ExperienceSection'
 
 const Dashboard: React.FC = () => {
-  const authContext = useContext(AuthContext)
-  const { user, pageLoading: authPageLoading } = authContext.state
-  const { userLoad } = authContext.actions
+  const auth = useContext(AuthContext)
+  const { user, pageLoading: authPageLoading } = auth.state
 
-  const profileContext = useContext(ProfileContext)
-  const { profile, pageLoading: profilePageLoading } = profileContext.state
-  const { getCurrentUserProfile } = profileContext.actions
+  const profile = useContext(ProfileContext)
+  const {
+    profile: singleProfile,
+    pageLoading: profilePageLoading
+  } = profile.state
+  const { getCurrentUserProfile } = profile.actions
 
-  const getCurrentUser = useCallback(userLoad, [])
   const getCurrentProfile = useCallback(getCurrentUserProfile, [])
 
   useEffect(() => {
-    getCurrentUser()
     getCurrentProfile()
-  }, [getCurrentUser, getCurrentProfile])
+  }, [getCurrentProfile])
 
   return authPageLoading || profilePageLoading || user === null ? (
     <AppLoader />
@@ -45,7 +45,7 @@ const Dashboard: React.FC = () => {
         <span>Welcome {user.username}</span>
       </Description>
 
-      {profile !== null ? (
+      {singleProfile !== null ? (
         <Fragment>
           <ActionsSection />
           <ExperienceSection />

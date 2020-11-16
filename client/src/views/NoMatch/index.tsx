@@ -1,14 +1,10 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+
+const NoMatchStyled = styled.div``
 
 const NoMatch: React.FC = () => {
-  let location = useLocation()
-
-  return (
-    <h3>
-      No match for <code>{location.pathname}</code>
-    </h3>
-  )
+  return <NoMatchStyled>Not Found</NoMatchStyled>
 }
 
 export { NoMatch }

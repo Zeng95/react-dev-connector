@@ -18,19 +18,16 @@ const PostsNotFound = styled.h4``
 const Posts: React.FC = () => {
   const auth = useContext(AuthContext)
   const { pageLoading: authPageLoading } = auth.state
-  const { userLoad } = auth.actions
 
   const post = useContext(PostContext)
   const { posts, pageLoading: profilePageLoading } = post.state
   const { getAllPosts } = post.actions
 
-  const getCurrentUser = useCallback(userLoad, [])
   const getPosts = useCallback(getAllPosts, [])
 
   useEffect(() => {
-    getCurrentUser()
     getPosts()
-  }, [getCurrentUser, getPosts])
+  }, [getPosts])
 
   return authPageLoading || profilePageLoading ? (
     <AppLoader />
