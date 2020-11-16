@@ -13,8 +13,8 @@ const openAlert = (funcName, content, duration = 2000) => {
   Alert[funcName](content, duration)
 }
 
-const openNotification = (funcName, description = 2000) => {
-  Notification[funcName]({ title: funcName, description })
+const openNotification = (funcName, title, description = 2000) => {
+  Notification[funcName]({ title, description })
 }
 
 export { setAuthToken, removeChar, openAlert, openNotification }

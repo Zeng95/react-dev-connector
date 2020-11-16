@@ -1,5 +1,5 @@
-import { AppHeader } from 'components/App/AppHeader'
-import { AppFooter } from 'components/App/AppFooter'
+import { AppHeader } from './AppHeader'
+import { AppFooter } from './AppFooter'
 import { AppContent } from 'components/Shared/Styles'
 import React from 'react'
 import styled from 'styled-components'

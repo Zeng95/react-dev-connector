@@ -1,7 +1,6 @@
 import {
   PenSquare,
   ShareAlt,
-  SignOutAlt,
   UserEdit,
   UserFriends
 } from '@styled-icons/fa-solid'
@@ -9,11 +8,9 @@ import { IconStyledWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { Avatar, Whisper } from 'rsuite'
 import styled from 'styled-components'
-
-interface LinkProps {
-  readonly name: string
-}
+import { HeaderMenuPopover } from './AppHeaderMenu'
 
 const AppHeaderStyled = styled.header.attrs({
   className: 'fixed top-0 left-0 right-0 w-full z-20'
@@ -52,8 +49,13 @@ const LinkStyled = styled(Link).attrs({
 })``
 
 const AppHeader: React.FC = () => {
-  const { state } = useContext(AuthContext)
-  const { isAuthenticated, token } = state
+  const auth = useContext(AuthContext)
+  const { isAuthenticated, token } = auth.state
+
+  const triggerRef = React.createRef()
+  const handleSelectMenu = (eventKey: any, event: any) => {
+    console.log(eventKey)
+  }
 
   const authLinks = (
     <Fragment>
@@ -66,12 +68,14 @@ const AppHeader: React.FC = () => {
         </LinkStyled>
       </MenuItem>
       <MenuItem>
-        <LinkStyled to="/logout">
-          <IconStyledWrapper>
-            <SignOutAlt size="16" title="Logout account" />
-          </IconStyledWrapper>
-          <span>Logout</span>
-        </LinkStyled>
+        <Whisper
+          placement="bottomEnd"
+          trigger="click"
+          triggerRef={triggerRef}
+          speaker={<HeaderMenuPopover onSelect={handleSelectMenu} />}
+        >
+          <Avatar>RS</Avatar>
+        </Whisper>
       </MenuItem>
     </Fragment>
   )

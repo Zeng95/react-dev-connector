@@ -1,4 +1,4 @@
-import { AppLayout } from 'components/App/AppLayout'
+import { AppLayout } from 'layout'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { useContext } from 'react'
 import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom'

@@ -15,7 +15,7 @@ import {
   UPDATE_LIKES
 } from 'context/types'
 import { createContext } from 'react'
-import { openAlert } from 'utils'
+import { openAlert, openNotification } from 'utils'
 
 interface ILike {
   _id: string
@@ -199,9 +199,9 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         payload: { post: res.data.post }
       })
 
-      openAlert('success', res.data.msg)
+      openNotification('success', 'Success', res.data.msg)
     } catch (err) {
-      openAlert('error', err.response.data.msg)
+      openNotification('error', 'Error', err.response.data.msg)
     }
   },
   deleteSinglePost: async (postId: string) => {

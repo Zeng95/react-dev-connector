@@ -11,7 +11,17 @@ const CreatePost: React.FC = () => {
   console.log(createSinglePost)
   return (
     <PageStyled>
-      <ArticleForm>Create Post</ArticleForm>
+      <ArticleForm>
+        <header>header</header>
+        <main>
+          <div></div>
+
+          <aside>
+            <h2>Related</h2>
+          </aside>
+        </main>
+        <footer>footer</footer>
+      </ArticleForm>
     </PageStyled>
   )
 }
