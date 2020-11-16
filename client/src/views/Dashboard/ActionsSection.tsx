@@ -1,5 +1,5 @@
 import { BlackTie } from '@styled-icons/fa-brands'
-import { GraduationCap, PenSquare, UserCircle } from '@styled-icons/fa-solid'
+import { GraduationCap, UserCircle } from '@styled-icons/fa-solid'
 import { DashboardSection } from 'components/Shared/Styles'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -38,11 +38,6 @@ const ActionsSection: React.FC = () => (
     <LinkStyled to="/user/create-education">
       <GraduationCap size="18" />
       <span>Add Education</span>
-    </LinkStyled>
-
-    <LinkStyled to="/posts/new">
-      <PenSquare size="18" />
-      <span>Write a Post</span>
     </LinkStyled>
   </DashboardSection>
 )

@@ -1,5 +1,12 @@
-import { deletePost, getPosts, likePost, unlikePost } from 'api/posts'
 import {
+  createPost,
+  deletePost,
+  getPosts,
+  likePost,
+  unlikePost
+} from 'api/posts'
+import {
+  CREATE_POST,
   DELETE_POST,
   GET_POST,
   GET_POSTS,
@@ -46,6 +53,7 @@ interface InitialStateType {
   actions: {
     getAllPosts: () => any
     getSinglePost: () => any
+    createSinglePost: (post: any) => any
     deleteSinglePost: (postId: string) => any
     addLike: (postId: string) => any
     removeLike: (postId: string) => any
@@ -61,6 +69,7 @@ const initialState = {
   actions: {
     getAllPosts: () => {},
     getSinglePost: () => {},
+    createSinglePost: () => {},
     deleteSinglePost: () => {},
     addLike: () => {},
     removeLike: () => {}
@@ -97,6 +106,15 @@ const reducer = (state: any, action: any) => {
         state: {
           ...postState,
           post: payload.post,
+          pageLoading: false
+        }
+      }
+    case CREATE_POST:
+      return {
+        ...state,
+        state: {
+          ...postState,
+          posts: [...postState.posts, payload.post],
           pageLoading: false
         }
       }
@@ -170,6 +188,20 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       dispatch({
         type: POST_ERROR
       })
+    }
+  },
+  createSinglePost: async (post: IPost) => {
+    try {
+      const res = await createPost(post)
+
+      dispatch({
+        type: CREATE_POST,
+        payload: { post: res.data.post }
+      })
+
+      openAlert('success', res.data.msg)
+    } catch (err) {
+      openAlert('error', err.response.data.msg)
     }
   },
   deleteSinglePost: async (postId: string) => {

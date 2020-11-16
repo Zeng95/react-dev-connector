@@ -8,6 +8,7 @@ import { Dashboard } from 'views/Dashboard'
 import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
 import { Post } from 'views/Post'
+import { CreatePost } from 'views/PostForms/CreatePost'
 import { Posts } from 'views/Posts'
 import { Profile } from 'views/Profile'
 import { CreateEducation } from 'views/ProfileForms/CreateEducation'
@@ -73,6 +74,7 @@ const Router: React.FC = () => (
       />
 
       <PrivateRoute exact sensitive path="/dashboard" component={Dashboard} />
+      <PrivateRoute exact sensitive path="/posts/new" component={CreatePost} />
       <PrivateRoute
         exact
         sensitive

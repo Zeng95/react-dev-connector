@@ -13,8 +13,8 @@ const getPostById = (postId: string) => {
   return httpClient.get(`${END_POINT}/${postId}`)
 }
 
-const createPost = () => {
-  return httpClient.post(`${END_POINT}`, {
+const createPost = (post: any) => {
+  return httpClient.post(`${END_POINT}`, post, {
     headers: setAuthToken()
   })
 }

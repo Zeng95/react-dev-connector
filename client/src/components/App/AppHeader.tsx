@@ -1,7 +1,7 @@
 import {
+  PenSquare,
   ShareAlt,
   SignOutAlt,
-  TachometerAlt,
   UserEdit,
   UserFriends
 } from '@styled-icons/fa-solid'
@@ -58,11 +58,11 @@ const AppHeader: React.FC = () => {
   const authLinks = (
     <Fragment>
       <MenuItem>
-        <LinkStyled to="/dashboard">
+        <LinkStyled to="/posts/new">
           <IconStyledWrapper>
-            <TachometerAlt size="16" title="Dashboard" />
+            <PenSquare size="16" title="Dashboard" />
           </IconStyledWrapper>
-          <span>Dashboard</span>
+          <span>Write a post</span>
         </LinkStyled>
       </MenuItem>
       <MenuItem>

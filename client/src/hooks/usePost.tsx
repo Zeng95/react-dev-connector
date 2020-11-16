@@ -1,0 +1,3 @@
+function usePost() {}
+
+export { usePost }
