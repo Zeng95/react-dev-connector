@@ -1,7 +1,7 @@
 import { ProfileContext } from 'context/profile/ProfileContext'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Alert } from 'rsuite'
+import { openAlert } from 'utils'
 
 function useProfile() {
   const { state, actions } = useContext(ProfileContext)
@@ -55,12 +55,21 @@ function useProfile() {
 
     if (edit) {
       updateUserProfile(profileForm)
-      Alert.success('Profile Updated', 2000)
+        .then(() => {
+          openAlert('success', 'Profile Successfully Updated')
+        })
+        .catch(() => {
+          openAlert('error', 'Profile Unsuccessfully Updated')
+        })
     } else {
       createUserProfile(profileForm)
-      Alert.success('Profile Created', 2000)
-
-      navigateToDashboard()
+        .then(() => {
+          navigateToDashboard()
+          openAlert('success', 'Profile Successfully Created')
+        })
+        .catch(() => {
+          openAlert('error', 'Profile Unsuccessfully Created')
+        })
     }
   }
 

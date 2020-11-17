@@ -7,8 +7,8 @@ const ArticleForm = styled.form``
 
 const CreatePost: React.FC = () => {
   const post = useContext(PostContext)
-  const { createSinglePost } = post.actions
-  console.log(createSinglePost)
+  const { createUserPost } = post.actions
+  console.log(createUserPost)
   return (
     <PageStyled>
       <ArticleForm>

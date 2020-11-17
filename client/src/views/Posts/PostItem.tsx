@@ -162,7 +162,7 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
   const { user: loggedInUser } = auth.state
 
   const post = useContext(PostContext)
-  const { addLike, removeLike, deleteSinglePost } = post.actions
+  const { addLike, removeLike, deleteUserPost } = post.actions
 
   const history = useHistory()
   const location = useLocation()
@@ -244,7 +244,7 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
 
         {/* 删除 */}
         {loggedInUser !== null && loggedInUser['_id'] === user && (
-          <ControlButton color="red" onClick={() => deleteSinglePost(_id)}>
+          <ControlButton color="red" onClick={() => deleteUserPost(_id)}>
             <IconStyledWrapper>
               <Times size="16" />
             </IconStyledWrapper>

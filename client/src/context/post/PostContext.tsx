@@ -54,8 +54,8 @@ interface InitialStateType {
   actions: {
     getAllPosts: () => any
     getSinglePost: (postId: string) => any
-    createSinglePost: (post: any) => any
-    deleteSinglePost: (postId: string) => any
+    createUserPost: (post: any) => any
+    deleteUserPost: (postId: string) => any
     addLike: (postId: string) => any
     removeLike: (postId: string) => any
   }
@@ -70,8 +70,8 @@ const initialState = {
   actions: {
     getAllPosts: () => {},
     getSinglePost: () => {},
-    createSinglePost: () => {},
-    deleteSinglePost: () => {},
+    createUserPost: () => {},
+    deleteUserPost: () => {},
     addLike: () => {},
     removeLike: () => {}
   }
@@ -191,7 +191,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  createSinglePost: async (post: IPost) => {
+  createUserPost: async (post: IPost) => {
     try {
       const res = await createPost(post)
 
@@ -205,7 +205,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       openNotification('error', 'Error', err.response.data.msg)
     }
   },
-  deleteSinglePost: async (postId: string) => {
+  deleteUserPost: async (postId: string) => {
     try {
       const res = await deletePost(postId)
 

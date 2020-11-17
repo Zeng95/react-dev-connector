@@ -259,32 +259,44 @@ const actions = (dispatch: React.Dispatch<any>) => ({
     }
   },
   createUserProfile: async (profile: any) => {
-    try {
-      const res = await createProfile(profile)
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await createProfile(profile)
 
-      dispatch({
-        type: GET_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: GET_PROFILE,
+          payload: res.data.profile
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
   updateUserProfile: async (profile: any) => {
-    try {
-      const res = await updateProfile(profile)
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await updateProfile(profile)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: res.data.profile
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
   createUserProfileExperience: (experience: any) => {
     return new Promise(async (resolve, reject) => {
