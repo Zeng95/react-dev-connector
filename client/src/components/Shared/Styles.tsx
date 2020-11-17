@@ -77,3 +77,6 @@ export const HeaderCellStyled = styled(HeaderCell)`
 export const ProfileSectionTitle = styled.h2.attrs({
   className: 'text-primary font-bold text-2xl'
 })``
+
+export const List = styled.ul``
+export const NotFound = styled.h4``

@@ -1,5 +1,6 @@
 // Global
 export const SHOW_LOADING = 'SHOW_LOADING'
+export const SHOW_BTN_LOADING = 'SHOW_BTN_LOADING'
 
 // Auth
 export const LOGIN = 'LOGIN'

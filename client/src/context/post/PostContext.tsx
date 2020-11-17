@@ -1,6 +1,7 @@
 import {
   createPost,
   deletePost,
+  getPostById,
   getPosts,
   likePost,
   unlikePost
@@ -52,7 +53,7 @@ interface InitialStateType {
   }
   actions: {
     getAllPosts: () => any
-    getSinglePost: () => any
+    getSinglePost: (postId: string) => any
     createSinglePost: (post: any) => any
     deleteSinglePost: (postId: string) => any
     addLike: (postId: string) => any
@@ -172,16 +173,16 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getSinglePost: async () => {
+  getSinglePost: async (postId: string) => {
     try {
       dispatch({
         type: SHOW_LOADING
       })
 
-      const res = await getPosts()
+      const res = await getPostById(postId)
 
       dispatch({
-        type: GET_POSTS,
+        type: GET_POST,
         payload: { post: res.data.post }
       })
     } catch (err) {

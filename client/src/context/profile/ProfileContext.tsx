@@ -90,9 +90,9 @@ interface InitialStateType {
     pageLoading: boolean
   }
   actions: {
-    getAllUsersProfiles: () => any
+    getAllProfiles: () => any
+    getSignleProfile: (userId: string) => any
     getCurrentUserProfile: () => any
-    getUserProfileByUserId: (userId: string) => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
     createUserProfileExperience: (experience: any) => any
@@ -113,9 +113,9 @@ const initialState = {
     pageLoading: true
   },
   actions: {
-    getAllUsersProfiles: () => {},
+    getAllProfiles: () => {},
+    getSignleProfile: () => {},
     getCurrentUserProfile: () => {},
-    getUserProfileByUserId: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
     createUserProfileExperience: () => {},
@@ -204,7 +204,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getAllUsersProfiles: async () => {
+  getAllProfiles: async () => {
     try {
       dispatch({
         type: SHOW_LOADING
@@ -222,13 +222,13 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getCurrentUserProfile: async () => {
+  getSignleProfile: async (userId: string) => {
     try {
       dispatch({
         type: SHOW_LOADING
       })
 
-      const res = await getProfile()
+      const res = await getProfileById(userId)
 
       dispatch({
         type: GET_PROFILE,
@@ -240,13 +240,13 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getUserProfileByUserId: async (userId: string) => {
+  getCurrentUserProfile: async () => {
     try {
       dispatch({
         type: SHOW_LOADING
       })
 
-      const res = await getProfileById(userId)
+      const res = await getProfile()
 
       dispatch({
         type: GET_PROFILE,

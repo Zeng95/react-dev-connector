@@ -3,24 +3,22 @@ import { AppLoader } from 'components/Loader'
 import {
   Description,
   IconStyledWrapper,
+  List,
+  NotFound,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
-import { AuthContext } from 'context/auth/AuthContext'
 import { PostContext } from 'context/post/PostContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { PostItem } from './PostItem'
 
-const PostList = styled.ul``
-const PostsNotFound = styled.h4``
+const PostList = styled(List)``
+const PostsNotFound = styled(NotFound)``
 
 const Posts: React.FC = () => {
-  const auth = useContext(AuthContext)
-  const { pageLoading: authPageLoading } = auth.state
-
   const post = useContext(PostContext)
-  const { posts, pageLoading: profilePageLoading } = post.state
+  const { pageLoading: postsDataLoading, posts } = post.state
   const { getAllPosts } = post.actions
 
   const getPosts = useCallback(getAllPosts, [])
@@ -29,7 +27,7 @@ const Posts: React.FC = () => {
     getPosts()
   }, [getPosts])
 
-  return authPageLoading || profilePageLoading ? (
+  return postsDataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

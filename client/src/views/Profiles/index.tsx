@@ -3,6 +3,8 @@ import { AppLoader } from 'components/Loader'
 import {
   Description,
   IconStyledWrapper,
+  List,
+  NotFound,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -11,21 +13,21 @@ import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfileItem } from './ProfileItem'
 
-const ProfileList = styled.ul``
-const ProfilesNotFound = styled.h4``
+const ProfileList = styled(List)``
+const ProfilesNotFound = styled(NotFound)``
 
 const Profiles: React.FC = () => {
   const profile = useContext(ProfileContext)
-  const { profiles, pageLoading } = profile.state
-  const { getAllUsersProfiles } = profile.actions
+  const { pageLoading: profilesDataLoading, profiles } = profile.state
+  const { getAllProfiles } = profile.actions
 
-  const getPorfiles = useCallback(getAllUsersProfiles, [])
+  const getPorfiles = useCallback(getAllProfiles, [])
 
   useEffect(() => {
     getPorfiles()
   }, [getPorfiles])
 
-  return pageLoading ? (
+  return profilesDataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

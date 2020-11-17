@@ -27,10 +27,13 @@ const Profile: React.FC = () => {
   const { userId } = location.state
 
   const profile = useContext(ProfileContext)
-  const { pageLoading, profile: singleProfile } = profile.state
-  const { getUserProfileByUserId } = profile.actions
+  const {
+    pageLoading: profileDataLoading,
+    profile: singleProfile
+  } = profile.state
+  const { getSignleProfile } = profile.actions
 
-  const getPorfileById = useCallback(getUserProfileByUserId, [])
+  const getPorfileById = useCallback(getSignleProfile, [])
 
   const navigateToProfiles = () => {
     history.push('/profiles')
@@ -40,7 +43,7 @@ const Profile: React.FC = () => {
     getPorfileById(userId)
   }, [getPorfileById, userId])
 
-  return pageLoading ? (
+  return profileDataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

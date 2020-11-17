@@ -172,6 +172,11 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
     state: { userId: user }
   }
 
+  const toPost = {
+    pathname: `/posts/${removeChar(username)}/${removeChar(title)}`,
+    state: { postId: _id }
+  }
+
   const updateLikes = (like: boolean) => {
     if (loggedInUser === null) {
       history.push({
@@ -202,18 +207,14 @@ const PostItem: React.FC<PostItemProps> = ({ post: singlePost }) => {
             <Link to={toProfile}>{username}</Link>
           </UserName>
           <PostDate>
-            <Link to={`/posts/${removeChar(username)}/${removeChar(title)}`}>
-              {moment(date).format("MMM D 'YY")}
-            </Link>
+            <Link to={toPost}>{moment(date).format("MMM D 'YY")}</Link>
           </PostDate>
         </UserInfo>
       </CardHeader>
 
       <CardBody>
         <CardBodyTitle>
-          <Link to={`/posts/${removeChar(username)}/${removeChar(title)}`}>
-            {title}
-          </Link>
+          <Link to={toPost}>{title}</Link>
         </CardBodyTitle>
 
         {/* 喜欢 */}
