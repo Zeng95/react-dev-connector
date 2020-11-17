@@ -90,9 +90,10 @@ const AppHeader: React.FC = () => {
         {user !== null ? (
           <Whisper
             placement="bottomEnd"
-            trigger="click"
+            trigger="hover"
             triggerRef={triggerRef}
             speaker={<AvatarDropdown user={user} onSelect={handleSelectMenu} />}
+            enterable={true}
           >
             <Avatar
               circle
