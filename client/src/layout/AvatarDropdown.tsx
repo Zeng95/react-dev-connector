@@ -68,6 +68,7 @@ const AvatarDropdown: React.FC<AvatarDropdownProps> = ({
         <Dropdown.Item>Write a Post</Dropdown.Item>
         <Dropdown.Item>Edit profile</Dropdown.Item>
         <Dropdown.Item divider />
+        <Dropdown.Item>Help</Dropdown.Item>
         <Dropdown.Item>Log out</Dropdown.Item>
       </Dropdown.Menu>
     </Popover>

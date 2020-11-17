@@ -6,7 +6,7 @@ const FooterStyled = styled.footer.attrs({
 })``
 
 const AppFooter: React.FC = () => {
-  return <FooterStyled>Copyright © 2020 DevConnector</FooterStyled>
+  return <FooterStyled>© 2020 DevConnector. All Rights Reserved.</FooterStyled>
 }
 
 export { AppFooter }
