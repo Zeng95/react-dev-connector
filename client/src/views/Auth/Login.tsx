@@ -58,7 +58,7 @@ const Callout = styled.p.attrs({
 
 const Login: React.FC = () => {
   const location = useLocation<LocationState>()
-  const { from } = location.state || { from: { pathname: '/' } }
+  const { from } = location.state || { from: { pathname: '/dashboard' } }
 
   const auth = useContext(AuthContext)
   const { submitLoading } = auth.state

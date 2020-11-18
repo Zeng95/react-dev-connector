@@ -41,8 +41,10 @@ const Dashboard: React.FC = () => {
 
   // 只在页面初始化时运行
   useEffect(() => {
-    getMyProfile()
-  }, [getMyProfile])
+    if (singleProfile === null) {
+      getMyProfile()
+    }
+  }, [singleProfile, getMyProfile])
 
   return authDataLoading || profileDataLoading || user === null ? (
     <AppLoader />

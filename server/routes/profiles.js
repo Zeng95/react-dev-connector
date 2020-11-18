@@ -155,7 +155,7 @@ router.post('/', verifyToken, async (req, res) => {
       facebook,
       linkedin,
       youtube,
-      instgram,
+      instagram,
       weibo
     } = req.body
     const profileFields = { user: req.userId, status }
@@ -177,7 +177,7 @@ router.post('/', verifyToken, async (req, res) => {
     if (facebook) profileFields.social.facebook = facebook
     if (linkedin) profileFields.social.linkedin = linkedin
     if (youtube) profileFields.social.youtube = youtube
-    if (instgram) profileFields.social.instgram = instgram
+    if (instagram) profileFields.social.instagram = instagram
     if (weibo) profileFields.social.weibo = weibo
 
     // Create
@@ -219,7 +219,7 @@ router.put('/', verifyToken, async (req, res) => {
       facebook,
       linkedin,
       youtube,
-      instgram,
+      instagram,
       weibo
     } = req.body
     const profileFields = { user: req.userId, status }
@@ -241,8 +241,8 @@ router.put('/', verifyToken, async (req, res) => {
     if (facebook) profileFields.social.facebook = facebook
     if (linkedin) profileFields.social.linkedin = linkedin
     if (youtube) profileFields.social.youtube = youtube
-    if (instgram) profileFields.social.instgram = instgram
-    if (weibo) profileFields.social.instgram = weibo
+    if (instagram) profileFields.social.instagram = instagram
+    if (weibo) profileFields.social.weibo = weibo
 
     // Update
     const updatedProfile = await Profile.findOneAndUpdate(

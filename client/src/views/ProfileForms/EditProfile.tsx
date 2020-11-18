@@ -3,6 +3,7 @@ import { AppLoader } from 'components/Loader'
 import {
   Description,
   IconStyledWrapper,
+  Instruction,
   PageStyled,
   Title
 } from 'components/Shared/Styles'
@@ -12,16 +13,22 @@ import { ProfileForm } from 'views/ProfileForms/SharedProfileForm'
 
 const EditProfile: React.FC = () => {
   const profile = useContext(ProfileContext)
-  const { dataLoading } = profile.state
+  const {
+    dataLoading: profileDataLoading,
+    profile: singleProfile
+  } = profile.state
   const { getCurrentProfile } = profile.actions
 
   const getMyProfile = useCallback(getCurrentProfile, [])
 
+  // 只在页面初始化时运行
   useEffect(() => {
-    getMyProfile()
-  }, [getMyProfile])
+    if (singleProfile === null) {
+      getMyProfile()
+    }
+  }, [singleProfile, getMyProfile])
 
-  return dataLoading ? (
+  return profileDataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>
@@ -33,6 +40,8 @@ const EditProfile: React.FC = () => {
         </IconStyledWrapper>
         <span>Let's get some information to make your profile stand out</span>
       </Description>
+
+      <Instruction>* = required field</Instruction>
 
       <ProfileForm edit={true} />
     </PageStyled>

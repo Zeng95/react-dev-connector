@@ -73,8 +73,10 @@ const AppHeader: React.FC = () => {
   }
 
   useEffect(() => {
-    getCurrentUser()
-  }, [getCurrentUser])
+    if (user === null) {
+      getCurrentUser()
+    }
+  }, [user, getCurrentUser])
 
   const authLinks = (
     <Fragment>

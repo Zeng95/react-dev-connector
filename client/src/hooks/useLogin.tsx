@@ -12,6 +12,7 @@ function LoginPage() {
   const history = useHistory()
 
   const auth = useContext(AuthContext)
+  const { submitLoading } = auth.state
   const { userLogin } = auth.actions
 
   const formEl = useRef<HTMLFormElement>(null)
@@ -31,11 +32,12 @@ function LoginPage() {
   ]
 
   const onSubmit = (from: any) => {
-    if (formEl.current !== null && !formEl.current.check()) return false
+    if (formEl.current !== null && !formEl.current.check()) {
+      return false
+    }
 
     userLogin(user)
       .then(() => {
-        console.log(from)
         history.replace(from)
       })
       .catch((err: any) => {
@@ -50,7 +52,7 @@ function LoginPage() {
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>, from: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !submitLoading) {
       onSubmit(from)
     }
   }

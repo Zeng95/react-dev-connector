@@ -1,5 +1,5 @@
 // Global
-export const SHOW_LOADING = 'SHOW_LOADING'
+export const SHOW_DATA_LOADING = 'SHOW_DATA_LOADING'
 export const SHOW_BTN_LOADING = 'SHOW_BTN_LOADING'
 
 // Auth
@@ -8,7 +8,6 @@ export const LOGOUT = 'LOGOUT'
 export const REGISTER = 'REGISTER'
 export const USER_LOADED = 'USER_LOADED'
 export const ACCOUNT_DELETED = 'ACCOUNT_DELETED'
-export const AUTH_SUBMIT = 'AUTH_SUBMIT'
 export const AUTH_ERROR = 'AUTH_ERROR'
 
 // Profile

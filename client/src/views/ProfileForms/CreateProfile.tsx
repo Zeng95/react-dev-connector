@@ -13,16 +13,22 @@ import { ProfileForm } from 'views/ProfileForms/SharedProfileForm'
 
 const CreateProfile: React.FC = () => {
   const profile = useContext(ProfileContext)
-  const { dataLoading } = profile.state
+  const {
+    dataLoading: profileDataLoading,
+    profile: singleProfile
+  } = profile.state
   const { getCurrentProfile } = profile.actions
 
   const getMyProfile = useCallback(getCurrentProfile, [])
 
+  // 只在页面初始化时运行
   useEffect(() => {
-    getMyProfile()
-  }, [getMyProfile])
+    if (singleProfile === null) {
+      getMyProfile()
+    }
+  }, [singleProfile, getMyProfile])
 
-  return dataLoading ? (
+  return profileDataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

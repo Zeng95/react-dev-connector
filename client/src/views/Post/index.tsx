@@ -15,7 +15,7 @@ const Post: React.FC = () => {
   const { postId } = location.state
 
   const post = useContext(PostContext)
-  const { pageLoading: postDataLoading, post: singlePost } = post.state
+  const { dataLoading: postDataLoading, post: singlePost } = post.state
   const { getSinglePost } = post.actions
 
   const getPost = useCallback(getSinglePost, [])

@@ -4,9 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { openAlert } from 'utils'
 
 function useProfile() {
-  const { state, actions } = useContext(ProfileContext)
-  const { profile } = state
-  const { createUserProfile, updateUserProfile } = actions
+  const profile = useContext(ProfileContext)
+  const { profile: singleProfile } = profile.state
+  const { createUserProfile, updateUserProfile } = profile.actions
 
   const history = useHistory()
   const location = useLocation()
@@ -26,20 +26,50 @@ function useProfile() {
     facebook: '',
     linkedin: '',
     youtube: '',
-    instgram: '',
+    instagram: '',
     weibo: ''
   })
 
   useEffect(() => {
     const { pathname } = location
 
-    if (profile !== null) {
+    if (singleProfile !== null) {
       if (pathname === '/user/edit-profile') {
-        setProfileForm(profileForm => ({
-          ...profileForm,
-          ...profile,
-          skills: profile.skills.join(', ')
-        }))
+        setProfileForm({
+          status: singleProfile.status,
+          company: singleProfile.company ? singleProfile.company : '',
+          website: singleProfile.website ? singleProfile.website : '',
+          location: singleProfile.location ? singleProfile.location : '',
+          skills: singleProfile.skills.join(', '),
+          githubusername: singleProfile.githubusername
+            ? singleProfile.githubusername
+            : '',
+          bio: singleProfile.bio ? singleProfile.bio : '',
+          twitter:
+            singleProfile.social && singleProfile.social.twitter
+              ? singleProfile.social.twitter
+              : '',
+          facebook:
+            singleProfile.social && singleProfile.social.facebook
+              ? singleProfile.social.facebook
+              : '',
+          linkedin:
+            singleProfile.social && singleProfile.social.linkedin
+              ? singleProfile.social.linkedin
+              : '',
+          youtube:
+            singleProfile.social && singleProfile.social.youtube
+              ? singleProfile.social.youtube
+              : '',
+          instagram:
+            singleProfile.social && singleProfile.social.instagram
+              ? singleProfile.social.instagram
+              : '',
+          weibo:
+            singleProfile.social && singleProfile.social.weibo
+              ? singleProfile.social.weibo
+              : ''
+        })
       } else if (pathname === '/user/create-profile') {
         history.push('/dashboard')
       }
@@ -48,10 +78,12 @@ function useProfile() {
         history.push('/dashboard')
       }
     }
-  }, [profile, history, location])
+  }, [singleProfile, history, location])
 
-  const onSubmit = (edit: boolean) => {
-    if (formEl.current !== null && !formEl.current.check()) return false
+  const handleSubmit = (edit: boolean) => {
+    if (formEl.current !== null && !formEl.current.check()) {
+      return false
+    }
 
     if (edit) {
       updateUserProfile(profileForm)
@@ -73,20 +105,20 @@ function useProfile() {
     }
   }
 
-  const onKeyUp = (
+  const handleKeyUp = (
     event: React.KeyboardEvent<HTMLInputElement>,
     edit: boolean
   ) => {
     if (event.key === 'Enter') {
-      onSubmit(edit)
+      handleSubmit(edit)
     }
   }
 
-  const onChange = (formValue: any) => {
+  const handleChange = (formValue: any) => {
     setProfileForm(formValue)
   }
 
-  const onReset = () => {
+  const handleReset = () => {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
     setProfileForm({
@@ -101,7 +133,7 @@ function useProfile() {
       facebook: '',
       linkedin: '',
       youtube: '',
-      instgram: '',
+      instagram: '',
       weibo: ''
     })
   }
@@ -118,10 +150,10 @@ function useProfile() {
     formEl,
     profileForm,
     showSocialInputs,
-    onSubmit,
-    onKeyUp,
-    onChange,
-    onReset,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     toggleSocialInputs,
     navigateToDashboard
   }

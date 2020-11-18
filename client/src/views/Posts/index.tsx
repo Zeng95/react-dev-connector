@@ -18,7 +18,7 @@ const PostsNotFound = styled(NotFound)``
 
 const Posts: React.FC = () => {
   const post = useContext(PostContext)
-  const { pageLoading: postsDataLoading, posts } = post.state
+  const { dataLoading: postsDataLoading, posts } = post.state
   const { getAllPosts } = post.actions
 
   const getPosts = useCallback(getAllPosts, [])

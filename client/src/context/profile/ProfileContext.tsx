@@ -18,7 +18,8 @@ import {
   GET_PROFILES,
   GET_REPOS,
   PROFILE_ERROR,
-  SHOW_LOADING,
+  SHOW_BTN_LOADING,
+  SHOW_DATA_LOADING,
   UPDATE_PROFILE
 } from 'context/types'
 import { createContext } from 'react'
@@ -88,6 +89,7 @@ interface InitialStateType {
     profiles: IProfile[]
     repos: IRepository[]
     dataLoading: boolean
+    submitLoading: boolean
   }
   actions: {
     getAllProfiles: () => any
@@ -110,7 +112,8 @@ const initialState = {
     profile: null,
     profiles: [],
     repos: [],
-    dataLoading: true
+    dataLoading: true,
+    submitLoading: false
   },
   actions: {
     getAllProfiles: () => {},
@@ -135,12 +138,20 @@ const reducer = (state: any, action: any) => {
   const { state: profileState } = state
 
   switch (type) {
-    case SHOW_LOADING:
+    case SHOW_DATA_LOADING:
       return {
         ...state,
         state: {
           ...profileState,
           dataLoading: true
+        }
+      }
+    case SHOW_BTN_LOADING:
+      return {
+        ...state,
+        state: {
+          ...profileState,
+          submitLoading: true
         }
       }
     case GET_PROFILES:
@@ -159,7 +170,8 @@ const reducer = (state: any, action: any) => {
         state: {
           ...profileState,
           profile: payload.profile,
-          dataLoading: false
+          dataLoading: false,
+          submitLoading: false
         }
       }
     case CLEAR_PROFILE:
@@ -206,7 +218,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getAllProfiles: async () => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       const res = await getProfiles()
@@ -224,7 +236,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getSignleProfile: async (userId: string) => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       const res = await getProfileById(userId)
@@ -242,7 +254,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getCurrentProfile: async () => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       const res = await getProfile()
@@ -265,11 +277,16 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   createUserProfile: async (profile: any) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
         const res = await createProfile(profile)
 
         dispatch({
           type: GET_PROFILE,
-          payload: res.data.profile
+          payload: { profile: res.data.profile }
         })
 
         resolve()
@@ -285,11 +302,16 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   updateUserProfile: async (profile: any) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
         const res = await updateProfile(profile)
 
         dispatch({
           type: UPDATE_PROFILE,
-          payload: res.data.profile
+          payload: { profile: res.data.profile }
         })
 
         resolve()

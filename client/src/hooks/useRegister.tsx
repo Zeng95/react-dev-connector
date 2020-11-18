@@ -9,8 +9,9 @@ interface IUser {
 }
 
 function RegisterPage() {
-  const { actions } = useContext(AuthContext)
-  const { userRegister } = actions
+  const auth = useContext(AuthContext)
+  const { submitLoading } = auth.state
+  const { userRegister } = auth.actions
 
   const formEl = useRef<HTMLFormElement>(null)
 
@@ -34,7 +35,9 @@ function RegisterPage() {
   ]
 
   const onSubmit = () => {
-    if (formEl.current !== null && !formEl.current.check()) return false
+    if (formEl.current !== null && !formEl.current.check()) {
+      return false
+    }
 
     const { email, username, password } = user
 
@@ -42,7 +45,7 @@ function RegisterPage() {
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !submitLoading) {
       onSubmit()
     }
   }

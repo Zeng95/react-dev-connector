@@ -1,11 +1,11 @@
 import { getUser, login, register } from 'api/users'
 import {
   AUTH_ERROR,
-  AUTH_SUBMIT,
   LOGIN,
   LOGOUT,
   REGISTER,
-  SHOW_LOADING,
+  SHOW_BTN_LOADING,
+  SHOW_DATA_LOADING,
   USER_LOADED
 } from 'context/types'
 import { createContext } from 'react'
@@ -68,7 +68,7 @@ const reducer = (state: any, action: any) => {
   const { state: authState } = state
 
   switch (type) {
-    case SHOW_LOADING:
+    case SHOW_DATA_LOADING:
       return {
         ...state,
         state: {
@@ -76,7 +76,7 @@ const reducer = (state: any, action: any) => {
           dataLoading: true
         }
       }
-    case AUTH_SUBMIT:
+    case SHOW_BTN_LOADING:
       return {
         ...state,
         state: {
@@ -129,7 +129,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   userLoad: async () => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       // 发送请求
@@ -150,7 +150,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       try {
         // 提交按钮显示加载中状态
         dispatch({
-          type: AUTH_SUBMIT
+          type: SHOW_BTN_LOADING
         })
 
         // 发送请求
@@ -175,7 +175,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
     try {
       // 提交按钮显示加载中状态
       dispatch({
-        type: AUTH_SUBMIT
+        type: SHOW_BTN_LOADING
       })
 
       const res = await register(formData)

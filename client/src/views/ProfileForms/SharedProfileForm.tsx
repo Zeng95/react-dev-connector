@@ -1,8 +1,9 @@
 import { Github } from '@styled-icons/fa-brands'
 import { Building, Globe, MapPin, UserCog } from '@styled-icons/fa-solid'
 import Weibo from 'assets/images/weibo.svg'
+import { ProfileContext } from 'context/profile/ProfileContext'
 import { useProfile } from 'hooks/useProfile'
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Animation,
   Button,
@@ -84,17 +85,20 @@ const ControlLabelStyled = styled(ControlLabel).attrs({
 `
 
 const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
-  const profile = useProfile()
   const {
     formEl,
     profileForm,
     showSocialInputs,
-    onKeyUp,
-    onSubmit,
-    onReset,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     toggleSocialInputs,
     navigateToDashboard
-  } = profile
+  } = useProfile()
+
+  const profile = useContext(ProfileContext)
+  const { submitLoading } = profile.state
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
@@ -130,6 +134,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       value: 'Senior Developer'
     },
     {
+      label: 'Data Scientist',
+      value: 'Data Scientist'
+    },
+    {
+      label: 'Designer',
+      value: 'Designer'
+    },
+    {
       label: 'Manager',
       value: 'Manager'
     },
@@ -159,7 +171,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
       formValue={profileForm}
       autoComplete="off"
       checkTrigger="none"
-      onChange={formValue => profile.onChange(formValue)}
+      onChange={formValue => handleChange(formValue)}
     >
       <FormGroup>
         <ControlLabelStyled required={true}>
@@ -182,7 +194,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           <FormControl
             name="company"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -198,7 +210,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           <FormControl
             name="website"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -214,7 +226,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           <FormControl
             name="location"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -230,7 +242,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           <FormControl
             name="skills"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -248,7 +260,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           <FormControl
             name="githubusername"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -267,7 +279,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
           componentClass="textarea"
           name="bio"
           onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-            onKeyUp(event, edit)
+            handleKeyUp(event, edit)
           }
         />
         <HelpBlock>Tell us a little about yourself</HelpBlock>
@@ -291,7 +303,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="twitter"
                 placeholder="Twitter URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -306,7 +318,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="facebook"
                 placeholder="Facebook URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -321,7 +333,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="youtube"
                 placeholder="YouTube URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -336,7 +348,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="linkedin"
                 placeholder="Linkedin URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -351,7 +363,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="instagram"
                 placeholder="Instagram URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -366,7 +378,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
                 name="weibo"
                 placeholder="Weibo URL"
                 onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                  onKeyUp(event, edit)
+                  handleKeyUp(event, edit)
                 }
               />
             </InputGroup>
@@ -376,13 +388,25 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ edit }) => {
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button appearance="primary" onClick={() => onSubmit(edit)}>
+          <Button
+            appearance="primary"
+            onClick={() => handleSubmit(edit)}
+            loading={submitLoading}
+          >
             Submit
           </Button>
-          <Button appearance="default" onClick={onReset}>
+          <Button
+            appearance="default"
+            onClick={handleReset}
+            disabled={submitLoading}
+          >
             Clear
           </Button>
-          <Button appearance="subtle" onClick={navigateToDashboard}>
+          <Button
+            appearance="subtle"
+            onClick={navigateToDashboard}
+            disabled={submitLoading}
+          >
             Go Back
           </Button>
         </ButtonToolbar>

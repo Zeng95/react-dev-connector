@@ -12,7 +12,8 @@ import {
   GET_POST,
   GET_POSTS,
   POST_ERROR,
-  SHOW_LOADING,
+  SHOW_BTN_LOADING,
+  SHOW_DATA_LOADING,
   UPDATE_LIKES
 } from 'context/types'
 import { createContext } from 'react'
@@ -49,7 +50,8 @@ interface InitialStateType {
   state: {
     post: IPost | null
     posts: IPost[]
-    pageLoading: boolean
+    dataLoading: boolean
+    submitLoading: boolean
   }
   actions: {
     getAllPosts: () => any
@@ -65,7 +67,8 @@ const initialState = {
   state: {
     post: null,
     posts: [],
-    pageLoading: true
+    dataLoading: true,
+    submitLoading: false
   },
   actions: {
     getAllPosts: () => {},
@@ -84,12 +87,20 @@ const reducer = (state: any, action: any) => {
   const { state: postState } = state
 
   switch (type) {
-    case SHOW_LOADING:
+    case SHOW_DATA_LOADING:
       return {
         ...state,
         state: {
           ...postState,
-          pageLoading: true
+          dataLoading: true
+        }
+      }
+    case SHOW_BTN_LOADING:
+      return {
+        ...state,
+        state: {
+          ...postState,
+          submitLoading: true
         }
       }
     case GET_POSTS:
@@ -98,7 +109,7 @@ const reducer = (state: any, action: any) => {
         state: {
           ...postState,
           posts: payload.posts,
-          pageLoading: false
+          dataLoading: false
         }
       }
     case GET_POST:
@@ -107,7 +118,7 @@ const reducer = (state: any, action: any) => {
         state: {
           ...postState,
           post: payload.post,
-          pageLoading: false
+          dataLoading: false
         }
       }
     case CREATE_POST:
@@ -116,7 +127,8 @@ const reducer = (state: any, action: any) => {
         state: {
           ...postState,
           posts: [...postState.posts, payload.post],
-          pageLoading: false
+          dataLoading: false,
+          submitLoading: false
         }
       }
     case DELETE_POST:
@@ -146,7 +158,7 @@ const reducer = (state: any, action: any) => {
           ...postState,
           post: null,
           posts: [],
-          pageLoading: false
+          dataLoading: false
         }
       }
     default:
@@ -158,7 +170,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getAllPosts: async () => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       const res = await getPosts()
@@ -176,7 +188,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   getSinglePost: async (postId: string) => {
     try {
       dispatch({
-        type: SHOW_LOADING
+        type: SHOW_DATA_LOADING
       })
 
       const res = await getPostById(postId)
@@ -193,6 +205,11 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   },
   createUserPost: async (post: IPost) => {
     try {
+      // 提交按钮显示加载中状态
+      dispatch({
+        type: SHOW_BTN_LOADING
+      })
+
       const res = await createPost(post)
 
       dispatch({
