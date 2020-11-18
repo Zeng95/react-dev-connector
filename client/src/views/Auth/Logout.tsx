@@ -11,16 +11,16 @@ const Logout: React.FC = () => {
   const { userLogout } = authContext.actions
 
   const profileContext = useContext(ProfileContext)
-  const { clearProfile } = profileContext.actions
+  const { clearCurrentProfile } = profileContext.actions
 
   useEffect(() => {
-    clearProfile()
+    clearCurrentProfile()
     userLogout()
 
     if (!isAuthenticated) {
       history.push('/')
     }
-  }, [isAuthenticated, history, clearProfile, userLogout])
+  }, [isAuthenticated, history, clearCurrentProfile, userLogout])
 
   return null
 }

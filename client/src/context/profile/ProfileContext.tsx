@@ -93,6 +93,7 @@ interface InitialStateType {
     getAllProfiles: () => any
     getSignleProfile: (userId: string) => any
     getCurrentProfile: () => any
+    clearCurrentProfile: () => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
     createUserProfileExperience: (experience: any) => any
@@ -101,7 +102,6 @@ interface InitialStateType {
     createUserProfileEducation: (education: any) => any
     updateUserProfileEducation: (educationId: string, education: any) => any
     deleteUserProfileEducation: (educationId: string) => any
-    clearProfile: () => any
   }
 }
 
@@ -116,6 +116,7 @@ const initialState = {
     getAllProfiles: () => {},
     getSignleProfile: () => {},
     getCurrentProfile: () => {},
+    clearCurrentProfile: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
     createUserProfileExperience: () => {},
@@ -123,8 +124,7 @@ const initialState = {
     deleteUserProfileExperience: () => {},
     createUserProfileEducation: () => {},
     updateUserProfileEducation: () => {},
-    deleteUserProfileEducation: () => {},
-    clearProfile: () => {}
+    deleteUserProfileEducation: () => {}
   }
 }
 
@@ -256,6 +256,11 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         type: PROFILE_ERROR
       })
     }
+  },
+  clearCurrentProfile: () => {
+    dispatch({
+      type: CLEAR_PROFILE
+    })
   },
   createUserProfile: async (profile: any) => {
     return new Promise(async (resolve, reject) => {
@@ -398,11 +403,6 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         type: PROFILE_ERROR
       })
     }
-  },
-  clearProfile: () => {
-    dispatch({
-      type: CLEAR_PROFILE
-    })
   }
 })
 

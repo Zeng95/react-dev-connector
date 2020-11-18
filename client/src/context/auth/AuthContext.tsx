@@ -89,7 +89,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...authState,
-          user: payload,
+          user: payload.user,
           isAuthenticated: true,
           dataLoading: false
         }
@@ -137,7 +137,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: USER_LOADED,
-        payload: res.data.user
+        payload: { user: res.data.user }
       })
     } catch (err) {
       dispatch({
