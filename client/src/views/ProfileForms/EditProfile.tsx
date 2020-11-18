@@ -11,17 +11,17 @@ import React, { useCallback, useContext, useEffect } from 'react'
 import { ProfileForm } from 'views/ProfileForms/SharedProfileForm'
 
 const EditProfile: React.FC = () => {
-  const { state, actions } = useContext(ProfileContext)
-  const { pageLoading } = state
-  const { getCurrentUserProfile } = actions
+  const profile = useContext(ProfileContext)
+  const { dataLoading } = profile.state
+  const { getCurrentProfile } = profile.actions
 
-  const getCurrentProfile = useCallback(getCurrentUserProfile, [])
+  const getMyProfile = useCallback(getCurrentProfile, [])
 
   useEffect(() => {
-    getCurrentProfile()
-  }, [getCurrentProfile])
+    getMyProfile()
+  }, [getMyProfile])
 
-  return pageLoading ? (
+  return dataLoading ? (
     <AppLoader />
   ) : (
     <PageStyled>

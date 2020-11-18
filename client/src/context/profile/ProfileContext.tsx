@@ -87,12 +87,12 @@ interface InitialStateType {
     profile: IProfile | null
     profiles: IProfile[]
     repos: IRepository[]
-    pageLoading: boolean
+    dataLoading: boolean
   }
   actions: {
     getAllProfiles: () => any
     getSignleProfile: (userId: string) => any
-    getCurrentUserProfile: () => any
+    getCurrentProfile: () => any
     createUserProfile: (profile: any) => any
     updateUserProfile: (profile: any) => any
     createUserProfileExperience: (experience: any) => any
@@ -110,12 +110,12 @@ const initialState = {
     profile: null,
     profiles: [],
     repos: [],
-    pageLoading: true
+    dataLoading: true
   },
   actions: {
     getAllProfiles: () => {},
     getSignleProfile: () => {},
-    getCurrentUserProfile: () => {},
+    getCurrentProfile: () => {},
     createUserProfile: () => {},
     updateUserProfile: () => {},
     createUserProfileExperience: () => {},
@@ -140,7 +140,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...profileState,
-          pageLoading: true
+          dataLoading: true
         }
       }
     case GET_PROFILES:
@@ -148,8 +148,8 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...profileState,
-          profiles: payload,
-          pageLoading: false
+          profiles: payload.profiles,
+          dataLoading: false
         }
       }
     case GET_PROFILE:
@@ -158,8 +158,8 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...profileState,
-          profile: payload,
-          pageLoading: false
+          profile: payload.profile,
+          dataLoading: false
         }
       }
     case CLEAR_PROFILE:
@@ -169,9 +169,8 @@ const reducer = (state: any, action: any) => {
         state: {
           ...profileState,
           profile: null,
-          profiles: [],
           repos: [],
-          pageLoading: false
+          dataLoading: false
         }
       }
     case GET_REPOS:
@@ -180,7 +179,7 @@ const reducer = (state: any, action: any) => {
         state: {
           ...profileState,
           repos: payload,
-          pageLoading: false
+          dataLoading: false
         }
       }
     default:
@@ -214,7 +213,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: GET_PROFILES,
-        payload: res.data.profiles
+        payload: { profiles: res.data.profiles }
       })
     } catch (err) {
       dispatch({
@@ -232,7 +231,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: GET_PROFILE,
-        payload: res.data.profile
+        payload: { profile: res.data.profile }
       })
     } catch (err) {
       dispatch({
@@ -240,7 +239,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getCurrentUserProfile: async () => {
+  getCurrentProfile: async () => {
     try {
       dispatch({
         type: SHOW_LOADING
@@ -250,7 +249,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
       dispatch({
         type: GET_PROFILE,
-        payload: res.data.profile
+        payload: { profile: res.data.profile }
       })
     } catch (err) {
       dispatch({

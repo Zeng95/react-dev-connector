@@ -18,7 +18,7 @@ const ProfilesNotFound = styled(NotFound)``
 
 const Profiles: React.FC = () => {
   const profile = useContext(ProfileContext)
-  const { pageLoading: profilesDataLoading, profiles } = profile.state
+  const { dataLoading: profilesDataLoading, profiles } = profile.state
   const { getAllProfiles } = profile.actions
 
   const getPorfiles = useCallback(getAllProfiles, [])

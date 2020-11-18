@@ -1,7 +1,7 @@
 import { Globe } from '@styled-icons/fa-solid'
 import { Description, Title } from 'components/Shared/Styles'
 import React from 'react'
-import { Icon } from 'rsuite'
+import { Avatar, Icon } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
@@ -53,10 +53,16 @@ interface ProfileTopProps {
 const ProfileTopStyled = styled.div.attrs({
   className: 'flex flex-col items-center bg-primary p-8 text-white'
 })``
-const UserAvatar = styled.img.attrs({
-  className: 'rounded-full my-4'
+const UserAvatar = styled(Avatar).attrs({
+  className: 'my-4'
 })`
   width: 250px;
+  height: 250px;
+
+  > img {
+    width: 100% !important;
+    height: 100% !important;
+  }
 `
 const UserName = styled(Title)`
   color: white;
@@ -88,7 +94,7 @@ const ProfileTop: React.FC<ProfileTopProps> = ({ profile }) => {
 
   return (
     <ProfileTopStyled>
-      <UserAvatar src={avatar} />
+      <UserAvatar circle src={avatar} alt={`${username} profile image`} />
 
       <UserName>{username}</UserName>
 

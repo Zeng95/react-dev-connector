@@ -34,7 +34,7 @@ interface InitialStateType {
     token: string | null
     user: IUser | null
     isAuthenticated: boolean
-    pageLoading: boolean
+    dataLoading: boolean
     submitLoading: boolean
   }
   actions: {
@@ -50,7 +50,7 @@ const initialAuth = {
     token: localStorage.getItem('auth-token'),
     user: null,
     isAuthenticated: false,
-    pageLoading: true,
+    dataLoading: true,
     submitLoading: false
   },
   actions: {
@@ -73,7 +73,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...authState,
-          pageLoading: true
+          dataLoading: true
         }
       }
     case AUTH_SUBMIT:
@@ -91,7 +91,7 @@ const reducer = (state: any, action: any) => {
           ...authState,
           user: payload,
           isAuthenticated: true,
-          pageLoading: false
+          dataLoading: false
         }
       }
     case LOGIN:
@@ -116,7 +116,7 @@ const reducer = (state: any, action: any) => {
           user: null,
           token: null,
           isAuthenticated: false,
-          pageLoading: false,
+          dataLoading: false,
           submitLoading: false
         }
       }

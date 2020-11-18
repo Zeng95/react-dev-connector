@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
 
   const profile = useContext(ProfileContext)
   const {
-    pageLoading: profileDataLoading,
+    dataLoading: profileDataLoading,
     profile: singleProfile
   } = profile.state
   const { getSignleProfile } = profile.actions

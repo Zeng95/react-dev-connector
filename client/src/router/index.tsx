@@ -1,6 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router'
-import { BrowserRouter, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Login } from 'views/Auth/Login'
 import { Logout } from 'views/Auth/Logout'
 import { Register } from 'views/Auth/Register'
