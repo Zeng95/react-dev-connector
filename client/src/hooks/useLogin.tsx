@@ -1,5 +1,7 @@
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { openAlert, openNotification } from 'utils'
 
 interface IUser {
   email: string
@@ -7,7 +9,10 @@ interface IUser {
 }
 
 function LoginPage() {
-  const { userLogin } = useContext(AuthContext).actions
+  const history = useHistory()
+
+  const auth = useContext(AuthContext)
+  const { userLogin } = auth.actions
 
   const formEl = useRef<HTMLFormElement>(null)
 
@@ -25,15 +30,28 @@ function LoginPage() {
     '@163.com'
   ]
 
-  const onSubmit = () => {
+  const onSubmit = (from: any) => {
     if (formEl.current !== null && !formEl.current.check()) return false
 
     userLogin(user)
+      .then(() => {
+        console.log(from)
+        history.replace(from)
+      })
+      .catch((err: any) => {
+        const { errors, msg } = err.response.data
+
+        if (errors) {
+          errors.forEach((error: any) => openAlert('error', error.msg))
+        } else {
+          openNotification('error', msg)
+        }
+      })
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>, from: any) => {
     if (event.key === 'Enter') {
-      onSubmit()
+      onSubmit(from)
     }
   }
 

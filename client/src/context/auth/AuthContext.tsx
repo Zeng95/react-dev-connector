@@ -18,12 +18,12 @@ interface IUser {
   username: string
 }
 
-interface IUserLoginProps {
+interface LoginProps {
   email: string
   password: string
 }
 
-interface IUserRegisterProps {
+interface RegisterProps {
   email: string
   username: string
   password: string
@@ -39,8 +39,8 @@ interface InitialStateType {
   }
   actions: {
     userLoad: () => any
-    userLogin: (formData: IUserLoginProps) => any
-    userRegister: (formData: IUserRegisterProps) => any
+    userLogin: (formData: LoginProps) => any
+    userRegister: (formData: RegisterProps) => any
     userLogout: () => any
   }
 }
@@ -145,35 +145,33 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  userLogin: async (formData: IUserLoginProps) => {
-    try {
-      // 提交按钮显示加载中状态
-      dispatch({
-        type: AUTH_SUBMIT
-      })
+  userLogin: (formData: LoginProps) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: AUTH_SUBMIT
+        })
 
-      // 发送请求
-      const res = await login(formData)
+        // 发送请求
+        const res = await login(formData)
 
-      dispatch({
-        type: LOGIN,
-        payload: { token: res.data.token }
-      })
-    } catch (err) {
-      const { errors, msg } = err.response.data
+        dispatch({
+          type: LOGIN,
+          payload: { token: res.data.token }
+        })
 
-      if (errors) {
-        errors.forEach((error: any) => openAlert('error', error.msg))
-      } else {
-        openNotification('error', msg)
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: AUTH_ERROR
+        })
+
+        reject(err)
       }
-
-      dispatch({
-        type: AUTH_ERROR
-      })
-    }
+    })
   },
-  userRegister: async (formData: IUserRegisterProps) => {
+  userRegister: async (formData: RegisterProps) => {
     try {
       // 提交按钮显示加载中状态
       dispatch({

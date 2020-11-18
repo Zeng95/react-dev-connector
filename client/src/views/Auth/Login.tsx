@@ -9,7 +9,7 @@ import {
 import { AuthContext } from 'context/auth/AuthContext'
 import { LoginPage } from 'hooks/useLogin'
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   AutoComplete,
   Button,
@@ -23,6 +23,12 @@ import {
 } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+
+interface LocationState {
+  from: {
+    pathname: string
+  }
+}
 
 const ControlLabelStyled = styled(ControlLabel).attrs({
   className: 'relative font-semibold'
@@ -51,8 +57,11 @@ const Callout = styled.p.attrs({
 `
 
 const Login: React.FC = () => {
-  const authContext = useContext(AuthContext)
-  const { submitLoading } = authContext.state
+  const location = useLocation<LocationState>()
+  const { from } = location.state || { from: { pathname: '/' } }
+
+  const auth = useContext(AuthContext)
+  const { submitLoading } = auth.state
 
   const {
     formEl,
@@ -101,7 +110,7 @@ const Login: React.FC = () => {
               type="email"
               accepter={AutoComplete}
               data={email}
-              onKeyPress={onKeyUp}
+              onKeyPress={(event: any) => onKeyUp(event, from)}
               onChange={onEmailChange}
             />
             <InputGroup.Addon>
@@ -117,7 +126,7 @@ const Login: React.FC = () => {
               name="password"
               type="password"
               autoComplete="on"
-              onKeyPress={onKeyUp}
+              onKeyPress={(event: any) => onKeyUp(event, from)}
             />
             <InputGroup.Addon>
               <Lock size="16" title="Password" />
@@ -129,7 +138,7 @@ const Login: React.FC = () => {
           <ButtonToolbar>
             <FormButton
               appearance="primary"
-              onClick={onSubmit}
+              onClick={() => onSubmit(from)}
               loading={submitLoading}
             >
               Submit
