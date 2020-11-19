@@ -3,6 +3,16 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { openAlert } from 'utils'
 
+interface IEducation {
+  school: string
+  degree: string
+  fieldofstudy: string
+  from: Date | null
+  to: Date | null
+  description: string
+  current: string[]
+}
+
 interface LocationState {
   educationId: string
 }
@@ -25,7 +35,7 @@ function useProfileEducation() {
 
   const [tableLoading, setTableLoading] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
-  const [educationForm, setEducationForm] = useState({
+  const [educationForm, setEducationForm] = useState<IEducation>({
     school: '',
     degree: '',
     fieldofstudy: '',
@@ -48,6 +58,17 @@ function useProfileEducation() {
             if (education.current || education.to === null) {
               toggleDisbaled(true)
             }
+
+            setEducationForm({
+              school: education.school,
+              degree: education.degree,
+              fieldofstudy: education.fieldofstudy,
+              from: new Date(education.from),
+              current:
+                education.current || education.to === null ? ['current'] : [],
+              to: education.to !== null ? new Date(education.to) : null,
+              description: education.description
+            })
           }
         } else {
           history.push('/dashboard')
@@ -61,6 +82,8 @@ function useProfileEducation() {
   }, [history, singleProfile, pathname, state, hasLocationState])
 
   const handleDelete = (educationId: string) => {
+    setTableLoading(true)
+
     deleteUserProfileEducation(educationId)
       .then(() => {
         openAlert('success', 'Education Successfully Deleted')

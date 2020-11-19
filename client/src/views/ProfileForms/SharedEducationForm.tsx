@@ -136,7 +136,8 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
 
         {/* DataPicker */}
         <FormControl
-          block
+          block={true}
+          oneTap={true}
           size="lg"
           name="from"
           placeholder="YYYY / MM / DD"
@@ -163,12 +164,13 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
 
         {/* DataPicker */}
         <FormControl
-          block
-          disabled={toDateDisabled}
+          block={true}
+          oneTap={true}
           size="lg"
           name="to"
           placeholder="YYYY / MM / DD"
           accepter={DatePickerStyled}
+          disabled={toDateDisabled}
         />
       </FormGroup>
 

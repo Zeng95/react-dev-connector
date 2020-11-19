@@ -7,8 +7,8 @@ interface IExperience {
   title: string
   company: string
   location: string
-  from: string | null
-  to: string | null
+  from: Date | null
+  to: Date | null
   description: string
   current: string[]
 }
@@ -59,12 +59,16 @@ function useProfileExperience() {
               toggleDisbaled(true)
             }
 
-            setExperienceForm(experienceForm => ({
-              ...experienceForm,
-              ...experience,
+            setExperienceForm({
+              title: experience.title,
+              company: experience.company,
+              location: experience.location,
+              from: new Date(experience.from),
               current:
-                experience.current || experience.to === null ? ['current'] : []
-            }))
+                experience.current || experience.to === null ? ['current'] : [],
+              to: experience.to !== null ? new Date(experience.to) : null,
+              description: experience.description
+            })
           }
         } else {
           history.push('/dashboard')
