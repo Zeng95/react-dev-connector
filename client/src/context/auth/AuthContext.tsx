@@ -9,7 +9,6 @@ import {
   USER_LOADED
 } from 'context/types'
 import { createContext } from 'react'
-import { openAlert, openNotification } from 'utils'
 
 interface IUser {
   _id: string
@@ -172,31 +171,28 @@ const actions = (dispatch: React.Dispatch<any>) => ({
     })
   },
   userRegister: async (formData: RegisterProps) => {
-    try {
-      // 提交按钮显示加载中状态
-      dispatch({
-        type: SHOW_BTN_LOADING
-      })
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
 
-      const res = await register(formData)
+        const res = await register(formData)
 
-      dispatch({
-        type: REGISTER,
-        payload: { token: res.data.token }
-      })
-    } catch (err) {
-      const { errors, msg } = err.response.data
+        dispatch({
+          type: REGISTER,
+          payload: { token: res.data.token }
+        })
 
-      if (errors) {
-        errors.forEach((error: any) => openAlert('error', error.msg))
-      } else {
-        openNotification('error', msg)
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: AUTH_ERROR
+        })
+        reject(err)
       }
-
-      dispatch({
-        type: AUTH_ERROR
-      })
-    }
+    })
   },
   userLogout: () => {
     dispatch({

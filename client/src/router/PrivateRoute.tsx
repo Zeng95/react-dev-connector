@@ -14,12 +14,14 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   const location = useLocation()
   const { state } = useContext(AuthContext)
   const { isAuthenticated, token } = state
-
+  console.log(location.pathname)
   const routeComponent = () => {
     return isAuthenticated || token ? (
       <AppLayout>
         <Component />
       </AppLayout>
+    ) : location.pathname === '/logout' ? (
+      <Redirect to="/login" />
     ) : (
       <Redirect
         to={{

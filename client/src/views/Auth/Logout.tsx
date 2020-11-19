@@ -6,9 +6,9 @@ import { useHistory } from 'react-router-dom'
 const Logout: React.FC = () => {
   const history = useHistory()
 
-  const authContext = useContext(AuthContext)
-  const { isAuthenticated } = authContext.state
-  const { userLogout } = authContext.actions
+  const auth = useContext(AuthContext)
+  const { isAuthenticated } = auth.state
+  const { userLogout } = auth.actions
 
   const profileContext = useContext(ProfileContext)
   const { clearCurrentProfile } = profileContext.actions
@@ -16,10 +16,6 @@ const Logout: React.FC = () => {
   useEffect(() => {
     clearCurrentProfile()
     userLogout()
-
-    if (!isAuthenticated) {
-      history.push('/')
-    }
   }, [isAuthenticated, history, clearCurrentProfile, userLogout])
 
   return null

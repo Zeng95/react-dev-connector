@@ -65,11 +65,11 @@ const AvatarDropdown: React.FC<AvatarDropdownProps> = ({
         </Dropdown.Item>
         <Dropdown.Item divider />
         <NavLink href="/dashboard">Dashboard</NavLink>
-        <Dropdown.Item>Write a Post</Dropdown.Item>
-        <Dropdown.Item>Edit profile</Dropdown.Item>
+        <NavLink href="/posts/new">Write a Post</NavLink>
+        <NavLink href="/user/edit-profile">Edit profile</NavLink>
         <Dropdown.Item divider />
         <Dropdown.Item>Help</Dropdown.Item>
-        <Dropdown.Item>Log out</Dropdown.Item>
+        <NavLink href="/logout">Log out</NavLink>
       </Dropdown.Menu>
     </Popover>
   )

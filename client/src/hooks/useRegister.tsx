@@ -1,5 +1,7 @@
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { openAlert, openNotification } from 'utils'
 
 interface IUser {
   email: string
@@ -9,6 +11,8 @@ interface IUser {
 }
 
 function RegisterPage() {
+  const history = useHistory()
+
   const auth = useContext(AuthContext)
   const { submitLoading } = auth.state
   const { userRegister } = auth.actions
@@ -42,6 +46,18 @@ function RegisterPage() {
     const { email, username, password } = user
 
     userRegister({ email, username, password })
+      .then(() => {
+        history.push('/dashboard')
+      })
+      .catch((err: any) => {
+        const { errors, msg } = err.response.data
+
+        if (errors) {
+          errors.forEach((error: any) => openAlert('error', error.msg))
+        } else {
+          openNotification('error', msg)
+        }
+      })
   }
 
   const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {

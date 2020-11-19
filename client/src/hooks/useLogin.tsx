@@ -18,7 +18,10 @@ function LoginPage() {
   const formEl = useRef<HTMLFormElement>(null)
 
   const [email, setEmail] = useState<string[]>([])
-  const [user, setUser] = useState<IUser>({ email: '', password: '' })
+  const [user, setUser] = useState<IUser>({
+    email: '',
+    password: ''
+  })
 
   const emailSuggestions = [
     '@gmail.com',
