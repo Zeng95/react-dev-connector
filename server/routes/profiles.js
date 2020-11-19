@@ -419,10 +419,21 @@ router.post('/education', verifyToken, async (req, res) => {
  */
 router.put('/education/:id', verifyToken, async (req, res) => {
   try {
+    const educationId = req.params.id
     const educationFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
+    const updateIndex = profile.education.findIndex(item => {
+      return educationId === item['_id'].toString()
+    })
 
-    profile.education.unshift(educationFields)
+    if (updateIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        msg: 'Please send a correct education id'
+      })
+    }
+
+    profile.education.splice(updateIndex, 1, educationFields)
 
     // Update
     const savedProfile = await profile.save()
@@ -432,7 +443,7 @@ router.put('/education/:id', verifyToken, async (req, res) => {
 
     res.status(201).json({
       success: true,
-      msg: 'You have successfully added an education to your profile',
+      msg: 'You have successfully updated an education to your profile',
       profile: foundProfile
     })
   } catch (err) {
