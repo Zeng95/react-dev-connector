@@ -74,7 +74,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       onChange={formValue => handleChange(formValue)}
     >
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>Job title</ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="title"
@@ -89,7 +92,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>Company</ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="company"
@@ -104,7 +110,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>Location</ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
           <FormControl
             name="location"
@@ -151,7 +160,10 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled>Job description</ControlLabelStyled>
+
+        {/* Input */}
         <FormControl
           componentClass="textarea"
           rows={5}

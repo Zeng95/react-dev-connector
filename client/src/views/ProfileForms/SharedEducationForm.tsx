@@ -1,7 +1,8 @@
 import { Book, Certificate, University } from '@styled-icons/fa-solid'
 import { CheckboxStyled, DatePickerStyled } from 'components/Shared/Styles'
+import { ProfileContext } from 'context/profile/ProfileContext'
 import { useProfileEducation } from 'hooks/useProfileEducation'
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Button,
   ButtonToolbar,
@@ -43,10 +44,15 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
   const {
     educationForm,
     toDateDisabled,
-    onSubmit,
-    onReset,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     navigateToDashboard
   } = education
+
+  const profile = useContext(ProfileContext)
+  const { submitLoading } = profile.state
 
   const { StringType, DateType } = Schema.Types
   const model = Schema.Model({
@@ -64,14 +70,22 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       formValue={educationForm}
       autoComplete="off"
       checkTrigger="none"
-      onChange={formValue => education.onChange(formValue)}
+      onChange={formValue => handleChange(formValue)}
     >
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>
           School or bootcamp
         </ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="school" />
+          <FormControl
+            name="school"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              handleKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <University size="16" title="School or bootcamp" />
           </InputGroup.Addon>
@@ -79,11 +93,19 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>
           Degree or certificate
         </ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="degree" />
+          <FormControl
+            name="degree"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              handleKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <Certificate size="16" title="Degree or certificate" />
           </InputGroup.Addon>
@@ -91,9 +113,17 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>Field of study</ControlLabelStyled>
+
+        {/* Input */}
         <InputGroup inside style={{ width: '100%' }}>
-          <FormControl name="fieldofstudy" />
+          <FormControl
+            name="fieldofstudy"
+            onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+              handleKeyUp(event, edit)
+            }
+          />
           <InputGroup.Addon>
             <Book size="16" title="Field of study" />
           </InputGroup.Addon>
@@ -101,7 +131,10 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled required={true}>From date</ControlLabelStyled>
+
+        {/* DataPicker */}
         <FormControl
           block
           size="lg"
@@ -125,7 +158,10 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled>To date</ControlLabelStyled>
+
+        {/* DataPicker */}
         <FormControl
           block
           disabled={toDateDisabled}
@@ -137,19 +173,41 @@ const EducationForm: React.FC<EducationFormProps> = ({ edit }) => {
       </FormGroup>
 
       <FormGroup>
+        {/* Label */}
         <ControlLabelStyled>Program description</ControlLabelStyled>
-        <FormControl name="description" componentClass="textarea" rows={5} />
+
+        {/* Input */}
+        <FormControl
+          componentClass="textarea"
+          rows={5}
+          name="description"
+          onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
+            handleKeyUp(event, edit)
+          }
+        />
       </FormGroup>
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button appearance="primary" onClick={() => onSubmit(edit)}>
+          <Button
+            appearance="primary"
+            onClick={() => handleSubmit(edit)}
+            loading={submitLoading}
+          >
             Submit
           </Button>
-          <Button appearance="default" onClick={onReset}>
+          <Button
+            appearance="default"
+            onClick={handleReset}
+            disabled={submitLoading}
+          >
             Clear
           </Button>
-          <Button appearance="subtle" onClick={navigateToDashboard}>
+          <Button
+            appearance="subtle"
+            onClick={navigateToDashboard}
+            disabled={submitLoading}
+          >
             Go Back
           </Button>
         </ButtonToolbar>

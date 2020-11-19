@@ -93,11 +93,13 @@ function useProfileExperience() {
   }
 
   const handleSubmit = (edit: boolean) => {
-    if (formEl.current !== null && !formEl.current.check()) return false
+    if (formEl.current !== null && !formEl.current.check()) {
+      return false
+    }
 
     const formData =
       experienceForm.current.length > 0
-        ? { ...experienceForm, current: true, to: '' }
+        ? { ...experienceForm, current: true, to: null }
         : { ...experienceForm, current: false }
 
     if (edit && hasLocationState) {

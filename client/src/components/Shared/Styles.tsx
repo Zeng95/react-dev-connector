@@ -24,7 +24,7 @@ export const Description = styled.p.attrs({
   className: 'flex items-center mb-8 text-2xl'
 })``
 export const Instruction = styled.small.attrs({
-  className: 'block my-5'
+  className: 'block mb-5'
 })``
 
 export const DatePickerStyled = styled(DatePicker)`

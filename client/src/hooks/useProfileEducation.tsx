@@ -1,27 +1,29 @@
 import { ProfileContext } from 'context/profile/ProfileContext'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Alert } from 'rsuite'
+import { openAlert } from 'utils'
 
 interface LocationState {
   educationId: string
 }
 
 function useProfileEducation() {
-  const profileContext = useContext(ProfileContext)
+  const profile = useContext(ProfileContext)
+  const { profile: singleProfile, submitLoading } = profile.state
   const {
     createUserProfileEducation,
     updateUserProfileEducation,
     deleteUserProfileEducation
-  } = profileContext.actions
+  } = profile.actions
 
   const history = useHistory()
   const location = useLocation<LocationState>()
-  const { state } = location
-  const hsaLocationState = typeof state === 'object' && state !== null
+  const { pathname, state } = location
+  const hasLocationState = typeof state === 'object' && state !== null
 
   const formEl = useRef<HTMLFormElement>(null)
 
+  const [tableLoading, setTableLoading] = useState(false)
   const [toDateDisabled, toggleDisbaled] = useState(false)
   const [educationForm, setEducationForm] = useState({
     school: '',
@@ -33,44 +35,89 @@ function useProfileEducation() {
     current: []
   })
 
-  const onDelete = (educationId: string) => {
+  useEffect(() => {
+    if (singleProfile !== null) {
+      if (pathname === '/user/edit-education') {
+        const educationArr = singleProfile.education
+
+        if (hasLocationState) {
+          const { educationId: id } = state
+          const education = educationArr.find(item => item['_id'] === id)
+
+          if (education !== undefined) {
+            if (education.current || education.to === null) {
+              toggleDisbaled(true)
+            }
+          }
+        } else {
+          history.push('/dashboard')
+        }
+      }
+    } else {
+      if (pathname === '/user/edit-education') {
+        history.push('/dashboard')
+      }
+    }
+  }, [history, singleProfile, pathname, state, hasLocationState])
+
+  const handleDelete = (educationId: string) => {
     deleteUserProfileEducation(educationId)
-    Alert.success('Education Deleted', 2000)
+      .then(() => {
+        openAlert('success', 'Education Successfully Deleted')
+      })
+      .catch(() => {
+        openAlert('error', 'Education Unsuccessfully Deleted')
+      })
+      .finally(() => {
+        setTableLoading(false)
+      })
   }
 
-  const onSubmit = (edit: boolean) => {
-    if (formEl.current !== null && !formEl.current.check()) return false
+  const handleSubmit = (edit: boolean) => {
+    if (formEl.current !== null && !formEl.current.check()) {
+      return false
+    }
 
     const formData =
       educationForm.current.length > 0
-        ? { ...educationForm, current: true }
+        ? { ...educationForm, current: true, to: null }
         : { ...educationForm, current: false }
 
-    if (edit && hsaLocationState) {
+    if (edit && hasLocationState) {
       updateUserProfileEducation(state.educationId, formData)
-      Alert.success('Education Updated', 2000)
+        .then(() => {
+          navigateToDashboard()
+          openAlert('success', 'Education Successfully Updated')
+        })
+        .catch(() => {
+          openAlert('error', 'Education Unsuccessfully Updated')
+        })
     } else {
       createUserProfileEducation(formData)
-      Alert.success('Education Created', 2000)
-
-      navigateToDashboard()
+        .then(() => {
+          navigateToDashboard()
+          openAlert('success', 'Education Successfully Created')
+        })
+        .catch(() => {
+          openAlert('error', 'Education Unsuccessfully Created')
+        })
     }
   }
 
-  const onKeyUp = (
+  const handleKeyUp = (
     event: React.KeyboardEvent<HTMLInputElement>,
     edit: boolean
   ) => {
-    if (event.key === 'Enter') {
-      onSubmit(edit)
+    if (event.key === 'Enter' && !submitLoading) {
+      handleSubmit(edit)
     }
   }
 
-  const onChange = (formValue: any) => {
+  const handleChange = (formValue: any) => {
     setEducationForm(formValue)
   }
 
-  const onReset = () => {
+  const handleReset = () => {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
     setEducationForm({
@@ -99,14 +146,15 @@ function useProfileEducation() {
 
   return {
     formEl,
+    tableLoading,
     educationForm,
     toDateDisabled,
     toggleDisbaled,
-    onDelete,
-    onSubmit,
-    onKeyUp,
-    onChange,
-    onReset,
+    handleDelete,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     navigateToDashboard,
     navigateToEditEducation
   }

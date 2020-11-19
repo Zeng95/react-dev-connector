@@ -17,7 +17,7 @@ const EducationSection: React.FC = () => {
   const { profile } = profileContext.state
 
   const education = useProfileEducation()
-  const { onDelete, navigateToEditEducation } = education
+  const { tableLoading, handleDelete, navigateToEditEducation } = education
 
   return (
     <DashboardSection>
@@ -26,6 +26,7 @@ const EducationSection: React.FC = () => {
       {profile ? (
         <SectionContent>
           <Table
+            loading={tableLoading}
             data={profile.education}
             autoHeight={true}
             headerHeight={60}
@@ -82,7 +83,7 @@ const EducationSection: React.FC = () => {
                       color="red"
                       size="lg"
                       title="Delete"
-                      onClick={() => onDelete(rowData['_id'])}
+                      onClick={() => handleDelete(rowData['_id'])}
                     />
                   </Fragment>
                 )}
