@@ -281,7 +281,7 @@ router.post('/experience', verifyToken, async (req, res) => {
     // Create
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
-      .populate('user', ['avatar', 'email', 'username'])
+      .populate('user', ['_id', 'avatar', 'email', 'username'])
       .select('-__v')
 
     res.status(201).json({
@@ -323,7 +323,7 @@ router.put('/experience/:id', verifyToken, async (req, res) => {
     // Update
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
-      .populate('user', ['avatar', 'email', 'username'])
+      .populate('user', ['_id', 'avatar', 'email', 'username'])
       .select('-__v')
 
     res.status(201).json({
@@ -365,7 +365,7 @@ router.delete('/experience/:id', verifyToken, async (req, res) => {
     // Update
     const savedProfile = await profile.save()
     const foundProfile = await Profile.findOne({ user: savedProfile.user })
-      .populate('user', ['avatar', 'email', 'username'])
+      .populate('user', ['_id', 'avatar', 'email', 'username'])
       .select('-__v')
 
     res.status(201).json({

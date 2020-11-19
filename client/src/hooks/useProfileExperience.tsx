@@ -18,13 +18,13 @@ interface LocationState {
 }
 
 function useProfileExperience() {
-  const profileContext = useContext(ProfileContext)
-  const { profile } = profileContext.state
+  const profile = useContext(ProfileContext)
+  const { profile: singleProfile, submitLoading } = profile.state
   const {
     createUserProfileExperience,
     updateUserProfileExperience,
     deleteUserProfileExperience
-  } = profileContext.actions
+  } = profile.actions
 
   const history = useHistory()
   const location = useLocation<LocationState>()
@@ -46,15 +46,13 @@ function useProfileExperience() {
   })
 
   useEffect(() => {
-    if (profile !== null) {
+    if (singleProfile !== null) {
       if (pathname === '/user/edit-experience') {
-        const experienceArr = profile.experience
+        const experienceArr = singleProfile.experience
 
         if (hasLocationState) {
-          const experienceId = state.experienceId
-          const experience = experienceArr.find(item => {
-            return item['_id'] === experienceId
-          })
+          const { experienceId: id } = state
+          const experience = experienceArr.find(item => item['_id'] === id)
 
           if (experience !== undefined) {
             if (experience.current || experience.to === null) {
@@ -77,9 +75,9 @@ function useProfileExperience() {
         history.push('/dashboard')
       }
     }
-  }, [history, profile, pathname, state, hasLocationState])
+  }, [history, singleProfile, pathname, state, hasLocationState])
 
-  const onDelete = (experienceId: string) => {
+  const handleDelete = (experienceId: string) => {
     setTableLoading(true)
 
     deleteUserProfileExperience(experienceId)
@@ -94,17 +92,18 @@ function useProfileExperience() {
       })
   }
 
-  const onSubmit = (edit: boolean) => {
+  const handleSubmit = (edit: boolean) => {
     if (formEl.current !== null && !formEl.current.check()) return false
 
     const formData =
       experienceForm.current.length > 0
-        ? { ...experienceForm, current: true }
+        ? { ...experienceForm, current: true, to: '' }
         : { ...experienceForm, current: false }
 
     if (edit && hasLocationState) {
       updateUserProfileExperience(state.experienceId, formData)
         .then(() => {
+          navigateToDashboard()
           openAlert('success', 'Experience Successfully Updated')
         })
         .catch(() => {
@@ -122,20 +121,20 @@ function useProfileExperience() {
     }
   }
 
-  const onKeyUp = (
+  const handleKeyUp = (
     event: React.KeyboardEvent<HTMLInputElement>,
     edit: boolean
   ) => {
-    if (event.key === 'Enter') {
-      onSubmit(edit)
+    if (event.key === 'Enter' && !submitLoading) {
+      handleSubmit(edit)
     }
   }
 
-  const onChange = (formValue: any) => {
+  const handleChange = (formValue: any) => {
     setExperienceForm(formValue)
   }
 
-  const onReset = () => {
+  const handleReset = () => {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
     setExperienceForm({
@@ -168,11 +167,11 @@ function useProfileExperience() {
     experienceForm,
     toDateDisabled,
     toggleDisbaled,
-    onDelete,
-    onSubmit,
-    onKeyUp,
-    onChange,
-    onReset,
+    handleDelete,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     navigateToDashboard,
     navigateToEditExperience
   }

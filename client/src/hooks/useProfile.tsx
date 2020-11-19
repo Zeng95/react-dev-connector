@@ -5,7 +5,7 @@ import { openAlert } from 'utils'
 
 function useProfile() {
   const profile = useContext(ProfileContext)
-  const { profile: singleProfile } = profile.state
+  const { profile: singleProfile, submitLoading } = profile.state
   const { createUserProfile, updateUserProfile } = profile.actions
 
   const history = useHistory()
@@ -88,6 +88,7 @@ function useProfile() {
     if (edit) {
       updateUserProfile(profileForm)
         .then(() => {
+          navigateToDashboard()
           openAlert('success', 'Profile Successfully Updated')
         })
         .catch(() => {
@@ -109,7 +110,7 @@ function useProfile() {
     event: React.KeyboardEvent<HTMLInputElement>,
     edit: boolean
   ) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !submitLoading) {
       handleSubmit(edit)
     }
   }

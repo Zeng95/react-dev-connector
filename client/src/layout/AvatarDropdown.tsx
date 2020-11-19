@@ -3,16 +3,13 @@ import { Link } from 'react-router-dom'
 import { Avatar, Dropdown, Popover } from 'rsuite'
 import styled from 'styled-components'
 
-interface IUser {
-  _id: string
-  email: string
-  avatar: string
-  username: string
-}
-
 interface AvatarDropdownProps {
-  onSelect: any
-  user: IUser
+  user: {
+    _id: string
+    email: string
+    avatar: string
+    username: string
+  }
 }
 
 interface NavLinkProps {
@@ -46,14 +43,10 @@ const NavLink: React.FC<NavLinkProps> = props => {
   return <Dropdown.Item componentClass={MyLink} {...props} />
 }
 
-const AvatarDropdown: React.FC<AvatarDropdownProps> = ({
-  user,
-  onSelect,
-  ...rest
-}) => {
+const AvatarDropdown: React.FC<AvatarDropdownProps> = ({ user, ...rest }) => {
   return (
-    <Popover {...rest} full>
-      <Dropdown.Menu onSelect={onSelect} style={{ minWidth: '18rem' }}>
+    <Popover {...rest}>
+      <Dropdown.Menu style={{ minWidth: '18rem' }}>
         <Dropdown.Item>
           <UserSection>
             <Avatar circle size="lg" src={user.avatar} />

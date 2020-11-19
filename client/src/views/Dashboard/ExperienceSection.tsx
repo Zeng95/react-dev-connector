@@ -13,21 +13,21 @@ import { Icon, IconButton, Table } from 'rsuite'
 const { Column, Cell } = Table
 
 const ExperienceSection: React.FC = () => {
-  const profileContext = useContext(ProfileContext)
-  const { profile } = profileContext.state
+  const profile = useContext(ProfileContext)
+  const { profile: singleProfile } = profile.state
 
   const experience = useProfileExperience()
-  const { tableLoading, onDelete, navigateToEditExperience } = experience
+  const { tableLoading, handleDelete, navigateToEditExperience } = experience
 
   return (
     <DashboardSection>
       <SectionTitle>Experience Credentials</SectionTitle>
 
-      {profile ? (
+      {singleProfile ? (
         <SectionContent>
           <Table
             loading={tableLoading}
-            data={profile.experience}
+            data={singleProfile.experience}
             autoHeight={true}
             headerHeight={60}
             rowHeight={70}
@@ -83,7 +83,7 @@ const ExperienceSection: React.FC = () => {
                       color="red"
                       size="lg"
                       title="Delete"
-                      onClick={() => onDelete(rowData['_id'])}
+                      onClick={() => handleDelete(rowData['_id'])}
                     />
                   </Fragment>
                 )}

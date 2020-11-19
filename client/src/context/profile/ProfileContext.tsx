@@ -274,7 +274,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       type: CLEAR_PROFILE
     })
   },
-  createUserProfile: async (profile: any) => {
+  createUserProfile: (profile: any) => {
     return new Promise(async (resolve, reject) => {
       try {
         // 提交按钮显示加载中状态
@@ -299,7 +299,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       }
     })
   },
-  updateUserProfile: async (profile: any) => {
+  updateUserProfile: (profile: any) => {
     return new Promise(async (resolve, reject) => {
       try {
         // 提交按钮显示加载中状态
@@ -324,14 +324,20 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       }
     })
   },
+
   createUserProfileExperience: (experience: any) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
         const res = await createProfileExperience(experience)
 
         dispatch({
           type: UPDATE_PROFILE,
-          payload: res.data.profile
+          payload: { profile: res.data.profile }
         })
 
         resolve()
@@ -347,11 +353,16 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   updateUserProfileExperience: (experienceId: string, experience: any) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
         const res = await updateProfileExperience(experienceId, experience)
 
         dispatch({
           type: UPDATE_PROFILE,
-          payload: res.data.profile
+          payload: { profile: res.data.profile }
         })
 
         resolve()
@@ -371,7 +382,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
 
         dispatch({
           type: UPDATE_PROFILE,
-          payload: res.data.profile
+          payload: { profile: res.data.profile }
         })
 
         resolve()
@@ -384,47 +395,71 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       }
     })
   },
-  createUserProfileEducation: async (education: any) => {
-    try {
-      const res = await createProfileEducation(education)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+  createUserProfileEducation: (education: any) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
+        const res = await createProfileEducation(education)
+
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: { profile: res.data.profile }
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
-  updateUserProfileEducation: async (educationId: string, education: any) => {
-    try {
-      const res = await updateProfileEducation(educationId, education)
+  updateUserProfileEducation: (educationId: string, education: any) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await updateProfileEducation(educationId, education)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: { profile: res.data.profile }
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
-  deleteUserProfileEducation: async (educationId: string) => {
-    try {
-      const res = await deleteProfileEducation(educationId)
+  deleteUserProfileEducation: (educationId: string) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await deleteProfileEducation(educationId)
 
-      dispatch({
-        type: UPDATE_PROFILE,
-        payload: res.data.profile
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: UPDATE_PROFILE,
+          payload: { profile: res.data.profile }
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   }
 })
 

@@ -67,11 +67,6 @@ const AppHeader: React.FC = () => {
 
   const getCurrentUser = useCallback(userLoad, [])
 
-  const triggerRef = React.createRef()
-  const handleSelectMenu = (eventKey: any, event: any) => {
-    console.log(eventKey)
-  }
-
   useEffect(() => {
     if (user === null) {
       getCurrentUser()
@@ -93,8 +88,7 @@ const AppHeader: React.FC = () => {
           <Whisper
             placement="bottomEnd"
             trigger="hover"
-            triggerRef={triggerRef}
-            speaker={<AvatarDropdown user={user} onSelect={handleSelectMenu} />}
+            speaker={<AvatarDropdown user={user} />}
             enterable={true}
           >
             <Avatar

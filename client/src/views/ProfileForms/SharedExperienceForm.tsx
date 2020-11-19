@@ -1,7 +1,8 @@
 import { Briefcase, Building, MapPin } from '@styled-icons/fa-solid'
 import { CheckboxStyled, DatePickerStyled } from 'components/Shared/Styles'
+import { ProfileContext } from 'context/profile/ProfileContext'
 import { useProfileExperience } from 'hooks/useProfileExperience'
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Button,
   ButtonToolbar,
@@ -44,11 +45,15 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
     formEl,
     experienceForm,
     toDateDisabled,
-    onSubmit,
-    onKeyUp,
-    onReset,
+    handleSubmit,
+    handleKeyUp,
+    handleChange,
+    handleReset,
     navigateToDashboard
   } = experience
+
+  const profile = useContext(ProfileContext)
+  const { submitLoading } = profile.state
 
   const { StringType, DateType } = Schema.Types
   const model = Schema.Model({
@@ -66,7 +71,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
       formValue={experienceForm}
       autoComplete="off"
       checkTrigger="none"
-      onChange={formValue => experience.onChange(formValue)}
+      onChange={formValue => handleChange(formValue)}
     >
       <FormGroup>
         <ControlLabelStyled required={true}>Job title</ControlLabelStyled>
@@ -74,7 +79,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
           <FormControl
             name="title"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -89,7 +94,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
           <FormControl
             name="company"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -104,7 +109,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
           <FormControl
             name="location"
             onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-              onKeyUp(event, edit)
+              handleKeyUp(event, edit)
             }
           />
           <InputGroup.Addon>
@@ -117,7 +122,6 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
         <ControlLabelStyled required={true}>From date</ControlLabelStyled>
         <FormControl
           block
-          size="lg"
           name="from"
           placeholder="YYYY / MM / DD"
           accepter={DatePickerStyled}
@@ -140,7 +144,6 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
         <FormControl
           block
           disabled={toDateDisabled}
-          size="lg"
           name="to"
           placeholder="YYYY / MM / DD"
           accepter={DatePickerStyled}
@@ -154,20 +157,32 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ edit }) => {
           rows={5}
           name="description"
           onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) =>
-            onKeyUp(event, edit)
+            handleKeyUp(event, edit)
           }
         />
       </FormGroup>
 
       <FormGroup>
         <ButtonToolbar className="my-4">
-          <Button appearance="primary" onClick={() => onSubmit(edit)}>
+          <Button
+            appearance="primary"
+            onClick={() => handleSubmit(edit)}
+            loading={submitLoading}
+          >
             Submit
           </Button>
-          <Button appearance="default" onClick={onReset}>
+          <Button
+            appearance="default"
+            onClick={handleReset}
+            disabled={submitLoading}
+          >
             Clear
           </Button>
-          <Button appearance="subtle" onClick={navigateToDashboard}>
+          <Button
+            appearance="subtle"
+            onClick={navigateToDashboard}
+            disabled={submitLoading}
+          >
             Go Back
           </Button>
         </ButtonToolbar>
