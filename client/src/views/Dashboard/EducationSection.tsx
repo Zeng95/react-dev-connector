@@ -13,8 +13,8 @@ import { Icon, IconButton, Table } from 'rsuite'
 const { Column, Cell } = Table
 
 const EducationSection: React.FC = () => {
-  const profileContext = useContext(ProfileContext)
-  const { profile } = profileContext.state
+  const profile = useContext(ProfileContext)
+  const { profile: singleProfile } = profile.state
 
   const education = useProfileEducation()
   const { tableLoading, handleDelete, navigateToEditEducation } = education
@@ -23,11 +23,11 @@ const EducationSection: React.FC = () => {
     <DashboardSection>
       <SectionTitle>Education Credentials</SectionTitle>
 
-      {profile ? (
+      {singleProfile ? (
         <SectionContent>
           <Table
             loading={tableLoading}
-            data={profile.education}
+            data={singleProfile.education}
             autoHeight={true}
             headerHeight={60}
             rowHeight={70}

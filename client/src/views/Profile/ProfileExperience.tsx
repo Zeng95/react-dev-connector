@@ -9,7 +9,7 @@ interface ExperienceType {
   company: string
   location: string
   from: string
-  to: string | null
+  to: string
   description: string
 }
 

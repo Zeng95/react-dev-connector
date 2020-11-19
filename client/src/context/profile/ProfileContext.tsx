@@ -57,7 +57,7 @@ interface IEducation {
   degree: string
   fieldofstudy: string
   from: string
-  to: string | null
+  to: string
   description: string
   current: boolean
 }
@@ -424,6 +424,11 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   updateUserProfileEducation: (educationId: string, education: any) => {
     return new Promise(async (resolve, reject) => {
       try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
         const res = await updateProfileEducation(educationId, education)
 
         dispatch({

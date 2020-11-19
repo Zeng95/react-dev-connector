@@ -21,7 +21,7 @@ interface IExperience {
   company: string
   location: string
   from: string
-  to: string | null
+  to: string
   description: string
 }
 
@@ -31,7 +31,7 @@ interface IEducation {
   degree: string
   fieldofstudy: string
   from: string
-  to: string | null
+  to: string
   description: string
 }
 

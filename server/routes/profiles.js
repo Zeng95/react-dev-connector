@@ -346,8 +346,8 @@ router.put('/experience/:id', verifyToken, async (req, res) => {
  */
 router.delete('/experience/:id', verifyToken, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.userId })
     const experienceId = req.params.id
+    const profile = await Profile.findOne({ user: req.userId })
     const removeIndex = profile.experience.findIndex(item => {
       return experienceId === item['_id'].toString()
     })
@@ -461,8 +461,8 @@ router.put('/education/:id', verifyToken, async (req, res) => {
  */
 router.delete('/education/:id', verifyToken, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.userId })
     const educationId = req.params.id
+    const profile = await Profile.findOne({ user: req.userId })
     const removeIndex = profile.education.findIndex(item => {
       return educationId === item['_id'].toString()
     })

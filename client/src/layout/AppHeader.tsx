@@ -10,7 +10,7 @@ import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Whisper } from 'rsuite'
 import styled, { css } from 'styled-components'
-import { AvatarDropdown } from './AvatarDropdown'
+import { AvatarDropdown } from './components/AvatarDropdown'
 
 interface MenuItemProps {
   name?: string
