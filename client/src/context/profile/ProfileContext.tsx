@@ -2,6 +2,7 @@ import {
   createProfile,
   createProfileEducation,
   createProfileExperience,
+  deleteAccount,
   deleteProfileEducation,
   deleteProfileExperience,
   getGithubReposByUsername,
@@ -13,6 +14,7 @@ import {
   updateProfileExperience
 } from 'api/profiles'
 import {
+  ACCOUNT_DELETED,
   CLEAR_PROFILE,
   GET_PROFILE,
   GET_PROFILES,
@@ -104,6 +106,7 @@ interface InitialStateType {
     createUserProfileEducation: (education: any) => any
     updateUserProfileEducation: (educationId: string, education: any) => any
     deleteUserProfileEducation: (educationId: string) => any
+    deleteMyAccount: () => any
   }
 }
 
@@ -127,7 +130,8 @@ const initialState = {
     deleteUserProfileExperience: () => {},
     createUserProfileEducation: () => {},
     updateUserProfileEducation: () => {},
-    deleteUserProfileEducation: () => {}
+    deleteUserProfileEducation: () => {},
+    deleteMyAccount: () => {}
   }
 }
 
@@ -152,6 +156,15 @@ const reducer = (state: any, action: any) => {
         state: {
           ...profileState,
           submitLoading: true
+        }
+      }
+    case GET_REPOS:
+      return {
+        ...state,
+        state: {
+          ...profileState,
+          repos: payload,
+          dataLoading: false
         }
       }
     case GET_PROFILES:
@@ -185,7 +198,7 @@ const reducer = (state: any, action: any) => {
           dataLoading: false
         }
       }
-    case GET_REPOS:
+    case ACCOUNT_DELETED:
       return {
         ...state,
         state: {
@@ -454,6 +467,30 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         dispatch({
           type: UPDATE_PROFILE,
           payload: { profile: res.data.profile }
+        })
+
+        resolve()
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
+  },
+
+  deleteMyAccount: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await deleteAccount()
+
+        dispatch({
+          type: CLEAR_PROFILE
+        })
+
+        dispatch({
+          type: ACCOUNT_DELETED
         })
 
         resolve()

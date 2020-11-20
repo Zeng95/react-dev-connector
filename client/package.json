@@ -12,7 +12,6 @@
     "axios": "^0.20.0",
     "customize-cra": "^1.0.0",
     "moment": "^2.27.0",
-    "nprogress": "^0.2.0",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.1",

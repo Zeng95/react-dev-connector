@@ -69,6 +69,12 @@ const deleteProfileEducation = (educationId: string) => {
   })
 }
 
+const deleteAccount = () => {
+  return httpClient.delete(`${END_POINT}`, {
+    headers: setAuthToken()
+  })
+}
+
 export {
   getGithubReposByUsername,
   getProfiles,
@@ -81,5 +87,6 @@ export {
   deleteProfileExperience,
   createProfileEducation,
   updateProfileEducation,
-  deleteProfileEducation
+  deleteProfileEducation,
+  deleteAccount
 }

@@ -1,4 +1,4 @@
-import { User } from '@styled-icons/fa-solid'
+import { User, UserMinus } from '@styled-icons/fa-solid'
 import { AppLoader } from 'components/Loader'
 import {
   Description,
@@ -12,13 +12,15 @@ import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
-import { ActionsSection } from 'views/Dashboard/ActionsSection'
-import { EducationSection } from './EducationSection'
-import { ExperienceSection } from './ExperienceSection'
+import { ActionsSection } from './components/ActionsSection'
+import { EducationSection } from './components/EducationSection'
+import { ExperienceSection } from './components/ExperienceSection'
 
 const ControlButton = styled(Button).attrs({
-  className: 'mt-8'
-})``
+  className: 'items-center mt-8'
+})`
+  display: inline-flex;
+`
 
 const Dashboard: React.FC = () => {
   const history = useHistory()
@@ -38,6 +40,8 @@ const Dashboard: React.FC = () => {
   const navigateToCreateProfile = () => {
     history.push('/user/create-profile')
   }
+
+  const handleDeleteAccount = () => {}
 
   // 只在页面初始化时运行
   useEffect(() => {
@@ -64,6 +68,12 @@ const Dashboard: React.FC = () => {
           <ActionsSection />
           <ExperienceSection />
           <EducationSection />
+          <ControlButton color="red" onClick={handleDeleteAccount}>
+            <IconStyledWrapper>
+              <UserMinus size="18" title="User Minus" />
+            </IconStyledWrapper>
+            Delete My Account
+          </ControlButton>
         </Fragment>
       ) : (
         <div>
