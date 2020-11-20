@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
   const hasLocationState = typeof state === 'object' && state !== null
 
   const auth = useContext(AuthContext)
-  const { dataLoading: authDataLoading, isAuthenticated, user } = auth.state
+  const { isAuthenticated, user } = auth.state
 
   const profile = useContext(ProfileContext)
   const {
@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
   }
 
   useEffect(() => {
-    hasLocationState ? getPorfileById(state.userId) : history.push('/login')
+    hasLocationState ? getPorfileById(state.userId) : history.replace('/login')
   }, [getPorfileById, hasLocationState, state, history])
 
   return profileDataLoading ? (
