@@ -123,6 +123,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
         {location && <JobLocation>{location}</JobLocation>}
 
+        {/* View Profile Button */}
         <ControlButton appearance="primary" onClick={navigateToProfile}>
           View Profile
         </ControlButton>

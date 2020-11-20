@@ -11,7 +11,7 @@ import {
 import { PostContext } from 'context/post/PostContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { PostItem } from './PostItem'
+import { PostItem } from './components/PostItem'
 
 const PostList = styled(List)``
 const PostsNotFound = styled(NotFound)``

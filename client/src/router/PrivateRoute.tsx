@@ -16,7 +16,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   const { isAuthenticated, token } = state
 
   const routeComponent = () => {
-    return isAuthenticated || token ? (
+    return isAuthenticated || token !== null ? (
       <AppLayout>
         <Component />
       </AppLayout>

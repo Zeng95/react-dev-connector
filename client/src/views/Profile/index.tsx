@@ -1,10 +1,12 @@
 import { AppLoader } from 'components/Loader'
 import { PageStyled } from 'components/Shared/Styles'
+import { AuthContext } from 'context/auth/AuthContext'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Button } from 'rsuite'
+import { Button, ButtonToolbar } from 'rsuite'
 import styled from 'styled-components'
+import tw from 'twin.macro'
 import { ProfileAbout } from './components/ProfileAbout'
 import { ProfileEducation } from './components/ProfileEducation'
 import { ProfileExperience } from './components/ProfileExperience'
@@ -14,6 +16,11 @@ interface LocationState {
   userId: string
 }
 
+const ButtonToolbarStyled = styled(ButtonToolbar)`
+  & > :not(:first-child):not(.rs-btn-block) {
+    ${tw`ml-3`}
+  }
+`
 const ProfileGrid = styled.div.attrs({
   className: 'my-4'
 })``
@@ -24,7 +31,11 @@ const SectionContainer = styled.section.attrs({
 const Profile: React.FC = () => {
   const history = useHistory()
   const location = useLocation<LocationState>()
-  const { userId } = location.state
+  const { state } = location
+  const hasLocationState = typeof state === 'object' && state !== null
+
+  const auth = useContext(AuthContext)
+  const { dataLoading: authDataLoading, isAuthenticated, user } = auth.state
 
   const profile = useContext(ProfileContext)
   const {
@@ -39,9 +50,13 @@ const Profile: React.FC = () => {
     history.push('/profiles')
   }
 
+  const navigateToEditProfile = () => {
+    history.push('/user/edit-profile')
+  }
+
   useEffect(() => {
-    getPorfileById(userId)
-  }, [getPorfileById, userId])
+    hasLocationState ? getPorfileById(state.userId) : history.push('/login')
+  }, [getPorfileById, hasLocationState, state, history])
 
   return profileDataLoading ? (
     <AppLoader />
@@ -49,9 +64,17 @@ const Profile: React.FC = () => {
     <PageStyled>
       {singleProfile !== null ? (
         <Fragment>
-          <Button appearance="ghost" onClick={navigateToProfiles}>
-            Back To Profiles
-          </Button>
+          <ButtonToolbarStyled>
+            <Button appearance="ghost" onClick={navigateToProfiles}>
+              Back To Profiles
+            </Button>
+
+            {isAuthenticated && user !== null && user['_id'] === state.userId && (
+              <Button appearance="default" onClick={navigateToEditProfile}>
+                Edit Profile
+              </Button>
+            )}
+          </ButtonToolbarStyled>
 
           <ProfileGrid>
             <ProfileTop profile={singleProfile} />
