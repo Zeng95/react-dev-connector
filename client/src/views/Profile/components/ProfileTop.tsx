@@ -1,24 +1,12 @@
-import { Description, Title } from 'components/Shared/Styles'
+import { Title } from 'components/Shared/Styles'
 import React from 'react'
 import { Avatar, Icon } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
 interface UserType {
-  _id: string
   avatar: string
-  email: string
   username: string
-}
-
-interface ExperienceType {
-  title: string
-  company: string
-}
-
-interface EducationType {
-  school: string
-  degree: string
 }
 
 interface SocialType {
@@ -30,23 +18,15 @@ interface SocialType {
   weibo: string
 }
 
-interface ProfileType {
-  _id: string
-  status: string
-  company: string
-  website: string
-  location: string
-  skills: string[]
-  githubusername: string
-  bio: string
-  social?: SocialType
-  user: UserType
-  experience?: ExperienceType[]
-  education?: EducationType[]
-}
-
 interface ProfileTopProps {
-  profile: ProfileType
+  profile: {
+    status: string
+    company: string
+    website: string
+    location: string
+    social?: SocialType
+    user: UserType
+  }
 }
 
 const ProfileTopStyled = styled.div.attrs({
@@ -66,7 +46,9 @@ const UserAvatar = styled(Avatar).attrs({
 const UserName = styled(Title)`
   color: white;
 `
-const JobDescription = styled(Description)`
+const JobDescription = styled.p.attrs({
+  className: 'mb-4'
+})`
   span {
     &:first-of-type {
       ${tw`mr-1`}
@@ -83,12 +65,12 @@ const Link = styled.a.attrs({
 
 const ProfileTop: React.FC<ProfileTopProps> = ({ profile }) => {
   const {
+    user: { avatar, username },
     website,
     status,
     company,
     location,
-    social,
-    user: { avatar, username }
+    social
   } = profile
 
   return (

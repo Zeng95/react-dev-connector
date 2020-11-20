@@ -1,54 +1,18 @@
 import { Check } from '@styled-icons/fa-solid'
 import {
   IconStyledWrapper,
+  List,
   ProfileSectionTitle
 } from 'components/Shared/Styles'
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 
-interface UserType {
-  _id: string
-  avatar: string
-  email: string
-  username: string
-}
-
-interface ExperienceType {
-  title: string
-  company: string
-}
-
-interface EducationType {
-  school: string
-  degree: string
-}
-
-interface SocialType {
-  twitter: string
-  facebook: string
-  linkedin: string
-  youtube: string
-  instagram: string
-  weibo: string
-}
-
-interface ProfileType {
-  _id: string
-  status: string
-  company: string
-  website: string
-  location: string
-  skills: string[]
-  githubusername: string
-  bio: string
-  social?: SocialType
-  user: UserType
-  experience?: ExperienceType[]
-  education?: EducationType[]
-}
-
-interface ProfileTopProps {
-  profile: ProfileType
+interface ProfileAboutProps {
+  profile: {
+    bio: string
+    skills: string[]
+    user: { username: string }
+  }
 }
 
 const ProfileAboutStyled = styled.div.attrs({
@@ -62,18 +26,23 @@ const Line = styled.div.attrs({
   height: 1px;
   background-color: #ccc;
 `
-const Skills = styled.ul.attrs({
-  className: 'flex justify-center'
-})``
-const Skill = styled.li.attrs({
+const SkillList = styled(List).attrs({
+  className: 'grid justify-center'
+})`
+  grid-template-columns: repeat(5, minmax(0, min-content));
+`
+const SkillItem = styled.li.attrs({
   className: 'flex items-center p-4'
 })``
+const SkillName = styled.span.attrs({
+  className: 'truncate'
+})``
 
-const ProfileAbout: React.FC<ProfileTopProps> = ({ profile }) => {
+const ProfileAbout: React.FC<ProfileAboutProps> = ({ profile }) => {
   const {
+    user: { username },
     bio,
-    skills,
-    user: { username }
+    skills
   } = profile
 
   return (
@@ -88,19 +57,19 @@ const ProfileAbout: React.FC<ProfileTopProps> = ({ profile }) => {
         </Fragment>
       )}
 
-      <ProfileSectionTitle>Skill Set</ProfileSectionTitle>
-      <Skills>
-        {skills.slice(0, 5).map((skill, index) => {
+      <ProfileSectionTitle>Skill Sets</ProfileSectionTitle>
+      <SkillList>
+        {skills.map((skill, index) => {
           return (
-            <Skill key={index}>
+            <SkillItem key={index}>
               <IconStyledWrapper>
                 <Check size="18" />
               </IconStyledWrapper>
-              <span>{skill}</span>
-            </Skill>
+              <SkillName>{skill}</SkillName>
+            </SkillItem>
           )
         })}
-      </Skills>
+      </SkillList>
     </ProfileAboutStyled>
   )
 }
