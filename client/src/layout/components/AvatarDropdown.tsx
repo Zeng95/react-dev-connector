@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar, Dropdown, Popover } from 'rsuite'
 import styled from 'styled-components'
+import { removeChar } from 'utils'
 
 interface AvatarDropdownProps {
   user: {
@@ -13,7 +14,7 @@ interface AvatarDropdownProps {
 }
 
 interface NavLinkProps {
-  href: string
+  href: string | { pathname: string; state: { userId: string } }
 }
 
 const UserSection = styled.div.attrs({
@@ -44,18 +45,25 @@ const NavLink: React.FC<NavLinkProps> = props => {
 }
 
 const AvatarDropdown: React.FC<AvatarDropdownProps> = ({ user, ...rest }) => {
+  const { _id, avatar, email, username } = user
+
   return (
     <Popover {...rest}>
       <Dropdown.Menu style={{ minWidth: '18rem' }}>
-        <Dropdown.Item>
+        <NavLink
+          href={{
+            pathname: `/profiles/${removeChar(username)}`,
+            state: { userId: _id }
+          }}
+        >
           <UserSection>
-            <Avatar circle size="lg" src={user.avatar} />
+            <Avatar circle size="lg" src={avatar} />
             <UserDetails>
-              <UserName>{user.username}</UserName>
-              <UserEmail>{user.email}</UserEmail>
+              <UserName>{username}</UserName>
+              <UserEmail>{email}</UserEmail>
             </UserDetails>
           </UserSection>
-        </Dropdown.Item>
+        </NavLink>
         <Dropdown.Item divider />
         <NavLink href="/dashboard">Dashboard</NavLink>
         <NavLink href="/posts/new">Write a Post</NavLink>

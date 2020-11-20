@@ -8,59 +8,14 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 import { removeChar } from 'utils'
 
-interface IUser {
-  _id: string
-  avatar: string
-  email: string
-  username: string
-}
-
-interface IExperience {
-  _id: string
-  title: string
-  company: string
-  location: string
-  from: string
-  to: string
-  description: string
-}
-
-interface IEducation {
-  _id: string
-  school: string
-  degree: string
-  fieldofstudy: string
-  from: string
-  to: string
-  description: string
-}
-
-interface ISocial {
-  twitter: string
-  facebook: string
-  linkedin: string
-  youtube: string
-  instagram: string
-  weibo: string
-}
-
-interface IProfile {
-  _id: string
-  status: string
-  company: string
-  website: string
-  location: string
-  skills: string[]
-  githubusername: string
-  bio: string
-  social?: ISocial
-  user: IUser
-  experience: IExperience[]
-  education: IEducation[]
-}
-
 interface ProfileItemProps {
-  profile: IProfile
+  profile: {
+    user: { _id: string; avatar: string; username: string }
+    status: string
+    company: string
+    location: string
+    skills: string[]
+  }
 }
 
 const ProfileItemStyled = styled.li.attrs({
@@ -122,7 +77,7 @@ const JobDescription = styled.p.attrs({
 const JobLocation = styled.p.attrs({
   className: 'mb-4'
 })``
-const ButtonStyled = styled(Button)`
+const ControlButton = styled(Button)`
   padding: 0.5rem 1.25rem;
 `
 
@@ -134,11 +89,11 @@ const SkillItem = styled.li.attrs({
 const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
   const history = useHistory()
   const {
+    user: { _id, avatar, username },
     status,
     company,
     location,
-    skills,
-    user: { _id, avatar, username }
+    skills
   } = profile
 
   const linkLocation = {
@@ -168,13 +123,13 @@ const ProfileItem: React.FC<ProfileItemProps> = ({ profile }) => {
 
         {location && <JobLocation>{location}</JobLocation>}
 
-        <ButtonStyled appearance="primary" onClick={navigateToProfile}>
+        <ControlButton appearance="primary" onClick={navigateToProfile}>
           View Profile
-        </ButtonStyled>
+        </ControlButton>
       </UserInfo>
 
       <UserSkills>
-        {skills.slice(0, 5).map((skill, index) => {
+        {skills.slice(0, 4).map((skill, index) => {
           return (
             <SkillItem key={index}>
               <IconStyledWrapper>

@@ -11,7 +11,7 @@ import {
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components'
-import { ProfileItem } from './ProfileItem'
+import { ProfileItem } from './components/ProfileItem'
 
 const ProfileList = styled(List)``
 const ProfilesNotFound = styled(NotFound)``

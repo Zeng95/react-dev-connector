@@ -109,7 +109,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: '2d' },
+        { expiresIn: '3d' },
         (err, token) => {
           if (err) throw err
 
@@ -180,7 +180,7 @@ router.post(
       jwt.sign(
         payload,
         config.get('jwtSecret'),
-        { expiresIn: '2d' },
+        { expiresIn: '3d' },
         (err, token) => {
           if (err) throw err
 

@@ -1,4 +1,3 @@
-import { Globe } from '@styled-icons/fa-solid'
 import { Description, Title } from 'components/Shared/Styles'
 import React from 'react'
 import { Avatar, Icon } from 'rsuite'
@@ -76,7 +75,7 @@ const JobDescription = styled(Description)`
 `
 const JobLocation = styled.p``
 const SocialMediaIcons = styled.div.attrs({
-  className: 'my-4'
+  className: 'flex items-center my-4'
 })``
 const Link = styled.a.attrs({
   className: 'mx-2'
@@ -109,7 +108,7 @@ const ProfileTop: React.FC<ProfileTopProps> = ({ profile }) => {
         <SocialMediaIcons>
           {website && (
             <Link href={website} target="_blank">
-              <Globe size="32" />
+              <Icon icon="globe2" size="2x" />
             </Link>
           )}
 

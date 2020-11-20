@@ -5,10 +5,10 @@ import React, { Fragment, useCallback, useContext, useEffect } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Button } from 'rsuite'
 import styled from 'styled-components'
-import { ProfileAbout } from './ProfileAbout'
-import { ProfileEducation } from './ProfileEducation'
-import { ProfileExperience } from './ProfileExperience'
-import { ProfileTop } from './ProfileTop'
+import { ProfileAbout } from './components/ProfileAbout'
+import { ProfileEducation } from './components/ProfileEducation'
+import { ProfileExperience } from './components/ProfileExperience'
+import { ProfileTop } from './components/ProfileTop'
 
 interface LocationState {
   userId: string
