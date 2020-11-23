@@ -4,7 +4,7 @@ import httpClient from './httpClient'
 const END_POINT = '/profiles'
 
 const getGithubReposByUsername = (username: string) => {
-  return httpClient.get(`${END_POINT}/${username}`)
+  return httpClient.get(`${END_POINT}/github/${username}`)
 }
 
 const getProfiles = () => {
@@ -33,6 +33,7 @@ const updateProfile = (profile: any) => {
   })
 }
 
+// Profile Experience
 const createProfileExperience = (experience: any) => {
   return httpClient.post(`${END_POINT}/experience`, experience, {
     headers: setAuthToken()
@@ -51,6 +52,7 @@ const deleteProfileExperience = (experienceId: string) => {
   })
 }
 
+// Profile Education
 const createProfileEducation = (education: any) => {
   return httpClient.post(`${END_POINT}/education`, education, {
     headers: setAuthToken()

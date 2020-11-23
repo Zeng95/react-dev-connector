@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const config = require('config')
+const axios = require('axios')
 const { verifyToken } = require('../middlewares/auth')
 
 const User = require('../models/User')
@@ -39,25 +41,35 @@ router.get('/all', async (req, res) => {
 })
 
 /**
- * @route   GET api/profiles/github
+ * @route   GET api/profiles/github/:username
  * @desc    Get a user's repos from Github
  * @access  Public
  */
-router.get('/github', async (req, res) => {
+router.get('/github/:username', async (req, res) => {
   try {
-    console.log(1)
     const { username } = req.params
-    const options = {
-      uri: encodeURI(
-        `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`
-      ),
-      method: 'GET',
-      headers: {
-        'user-agent': 'node.js',
-        Authorization: `token ${config.get('githubToken')}`
-      }
+    const uri = encodeURI(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc`
+    )
+    const headers = {
+      'user-agent': 'node.js',
+      Authorization: `token ${config.get('githubToken')}`
     }
+    const gitHubResponse = await axios.get(uri, { headers })
+
+    res.status(200).json({
+      success: true,
+      msg: "Get the user's latest five repositories successfully",
+      repos: gitHubResponse.data
+    })
   } catch (err) {
+    if (err.response.status === 404) {
+      res.status(404).json({
+        success: false,
+        msg: `Github Profile ${err.response.data.message}`
+      })
+    }
+
     res.status(500).json({
       success: false,
       msg: `Server Error: ${err.message}`
@@ -104,7 +116,7 @@ router.get('/me', verifyToken, async (req, res) => {
  */
 router.get('/:userId', async (req, res) => {
   try {
-    const userId = req.params.userId
+    const { userId } = req.params
     const profile = await Profile.findOne({ user: userId })
       .populate('user', ['avatar', 'email', 'username'])
       .select('-__v')
@@ -304,7 +316,7 @@ router.post('/experience', verifyToken, async (req, res) => {
  */
 router.put('/experience/:id', verifyToken, async (req, res) => {
   try {
-    const experienceId = req.params.id
+    const { id: experienceId } = req.params
     const experienceFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
     const updateIndex = profile.experience.findIndex(item => {
@@ -346,7 +358,7 @@ router.put('/experience/:id', verifyToken, async (req, res) => {
  */
 router.delete('/experience/:id', verifyToken, async (req, res) => {
   try {
-    const experienceId = req.params.id
+    const { id: experienceId } = req.params
     const profile = await Profile.findOne({ user: req.userId })
     const removeIndex = profile.experience.findIndex(item => {
       return experienceId === item['_id'].toString()
@@ -419,7 +431,7 @@ router.post('/education', verifyToken, async (req, res) => {
  */
 router.put('/education/:id', verifyToken, async (req, res) => {
   try {
-    const educationId = req.params.id
+    const { id: educationId } = req.params
     const educationFields = { ...req.body }
     const profile = await Profile.findOne({ user: req.userId })
     const updateIndex = profile.education.findIndex(item => {
@@ -461,7 +473,7 @@ router.put('/education/:id', verifyToken, async (req, res) => {
  */
 router.delete('/education/:id', verifyToken, async (req, res) => {
   try {
-    const educationId = req.params.id
+    const { id: educationId } = req.params
     const profile = await Profile.findOne({ user: req.userId })
     const removeIndex = profile.education.findIndex(item => {
       return educationId === item['_id'].toString()
