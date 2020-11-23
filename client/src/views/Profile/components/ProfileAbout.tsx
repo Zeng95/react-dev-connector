@@ -15,7 +15,7 @@ interface ProfileAboutProps {
   }
 }
 
-const ProfileAboutStyled = styled.div.attrs({
+const ProfileAboutStyled = styled.section.attrs({
   className: 'bg-light mt-4 p-8 text-center'
 })`
   border: #ccc solid 1px;

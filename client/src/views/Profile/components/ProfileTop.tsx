@@ -29,7 +29,7 @@ interface ProfileTopProps {
   }
 }
 
-const ProfileTopStyled = styled.div.attrs({
+const ProfileTopStyled = styled.section.attrs({
   className: 'flex flex-col items-center bg-primary p-8 text-white'
 })``
 const UserAvatar = styled(Avatar).attrs({
