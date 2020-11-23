@@ -1,3 +1,4 @@
+import { NotFound } from 'components/Shared/Styles'
 import moment from 'moment'
 import React from 'react'
 import styled from 'styled-components'
@@ -22,7 +23,9 @@ interface ProfileEducationProps {
   education: EducationType[]
 }
 
-const EducationContainer = styled(ExperienceContainer)``
+const EducationContainer = styled(ExperienceContainer)`
+  margin-right: 0;
+`
 const Education = styled(Experience)``
 
 const ProfileEducation: React.FC<ProfileEducationProps> = ({ education }) => {
@@ -33,7 +36,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({ education }) => {
       {education.length > 0 ? (
         education.map(item => {
           const {
-            _id: id,
+            _id,
             school,
             degree,
             fieldofstudy,
@@ -43,11 +46,12 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({ education }) => {
           } = item
 
           return (
-            <Education key={id}>
+            <Education key={_id}>
               <Subtitle>{school}</Subtitle>
               <p>
-                {moment(from).format('YYYY/MM/DD')} -{' '}
-                {!to ? 'Now' : moment(to).format('YYYY/MM/DD')}
+                <time>{moment(from).format('YYYY/MM/DD')}</time>
+                <span className="mx-1">-</span>
+                <time>{!to ? 'Now' : moment(to).format('YYYY/MM/DD')}</time>
               </p>
               <p>
                 <strong>Degree: </strong>
@@ -67,7 +71,7 @@ const ProfileEducation: React.FC<ProfileEducationProps> = ({ education }) => {
           )
         })
       ) : (
-        <h4>No education credentials</h4>
+        <NotFound>No education credentials</NotFound>
       )}
     </EducationContainer>
   )

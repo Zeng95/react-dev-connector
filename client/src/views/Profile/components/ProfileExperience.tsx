@@ -1,4 +1,4 @@
-import { ProfileSectionTitle } from 'components/Shared/Styles'
+import { NotFound, ProfileSectionTitle } from 'components/Shared/Styles'
 import moment from 'moment'
 import React from 'react'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ interface ProfileExperienceProps {
 }
 
 export const ExperienceContainer = styled.div.attrs({
-  className: 'p-8 w-2/4'
+  className: 'mr-4 p-8 w-2/4'
 })`
   color: #333;
   border: 1px solid #ccc;
@@ -29,7 +29,15 @@ export const Title = styled(ProfileSectionTitle)`
 export const Subtitle = styled.h3.attrs({
   className: 'font-bold text-dark text-xl'
 })``
-export const Experience = styled.div`
+export const Experience = styled.div.attrs({
+  className: 'mb-4 py-4'
+})`
+  border-bottom: #ccc 1px dotted;
+
+  &:last-child {
+    border: 0;
+  }
+
   p {
     margin: 0.5rem 0;
   }
@@ -44,14 +52,19 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
 
       {experience.length > 0 ? (
         experience.map(item => {
-          const { _id: id, title, company, description, from, to } = item
+          const { _id, title, company, location, description, from, to } = item
 
           return (
-            <Experience key={id}>
+            <Experience key={_id}>
               <Subtitle>{company}</Subtitle>
               <p>
-                {moment(from).format('YYYY/MM/DD')} -{' '}
-                {!to ? 'Now' : moment(to).format('YYYY/MM/DD')}
+                <time>{moment(from).format('YYYY/MM/DD')}</time>
+                <span className="mx-1">-</span>
+                <time>{!to ? 'Now' : moment(to).format('YYYY/MM/DD')}</time>
+              </p>
+              <p>
+                <strong>Location: </strong>
+                {location}
               </p>
               <p>
                 <strong>Position: </strong>
@@ -67,7 +80,7 @@ const ProfileExperience: React.FC<ProfileExperienceProps> = ({
           )
         })
       ) : (
-        <h4>No experience credentials</h4>
+        <NotFound>No experience credentials</NotFound>
       )}
     </ExperienceContainer>
   )
