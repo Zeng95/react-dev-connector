@@ -30,7 +30,7 @@ export const Subtitle = styled.h3.attrs({
   className: 'font-bold text-dark text-xl'
 })``
 export const Experience = styled.div.attrs({
-  className: 'mb-4 py-4'
+  className: 'mb-4 pb-4'
 })`
   border-bottom: #ccc 1px dotted;
 

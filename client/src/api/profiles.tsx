@@ -3,7 +3,7 @@ import httpClient from './httpClient'
 
 const END_POINT = '/profiles'
 
-const getGithubReposByUsername = (username: string) => {
+const getGithubRepos = (username: string) => {
   return httpClient.get(`${END_POINT}/github/${username}`)
 }
 
@@ -78,7 +78,7 @@ const deleteAccount = () => {
 }
 
 export {
-  getGithubReposByUsername,
+  getGithubRepos,
   getProfiles,
   getProfile,
   getProfileById,

@@ -5,7 +5,7 @@ import {
   deleteAccount,
   deleteProfileEducation,
   deleteProfileExperience,
-  getGithubReposByUsername,
+  getGithubRepos,
   getProfile,
   getProfileById,
   getProfiles,
@@ -18,6 +18,7 @@ import {
   CLEAR_PROFILE,
   GET_PROFILE,
   GET_PROFILES,
+  GET_PROFILE_BY_ID,
   GET_REPOS,
   PROFILE_ERROR,
   SHOW_BTN_LOADING,
@@ -82,7 +83,11 @@ interface IProfile {
 interface IRepository {
   id: number
   name: string
-  price: number
+  html_url: string
+  description: string
+  stargazers_count: string
+  watchers_count: string
+  forks_count: string
 }
 
 interface InitialStateType {
@@ -94,8 +99,9 @@ interface InitialStateType {
     submitLoading: boolean
   }
   actions: {
+    getUserGithubRepos: (username: string) => any
     getAllProfiles: () => any
-    getSignleProfile: (userId: string) => any
+    getSingleProfile: (userId: string) => any
     getCurrentProfile: () => any
     clearCurrentProfile: () => any
     createUserProfile: (profile: any) => any
@@ -119,8 +125,9 @@ const initialState = {
     submitLoading: false
   },
   actions: {
+    getUserGithubRepos: () => {},
     getAllProfiles: () => {},
-    getSignleProfile: () => {},
+    getSingleProfile: () => {},
     getCurrentProfile: () => {},
     clearCurrentProfile: () => {},
     createUserProfile: () => {},
@@ -163,7 +170,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...profileState,
-          repos: payload,
+          repos: payload.repos,
           dataLoading: false
         }
       }
@@ -185,6 +192,14 @@ const reducer = (state: any, action: any) => {
           profile: payload.profile,
           dataLoading: false,
           submitLoading: false
+        }
+      }
+    case GET_PROFILE_BY_ID:
+      return {
+        ...state,
+        state: {
+          ...profileState,
+          profile: payload.profile
         }
       }
     case CLEAR_PROFILE:
@@ -215,19 +230,20 @@ const reducer = (state: any, action: any) => {
 const actions = (dispatch: React.Dispatch<any>) => ({
   getUserGithubRepos: async (username: string) => {
     try {
-      const res = await getGithubReposByUsername(username)
+      const res = await getGithubRepos(username)
 
       dispatch({
-        type: GET_PROFILES,
-        payload: res.data.profiles
+        type: GET_REPOS,
+        payload: { repos: res.data.repos }
       })
     } catch (err) {
       dispatch({
-        type: PROFILE_ERROR,
-        payload: { msg: err.response.data.msg, status: err.response.status }
+        type: PROFILE_ERROR
       })
     }
   },
+
+  // Profiles
   getAllProfiles: async () => {
     try {
       dispatch({
@@ -246,23 +262,29 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  getSignleProfile: async (userId: string) => {
-    try {
-      dispatch({
-        type: SHOW_DATA_LOADING
-      })
+  getSingleProfile: (userId: string) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        dispatch({
+          type: SHOW_DATA_LOADING
+        })
 
-      const res = await getProfileById(userId)
+        const res = await getProfileById(userId)
 
-      dispatch({
-        type: GET_PROFILE,
-        payload: { profile: res.data.profile }
-      })
-    } catch (err) {
-      dispatch({
-        type: PROFILE_ERROR
-      })
-    }
+        dispatch({
+          type: GET_PROFILE_BY_ID,
+          payload: { profile: res.data.profile }
+        })
+
+        resolve(res.data.profile)
+      } catch (err) {
+        dispatch({
+          type: PROFILE_ERROR
+        })
+
+        reject()
+      }
+    })
   },
   getCurrentProfile: async () => {
     try {
@@ -281,11 +303,6 @@ const actions = (dispatch: React.Dispatch<any>) => ({
         type: PROFILE_ERROR
       })
     }
-  },
-  clearCurrentProfile: () => {
-    dispatch({
-      type: CLEAR_PROFILE
-    })
   },
   createUserProfile: (profile: any) => {
     return new Promise(async (resolve, reject) => {
@@ -337,7 +354,13 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       }
     })
   },
+  clearCurrentProfile: () => {
+    dispatch({
+      type: CLEAR_PROFILE
+    })
+  },
 
+  // Profile Experience
   createUserProfileExperience: (experience: any) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -409,6 +432,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
     })
   },
 
+  // Profile Education
   createUserProfileEducation: (education: any) => {
     return new Promise(async (resolve, reject) => {
       try {

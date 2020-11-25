@@ -59,7 +59,7 @@ router.get('/github/:username', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: "Get the user's latest five repositories successfully",
+      msg: "Get the user's five latest repositories successfully",
       repos: gitHubResponse.data
     })
   } catch (err) {

@@ -10,6 +10,7 @@ import tw from 'twin.macro'
 import { ProfileAbout } from './components/ProfileAbout'
 import { ProfileEducation } from './components/ProfileEducation'
 import { ProfileExperience } from './components/ProfileExperience'
+import { ProfileGithub } from './components/ProfileGithub'
 import { ProfileTop } from './components/ProfileTop'
 
 interface LocationState {
@@ -42,9 +43,10 @@ const Profile: React.FC = () => {
     dataLoading: profileDataLoading,
     profile: singleProfile
   } = profile.state
-  const { getSignleProfile } = profile.actions
+  const { getSingleProfile, getUserGithubRepos } = profile.actions
 
-  const getPorfileById = useCallback(getSignleProfile, [])
+  const getPorfileById = useCallback(getSingleProfile, [])
+  const getGithubRepos = useCallback(getUserGithubRepos, [])
 
   const navigateToProfiles = () => {
     history.push('/profiles')
@@ -55,8 +57,20 @@ const Profile: React.FC = () => {
   }
 
   useEffect(() => {
-    hasLocationState ? getPorfileById(state.userId) : history.replace('/login')
-  }, [getPorfileById, hasLocationState, state, history])
+    const sendReuqests = async () => {
+      const profile = await getPorfileById(state.userId)
+
+      if (profile.githubusername) {
+        await getGithubRepos(profile.githubusername)
+      }
+    }
+
+    if (hasLocationState) {
+      sendReuqests()
+    } else {
+      history.replace('/login')
+    }
+  }, [getPorfileById, getGithubRepos, hasLocationState, state, history])
 
   return profileDataLoading ? (
     <AppLoader />
@@ -85,6 +99,8 @@ const Profile: React.FC = () => {
               <ProfileExperience experience={singleProfile.experience} />
               <ProfileEducation education={singleProfile.education} />
             </SectionContainer>
+
+            <ProfileGithub />
           </ProfileGrid>
         </Fragment>
       ) : (
