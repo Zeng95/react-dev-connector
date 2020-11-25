@@ -7,7 +7,7 @@ import {
 import { IconStyledWrapper } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
 import React, { Fragment, useCallback, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Avatar, Whisper } from 'rsuite'
 import styled, { css } from 'styled-components'
 import { AvatarDropdown } from './components/AvatarDropdown'
@@ -56,9 +56,13 @@ const MenuItem = styled.li<MenuItemProps>`
       cursor: pointer;
     `}
 `
-const LinkStyled = styled(Link).attrs({
+const LinkStyled = styled(NavLink).attrs({
   className: 'flex items-center'
-})``
+})`
+  &.active {
+    color: #17a2b8;
+  }
+`
 
 const AppHeader: React.FC = () => {
   const auth = useContext(AuthContext)
@@ -76,7 +80,7 @@ const AppHeader: React.FC = () => {
   const authLinks = (
     <Fragment>
       <MenuItem>
-        <LinkStyled to="/posts/new">
+        <LinkStyled exact to="/posts/new">
           <IconStyledWrapper>
             <PenSquare size="16" title="Dashboard" />
           </IconStyledWrapper>
@@ -108,10 +112,14 @@ const AppHeader: React.FC = () => {
   const guestLinks = (
     <Fragment>
       <MenuItem>
-        <Link to="/login">Log in</Link>
+        <LinkStyled exact to="/login">
+          Log in
+        </LinkStyled>
       </MenuItem>
       <MenuItem>
-        <Link to="/register">Create account</Link>
+        <LinkStyled exact to="/register">
+          Create account
+        </LinkStyled>
       </MenuItem>
     </Fragment>
   )
@@ -120,7 +128,7 @@ const AppHeader: React.FC = () => {
     <AppHeaderStyled>
       <NavBar>
         <Logo>
-          <LinkStyled to="/">
+          <LinkStyled exact to="/">
             <IconStyledWrapper>
               <ShareAlt size="26" title="Logo" />
             </IconStyledWrapper>
@@ -130,7 +138,7 @@ const AppHeader: React.FC = () => {
 
         <Menu>
           <MenuItem>
-            <LinkStyled to="/profiles">
+            <LinkStyled exact to="/profiles">
               <IconStyledWrapper>
                 <UserFriends size="18" title="User profiles" />
               </IconStyledWrapper>
@@ -138,7 +146,7 @@ const AppHeader: React.FC = () => {
             </LinkStyled>
           </MenuItem>
           <MenuItem>
-            <LinkStyled to="/posts">
+            <LinkStyled exact to="/posts">
               <IconStyledWrapper>
                 <UserEdit size="18" title="User posts" />
               </IconStyledWrapper>
