@@ -1548,6 +1548,14 @@
     "@babel/runtime" "^7.10.5"
     "@styled-icons/styled-icon" "^10.6.0"
 
+"@styled-icons/fa-regular@^10.22.0":
+  version "10.22.0"
+  resolved "https://registry.npm.taobao.org/@styled-icons/fa-regular/download/@styled-icons/fa-regular-10.22.0.tgz#9ca84bf93905c0029195841e3a91140208f6649f"
+  integrity sha1-nKhL+TkFwAKRlYQeOpEUAgj2ZJ8=
+  dependencies:
+    "@babel/runtime" "^7.10.5"
+    "@styled-icons/styled-icon" "^10.6.0"
+
 "@styled-icons/fa-solid@^10.22.0":
   version "10.22.0"
   resolved "https://registry.npm.taobao.org/@styled-icons/fa-solid/download/@styled-icons/fa-solid-10.22.0.tgz#ebe087d955ebfa5c0f7a46467a3e857eca1004c6"
@@ -1863,9 +1871,9 @@
   integrity sha1-m0eiyOTavU23O1fnULJK9olgBRQ=
 
 "@types/node@^12.0.0":
-  version "12.19.5"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.19.5.tgz?cache=0&sync_timestamp=1605654729454&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-12.19.5.tgz#9be3946136e818597c71c62d04240d0602c645d4"
-  integrity sha1-m+OUYTboGFl8ccYtBCQNBgLGRdQ=
+  version "12.19.6"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.19.6.tgz#fbf249fa46487dd8c7386d785231368b92a33a53"
+  integrity sha1-+/JJ+kZIfdjHOG14UjE2i5KjOlM=
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1895,11 +1903,11 @@
     "@types/react" "*"
 
 "@types/react-dom@^16.9.0":
-  version "16.9.9"
-  resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.9.9.tgz#d2d0a6f720a0206369ccbefff752ba37b9583136"
-  integrity sha1-0tCm9yCgIGNpzL7/91K6N7lYMTY=
+  version "16.9.10"
+  resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.9.10.tgz#4485b0bec3d41f856181b717f45fd7831101156f"
+  integrity sha1-RIWwvsPUH4VhgbcX9F/XgxEBFW8=
   dependencies:
-    "@types/react" "*"
+    "@types/react" "^16"
 
 "@types/react-lazyload@^3.0.0":
   version "3.0.0"
@@ -1939,10 +1947,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.9.0":
-  version "16.9.56"
-  resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-16.9.56.tgz?cache=0&sync_timestamp=1604652695890&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-16.9.56.tgz#ea25847b53c5bec064933095fc366b1462e2adf0"
-  integrity sha1-6iWEe1PFvsBkkzCV/DZrFGLirfA=
+"@types/react@*":
+  version "17.0.0"
+  resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
+  integrity sha1-WvPrf60oBwkvAEahMCt4I+J5Gbg=
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^3.0.2"
+
+"@types/react@^16", "@types/react@^16.9.0":
+  version "16.14.2"
+  resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-16.14.2.tgz#85dcc0947d0645349923c04ccef6018a1ab7538c"
+  integrity sha1-hdzAlH0GRTSZI8BMzvYBihq3U4w=
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -4136,7 +4152,7 @@ cssstyle@^1.0.0, cssstyle@^1.1.1:
 
 csstype@^3.0.2:
   version "3.0.5"
-  resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.5.tgz?cache=0&sync_timestamp=1605259236605&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-3.0.5.tgz#7fdec6a28a67ae18647c51668a9ff95bb2fa7bb8"
+  resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.5.tgz#7fdec6a28a67ae18647c51668a9ff95bb2fa7bb8"
   integrity sha1-f97GoopnrhhkfFFmip/5W7L6e7g=
 
 customize-cra@^1.0.0:
