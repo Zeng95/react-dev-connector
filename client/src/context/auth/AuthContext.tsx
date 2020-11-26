@@ -1,4 +1,5 @@
-import { getUser, login, register } from 'api/users'
+import { login, register } from 'api/auth'
+import { getUser } from 'api/users'
 import {
   AUTH_ERROR,
   LOGIN,

@@ -19,7 +19,6 @@ interface registerProps {
   email: string
   username: string
   password: string
-  confirmPassword: string
 }
 
 const checkUsername = (formData: checkUsernameProps) => {
