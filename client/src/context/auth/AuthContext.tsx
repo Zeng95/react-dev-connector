@@ -11,7 +11,7 @@ import {
 } from 'context/types'
 import { createContext } from 'react'
 
-interface IUser {
+interface User {
   _id: string
   email: string
   avatar: string
@@ -29,10 +29,10 @@ interface RegisterProps {
   password: string
 }
 
-interface InitialStateType {
+interface InitialState {
   state: {
     token: string | null
-    user: IUser | null
+    user: User | null
     isAuthenticated: boolean
     dataLoading: boolean
     submitLoading: boolean
@@ -45,7 +45,7 @@ interface InitialStateType {
   }
 }
 
-const initialAuth = {
+const initialState = {
   state: {
     token: localStorage.getItem('auth-token'),
     user: null,
@@ -61,7 +61,7 @@ const initialAuth = {
   }
 }
 
-const AuthContext = createContext<InitialStateType>(initialAuth)
+const AuthContext = createContext<InitialState>(initialState)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -202,4 +202,4 @@ const actions = (dispatch: React.Dispatch<any>) => ({
   }
 })
 
-export { AuthContext, initialAuth, reducer, actions }
+export { AuthContext, initialState, reducer, actions }

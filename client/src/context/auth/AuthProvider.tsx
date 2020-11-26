@@ -1,8 +1,8 @@
 import React, { useReducer } from 'react'
-import { actions, AuthContext, initialAuth, reducer } from './AuthContext'
+import { actions, AuthContext, initialState, reducer } from './AuthContext'
 
 const AuthProvider: React.FC = props => {
-  const [auth, dispatch] = useReducer(reducer, initialAuth)
+  const [auth, dispatch] = useReducer(reducer, initialState)
   const reducerState = auth.state
   const reducerActions = actions(dispatch)
   const context = { state: { ...reducerState }, actions: { ...reducerActions } }

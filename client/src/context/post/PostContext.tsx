@@ -19,13 +19,13 @@ import {
 import { createContext } from 'react'
 import { openAlert, openNotification } from 'utils'
 
-interface ILike {
+interface Like {
   _id: string
   user: string
   date: string
 }
 
-interface IComment {
+interface Comment {
   _id: string
   user: string
   text: string
@@ -34,22 +34,22 @@ interface IComment {
   date: string
 }
 
-interface IPost {
+interface Post {
   _id: string
   user: string
   title: string
   content: string
   avatar: string
   username: string
-  likes: ILike[]
-  comments: IComment[]
+  likes: Like[]
+  comments: Comment[]
   date: string
 }
 
-interface InitialStateType {
+interface InitialState {
   state: {
-    post: IPost | null
-    posts: IPost[]
+    post: Post | null
+    posts: Post[]
     dataLoading: boolean
     submitLoading: boolean
   }
@@ -80,7 +80,7 @@ const initialState = {
   }
 }
 
-const PostContext = createContext<InitialStateType>(initialState)
+const PostContext = createContext<InitialState>(initialState)
 
 const reducer = (state: any, action: any) => {
   const { type, payload } = action
@@ -136,7 +136,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...postState,
-          posts: postState.posts.filter((item: IPost) => {
+          posts: postState.posts.filter((item: Post) => {
             return item['_id'] !== payload.postId
           })
         }
@@ -146,7 +146,7 @@ const reducer = (state: any, action: any) => {
         ...state,
         state: {
           ...postState,
-          posts: postState.posts.map((item: IPost) => {
+          posts: postState.posts.map((item: Post) => {
             return item['_id'] === payload.postId ? payload.post : item
           })
         }
@@ -203,7 +203,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  createUserPost: async (post: IPost) => {
+  createUserPost: async (post: Post) => {
     try {
       // 提交按钮显示加载中状态
       dispatch({
