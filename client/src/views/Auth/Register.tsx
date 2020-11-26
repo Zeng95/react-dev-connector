@@ -7,7 +7,7 @@ import {
   Title
 } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
-import { RegisterPage } from 'hooks/useRegister'
+import { useRegister } from 'hooks/useRegister'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -15,6 +15,7 @@ import {
   Button,
   ButtonToolbar,
   ControlLabel,
+  Divider,
   Form,
   FormControl,
   FormGroup,
@@ -38,7 +39,7 @@ const ControlLabelStyled = styled(ControlLabel).attrs({
     color: #cb2431;
   }
 `
-const FormButton = styled(Button).attrs({
+const ControlButton = styled(Button).attrs({
   className: 'mr-3'
 })`
   margin-left: 0 !important;
@@ -63,15 +64,23 @@ const Register: React.FC = () => {
     onChange,
     onSubmit,
     onKeyUp,
-    onReset
-  } = RegisterPage()
+    onReset,
+    asyncCheckEmail
+  } = useRegister()
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
+    username: StringType()
+      .addRule(value => {
+        return asyncCheckEmail(value)
+      }, 'Duplicate email')
+      .isRequired('This field is required'),
     email: StringType()
       .isEmail('Please enter a valid email address')
+      .addRule(value => {
+        return asyncCheckEmail(value)
+      }, 'Duplicate email')
       .isRequired('This field is required'),
-    username: StringType().isRequired('This field is required'),
     password: StringType()
       .minLength(6, 'Minimum 6 characters required')
       .isRequired('This field is required'),
@@ -86,7 +95,9 @@ const Register: React.FC = () => {
 
   return (
     <PageStyled>
-      <Title>Welcome</Title>
+      <Title>Join now</Title>
+
+      <Divider />
 
       <Description>
         <IconStyledWrapper>
@@ -164,20 +175,20 @@ const Register: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar>
-            <FormButton
+            <ControlButton
               appearance="primary"
               onClick={onSubmit}
               loading={submitLoading}
             >
               Submit
-            </FormButton>
-            <FormButton
+            </ControlButton>
+            <ControlButton
               appearance="default"
               onClick={onReset}
               disabled={submitLoading}
             >
               Clear
-            </FormButton>
+            </ControlButton>
           </ButtonToolbar>
         </FormGroup>
       </Form>

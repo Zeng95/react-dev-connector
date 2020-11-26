@@ -7,7 +7,7 @@ import {
   Title
 } from 'components/Shared/Styles'
 import { AuthContext } from 'context/auth/AuthContext'
-import { LoginPage } from 'hooks/useLogin'
+import { useLogin } from 'hooks/useLogin'
 import React, { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
@@ -15,6 +15,7 @@ import {
   Button,
   ButtonToolbar,
   ControlLabel,
+  Divider,
   Form,
   FormControl,
   FormGroup,
@@ -43,11 +44,14 @@ const ControlLabelStyled = styled(ControlLabel).attrs({
     color: #cb2431;
   }
 `
-const FormButton = styled(Button).attrs({
+const ControlButton = styled(Button).attrs({
   className: 'mr-3'
 })`
   margin-left: 0 !important;
 `
+const ForgotPassword = styled(Link).attrs({
+  className: 'absolute top-0 right-0 text-primary'
+})``
 const Callout = styled.p.attrs({
   className: 'my-4'
 })`
@@ -72,7 +76,7 @@ const Login: React.FC = () => {
     onSubmit,
     onKeyUp,
     onReset
-  } = LoginPage()
+  } = useLogin()
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
@@ -84,7 +88,9 @@ const Login: React.FC = () => {
 
   return (
     <PageStyled>
-      <Title>Welcome</Title>
+      <Title>Welcome back</Title>
+
+      <Divider />
 
       <Description>
         <IconStyledWrapper>
@@ -120,7 +126,10 @@ const Login: React.FC = () => {
         </FormGroup>
 
         <FormGroup>
-          <ControlLabelStyled>Password</ControlLabelStyled>
+          <ControlLabelStyled>
+            Password
+            <ForgotPassword to="/forgot">Forgot password?</ForgotPassword>
+          </ControlLabelStyled>
           <InputGroup inside style={{ width: '100%' }}>
             <FormControl
               name="password"
@@ -136,20 +145,20 @@ const Login: React.FC = () => {
 
         <FormGroup>
           <ButtonToolbar>
-            <FormButton
+            <ControlButton
               appearance="primary"
               onClick={() => onSubmit(from)}
               loading={submitLoading}
             >
               Submit
-            </FormButton>
-            <FormButton
+            </ControlButton>
+            <ControlButton
               appearance="default"
               onClick={onReset}
               disabled={submitLoading}
             >
               Clear
-            </FormButton>
+            </ControlButton>
           </ButtonToolbar>
         </FormGroup>
       </Form>
