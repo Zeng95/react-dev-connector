@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Forgot } from 'views/Auth/Forgot'
 import { Login } from 'views/Auth/Login'
 import { Logout } from 'views/Auth/Logout'
 import { Register } from 'views/Auth/Register'
@@ -43,6 +44,13 @@ const Router: React.FC = () => (
         path="/register"
         restricted={true}
         component={Register}
+      />
+      <PublicRoute
+        exact
+        sensitive
+        path="/forgot"
+        restricted={false}
+        component={Forgot}
       />
       <PublicRoute
         exact

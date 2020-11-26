@@ -19,6 +19,7 @@ module.exports = override(
         '@line-height-large-computed': '24px',
         '@dropdown-link-hover-bg': 'transparent',
         '@dropdown-link-hover-color': '#17a2b8',
+        '@divider-default-horizontal-margin': '12px',
         '@reset-import': false
       }
     }

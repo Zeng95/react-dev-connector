@@ -3,12 +3,12 @@ import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { openAlert, openNotification } from 'utils'
 
-interface IUser {
+interface User {
   email: string
   password: string
 }
 
-function LoginPage() {
+function useLogin() {
   const history = useHistory()
 
   const auth = useContext(AuthContext)
@@ -18,7 +18,7 @@ function LoginPage() {
   const formEl = useRef<HTMLFormElement>(null)
 
   const [email, setEmail] = useState<string[]>([])
-  const [user, setUser] = useState<IUser>({
+  const [user, setUser] = useState<User>({
     email: '',
     password: ''
   })
@@ -34,7 +34,7 @@ function LoginPage() {
     '@163.com'
   ]
 
-  const onSubmit = (from: any) => {
+  const handleSubmit = (from: { pathname: string }) => {
     if (formEl.current !== null && !formEl.current.check()) {
       return false
     }
@@ -54,17 +54,26 @@ function LoginPage() {
       })
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>, from: any) => {
+  const handleKeyUp = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    from: any
+  ) => {
     if (event.key === 'Enter' && !submitLoading) {
-      onSubmit(from)
+      handleSubmit(from)
     }
   }
 
-  const onChange = (formValue: any) => {
+  const handleReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setUser({ email: '', password: '' })
+  }
+
+  const handleChange = (formValue: any) => {
     setUser(formValue)
   }
 
-  const onEmailChange = (value: any) => {
+  const handleEmailChange = (value: any) => {
     const at = value.match(/@[\S]*/)
     const nextData = at
       ? emailSuggestions
@@ -81,23 +90,17 @@ function LoginPage() {
     }
   }
 
-  const onReset = () => {
-    if (formEl.current !== null) formEl.current.cleanErrors()
-
-    setUser({ email: '', password: '' })
-  }
-
   return {
     formEl,
     user,
     email,
     emailSuggestions,
-    onEmailChange,
-    onChange,
-    onSubmit,
-    onKeyUp,
-    onReset
+    handleSubmit,
+    handleKeyUp,
+    handleReset,
+    handleChange,
+    handleEmailChange
   }
 }
 
-export { LoginPage }
+export { useLogin }

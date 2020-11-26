@@ -60,37 +60,46 @@ const Register: React.FC = () => {
     formEl,
     user,
     email,
-    onEmailChange,
-    onChange,
-    onSubmit,
-    onKeyUp,
-    onReset,
+    handleSubmit,
+    handleKeyUp,
+    handleReset,
+    handleChange,
+    handleEmailChange,
+    asyncCheckUsername,
     asyncCheckEmail
   } = useRegister()
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
     username: StringType()
-      .addRule(value => {
-        return asyncCheckEmail(value)
-      }, 'Duplicate email')
-      .isRequired('This field is required'),
+      .isRequired('This field is required')
+      .minLength(2, 'Minimum 2 characters required')
+      .addRule((value, data) => {
+        if (value === data.username) {
+          return asyncCheckUsername(value)
+        }
+      }, `Username ${user.username} is not available`),
+
     email: StringType()
+      .isRequired('This field is required')
       .isEmail('Please enter a valid email address')
-      .addRule(value => {
-        return asyncCheckEmail(value)
-      }, 'Duplicate email')
-      .isRequired('This field is required'),
+      .addRule((value, data) => {
+        if (value === data.email) {
+          return asyncCheckEmail(value)
+        }
+      }, 'Email is already taken'),
+
     password: StringType()
-      .minLength(6, 'Minimum 6 characters required')
-      .isRequired('This field is required'),
+      .isRequired('This field is required')
+      .minLength(6, 'Minimum 6 characters required'),
+
     confirmPassword: StringType()
+      .isRequired('This field is required')
       .addRule((value, data) => {
         if (value !== data.password) return false
 
         return true
       }, 'The two passwords do not match')
-      .isRequired('This field is required')
   })
 
   return (
@@ -112,13 +121,17 @@ const Register: React.FC = () => {
         ref={formEl}
         formValue={user}
         autoComplete="off"
-        checkTrigger="none"
-        onChange={formValue => onChange(formValue)}
+        onChange={formValue => handleChange(formValue)}
       >
         <FormGroup>
           <ControlLabelStyled>Username</ControlLabelStyled>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl name="username" onKeyPress={onKeyUp} />
+            <FormControl
+              name="username"
+              checkAsync
+              checkTrigger="blur"
+              onKeyPress={handleKeyUp}
+            />
             <InputGroup.Addon>
               <UserCircle size="16" title="Username" />
             </InputGroup.Addon>
@@ -131,10 +144,12 @@ const Register: React.FC = () => {
             <FormControl
               name="email"
               type="email"
+              checkAsync
+              checkTrigger="blur"
               accepter={AutoComplete}
               data={email}
-              onKeyPress={onKeyUp}
-              onChange={onEmailChange}
+              onKeyPress={handleKeyUp}
+              onChange={handleEmailChange}
             />
             <InputGroup.Addon>
               <Envelope size="16" title="Email address" />
@@ -150,7 +165,7 @@ const Register: React.FC = () => {
               name="password"
               type="password"
               autoComplete="on"
-              onKeyPress={onKeyUp}
+              onKeyPress={handleKeyUp}
             />
             <InputGroup.Addon>
               <Lock size="16" title="Password" />
@@ -165,7 +180,7 @@ const Register: React.FC = () => {
               name="confirmPassword"
               type="password"
               autoComplete="on"
-              onKeyPress={onKeyUp}
+              onKeyPress={handleKeyUp}
             />
             <InputGroup.Addon>
               <Lock size="16" title="Confirm password" />
@@ -177,14 +192,14 @@ const Register: React.FC = () => {
           <ButtonToolbar>
             <ControlButton
               appearance="primary"
-              onClick={onSubmit}
+              onClick={handleSubmit}
               loading={submitLoading}
             >
               Submit
             </ControlButton>
             <ControlButton
               appearance="default"
-              onClick={onReset}
+              onClick={handleReset}
               disabled={submitLoading}
             >
               Clear

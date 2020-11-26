@@ -1,16 +1,17 @@
+import { checkEmail, checkUsername } from 'api/auth'
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { openAlert, openNotification } from 'utils'
 
-interface IUser {
+interface User {
   email: string
   username: string
   password: string
   confirmPassword: string
 }
 
-function RegisterPage() {
+function useRegister() {
   const history = useHistory()
 
   const auth = useContext(AuthContext)
@@ -20,7 +21,7 @@ function RegisterPage() {
   const formEl = useRef<HTMLFormElement>(null)
 
   const [email, setEmail] = useState<string[]>([])
-  const [user, setUser] = useState<IUser>({
+  const [user, setUser] = useState<User>({
     email: '',
     username: '',
     password: '',
@@ -38,7 +39,7 @@ function RegisterPage() {
     '@163.com'
   ]
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     if (formEl.current !== null && !formEl.current.check()) {
       return false
     }
@@ -60,17 +61,28 @@ function RegisterPage() {
       })
   }
 
-  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !submitLoading) {
-      onSubmit()
+      handleSubmit()
     }
   }
 
-  const onChange = (formValue: any) => {
+  const handleReset = () => {
+    if (formEl.current !== null) formEl.current.cleanErrors()
+
+    setUser({
+      email: '',
+      username: '',
+      password: '',
+      confirmPassword: ''
+    })
+  }
+
+  const handleChange = (formValue: any) => {
     setUser(formValue)
   }
 
-  const onEmailChange = (value: any) => {
+  const handleEmailChange = (value: any) => {
     const at = value.match(/@[\S]*/)
     const nextData = at
       ? emailSuggestions
@@ -87,14 +99,31 @@ function RegisterPage() {
     }
   }
 
-  const onReset = () => {
-    if (formEl.current !== null) formEl.current.cleanErrors()
+  const asyncCheckUsername = (username: string) => {
+    return new Promise<boolean>(async resolve => {
+      let result = true
 
-    setUser({
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: ''
+      try {
+        await checkUsername({ username: username.trim() })
+      } catch (err) {
+        result = false
+      }
+
+      resolve(result)
+    })
+  }
+
+  const asyncCheckEmail = (email: string) => {
+    return new Promise<boolean>(async resolve => {
+      let result = true
+
+      try {
+        await checkEmail({ email })
+      } catch (err) {
+        result = false
+      }
+
+      resolve(result)
     })
   }
 
@@ -103,12 +132,14 @@ function RegisterPage() {
     user,
     email,
     emailSuggestions,
-    onEmailChange,
-    onChange,
-    onSubmit,
-    onKeyUp,
-    onReset
+    handleEmailChange,
+    handleChange,
+    handleSubmit,
+    handleKeyUp,
+    handleReset,
+    asyncCheckUsername,
+    asyncCheckEmail
   }
 }
 
-export { RegisterPage }
+export { useRegister }

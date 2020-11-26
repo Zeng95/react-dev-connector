@@ -26,9 +26,7 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 
 interface LocationState {
-  from: {
-    pathname: string
-  }
+  from: { pathname: string }
 }
 
 const ControlLabelStyled = styled(ControlLabel).attrs({
@@ -57,6 +55,8 @@ const Callout = styled.p.attrs({
 })`
   > a {
     ${tw`ml-1`}
+
+    color: #17a2b8;
   }
 `
 
@@ -71,18 +71,19 @@ const Login: React.FC = () => {
     formEl,
     user,
     email,
-    onEmailChange,
-    onChange,
-    onSubmit,
-    onKeyUp,
-    onReset
+    handleSubmit,
+    handleKeyUp,
+    handleReset,
+    handleChange,
+    handleEmailChange
   } = useLogin()
 
   const { StringType } = Schema.Types
   const model = Schema.Model({
     email: StringType()
-      .isEmail('Please enter a valid email address')
-      .isRequired('This field is required'),
+      .isRequired('This field is required')
+      .isEmail('Please enter a valid email address'),
+
     password: StringType().isRequired('This field is required')
   })
 
@@ -105,8 +106,7 @@ const Login: React.FC = () => {
         ref={formEl}
         formValue={user}
         autoComplete="off"
-        checkTrigger="none"
-        onChange={formValue => onChange(formValue)}
+        onChange={formValue => handleChange(formValue)}
       >
         <FormGroup>
           <ControlLabelStyled>Email address</ControlLabelStyled>
@@ -116,8 +116,8 @@ const Login: React.FC = () => {
               type="email"
               accepter={AutoComplete}
               data={email}
-              onKeyPress={(event: any) => onKeyUp(event, from)}
-              onChange={onEmailChange}
+              onKeyPress={(event: any) => handleKeyUp(event, from)}
+              onChange={handleEmailChange}
             />
             <InputGroup.Addon>
               <Envelope size="16" title="Email Address" />
@@ -135,7 +135,7 @@ const Login: React.FC = () => {
               name="password"
               type="password"
               autoComplete="on"
-              onKeyPress={(event: any) => onKeyUp(event, from)}
+              onKeyPress={(event: any) => handleKeyUp(event, from)}
             />
             <InputGroup.Addon>
               <Lock size="16" title="Password" />
@@ -147,14 +147,14 @@ const Login: React.FC = () => {
           <ButtonToolbar>
             <ControlButton
               appearance="primary"
-              onClick={() => onSubmit(from)}
+              onClick={() => handleSubmit(from)}
               loading={submitLoading}
             >
               Submit
             </ControlButton>
             <ControlButton
               appearance="default"
-              onClick={onReset}
+              onClick={handleReset}
               disabled={submitLoading}
             >
               Clear
@@ -165,7 +165,7 @@ const Login: React.FC = () => {
 
       <Callout>
         New to DevConnector?
-        <Link to="/register" className="text-primary">
+        <Link to="/register">
           <strong>Create an account</strong>
         </Link>
       </Callout>
