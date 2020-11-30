@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const nodemailer = require('nodemailer')
 const gravatar = require('gravatar')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -10,22 +11,22 @@ const UserModel = require('../models/User')
 
 /**
  * @route    POST api/auth/register_check/username
- * @desc     check if username already exists in the database
+ * @desc     Check if username already exists in the database
  * @access   Public
  */
 router.post('/register_check/username', async (req, res) => {
   try {
     const { username } = req.body
-    const foundUser = await UserModel.findOne({ username })
+    const user = await UserModel.findOne({ username })
 
-    if (foundUser) {
+    if (user) {
       return res.status(401).json({
         success: false,
         msg: 'Username already exists'
       })
     }
 
-    return res.status(200).send(`${username} is available`)
+    res.status(200).send(`${username} is available`)
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -42,16 +43,73 @@ router.post('/register_check/username', async (req, res) => {
 router.post('/register_check/email', async (req, res) => {
   try {
     const { email } = req.body
-    const foundUser = await UserModel.findOne({ email })
+    const user = await UserModel.findOne({ email })
 
-    if (foundUser) {
+    if (user) {
       return res.status(401).json({
         success: false,
         msg: 'Email already exists'
       })
     }
 
-    return res.status(200).send(`${email} is available`)
+    res.status(200).send(`${email} is available`)
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route    POST api/auth/forgot
+ * @desc     Recover Password - Generates token and Sends password reset email
+ * @access   Public
+ */
+router.post('/forgot', async (req, res) => {
+  try {
+    const { email } = req.body
+    const user = await UserModel.findOne({ email })
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        msg: `The email address ${email} is not associated with any account. Double-check your email address and try again`
+      })
+    }
+
+    // Generate and set password reset token
+    user.generatePasswordReset()
+
+    // Save the updated user object
+    await user.save()
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: config.get('emailAddress'),
+        pass: config.get('emailPassword')
+      }
+    })
+    const message = {
+      from: config.get('fromEmail'),
+      to: `${user.email}`,
+      subject: '[DevConnector] Please reset your password',
+      text:
+        `You are receiving this because you (or someone else) have requested the reset of the ${user.username} DevConnector user account.\n\n` +
+        `Please click on the following link, or paste this into your browser to complete the process within three hours of receiving it:\n\n` +
+        `http://localhost:3000/reset/${user.resetPasswordToken}\n\n` +
+        `If you received this in error, you can safely ignore it.\n\n\n` +
+        `Thanks,\nThe DevConnector Team`
+    }
+
+    // Send mail with a transporter object
+    await transporter.sendMail(message)
+
+    res.status(200).json({
+      success: true,
+      msg: `A reset email has been sent to ${user.email}`
+    })
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -81,9 +139,9 @@ router.post(
       .trim()
       .escape(),
 
-    check('password', 'The password must be 6 chars long and contain a number')
+    check('password', 'The password must be 16 chars long and contain a number')
       .trim()
-      .isLength({ min: 6 })
+      .isLength({ min: 16 })
       .matches(/\d/)
       .not()
       .isIn(['123456'])

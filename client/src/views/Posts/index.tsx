@@ -10,6 +10,7 @@ import {
 } from 'components/Shared/Styles'
 import { PostContext } from 'context/post/PostContext'
 import React, { useCallback, useContext, useEffect } from 'react'
+import { Divider } from 'rsuite'
 import styled from 'styled-components'
 import { PostItem } from './components/PostItem'
 
@@ -32,6 +33,8 @@ const Posts: React.FC = () => {
   ) : (
     <PageStyled>
       <Title>Posts</Title>
+
+      <Divider />
 
       <Description>
         <IconStyledWrapper>

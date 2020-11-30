@@ -14,24 +14,29 @@ interface RegisterData {
   password: string
 }
 
+// Check if username already exists
 const checkUsername = (username: string): Promise<AxiosResponse<any>> => {
   return httpClient.post(`${END_POINT}/register_check/username`, { username })
 }
 
+// Check if email already exists
 const checkEmail = (email: string): Promise<AxiosResponse<any>> => {
   return httpClient.post(`${END_POINT}/register_check/email`, { email })
 }
 
-const login = (formData: LoginData): Promise<AxiosResponse<any>> => {
-  return httpClient.post(`${END_POINT}/login`, formData)
-}
-
-const register = (formData: RegisterData): Promise<AxiosResponse<any>> => {
-  return httpClient.post(`${END_POINT}/register`, formData)
-}
-
+// Send recovery email
 const sendEmail = (email: string): Promise<AxiosResponse<any>> => {
   return httpClient.post(`${END_POINT}/forgot`, { email })
 }
 
-export { checkUsername, checkEmail, login, register, sendEmail }
+// Login user
+const login = (formData: LoginData): Promise<AxiosResponse<any>> => {
+  return httpClient.post(`${END_POINT}/login`, formData)
+}
+
+// Register user
+const register = (formData: RegisterData): Promise<AxiosResponse<any>> => {
+  return httpClient.post(`${END_POINT}/register`, formData)
+}
+
+export { checkUsername, checkEmail, sendEmail, login, register }

@@ -10,6 +10,7 @@ import {
 } from 'components/Shared/Styles'
 import { ProfileContext } from 'context/profile/ProfileContext'
 import React, { useCallback, useContext, useEffect } from 'react'
+import { Divider } from 'rsuite'
 import styled from 'styled-components'
 import { ProfileItem } from './components/ProfileItem'
 
@@ -32,6 +33,8 @@ const Profiles: React.FC = () => {
   ) : (
     <PageStyled>
       <Title>Developers</Title>
+
+      <Divider />
 
       <Description>
         <IconStyledWrapper>

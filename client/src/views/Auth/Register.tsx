@@ -87,11 +87,11 @@ const Register: React.FC = () => {
         if (value === data.email) {
           return asyncCheckEmail(value)
         }
-      }, 'Email is already taken'),
+      }, 'Email has already been taken'),
 
     password: StringType()
       .isRequired('This field is required')
-      .minLength(6, 'Minimum 6 characters required'),
+      .minLength(16, 'Minimum 16 characters required'),
 
     confirmPassword: StringType()
       .isRequired('This field is required')
@@ -171,6 +171,7 @@ const Register: React.FC = () => {
               <Lock size="16" title="Password" />
             </InputGroup.Addon>
           </InputGroup>
+          <HelpBlock>Must have at least 16 characters</HelpBlock>
         </FormGroup>
 
         <FormGroup>

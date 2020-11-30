@@ -6,9 +6,6 @@ import { openAlert, openNotification } from 'utils'
 
 interface User {
   email: string
-  username: string
-  password: string
-  confirmPassword: string
 }
 
 function useRegister() {
@@ -22,10 +19,7 @@ function useRegister() {
 
   const [email, setEmail] = useState<string[]>([])
   const [user, setUser] = useState<User>({
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: ''
+    email: ''
   })
 
   const emailSuggestions = [
@@ -43,22 +37,6 @@ function useRegister() {
     if (formEl.current !== null && !formEl.current.check()) {
       return false
     }
-
-    const { email, username, password } = user
-
-    userRegister({ email, username, password })
-      .then(() => {
-        history.push('/dashboard')
-      })
-      .catch((err: any) => {
-        const { errors, msg } = err.response.data
-
-        if (errors) {
-          errors.forEach((error: any) => openAlert('error', error.msg))
-        } else {
-          openNotification('error', msg)
-        }
-      })
   }
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -71,10 +49,7 @@ function useRegister() {
     if (formEl.current !== null) formEl.current.cleanErrors()
 
     setUser({
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: ''
+      email: ''
     })
   }
 
@@ -99,34 +74,6 @@ function useRegister() {
     }
   }
 
-  const asyncCheckUsername = (username: string) => {
-    return new Promise<boolean>(async resolve => {
-      let result = true
-
-      try {
-        await checkUsername({ username: username.trim() })
-      } catch (err) {
-        result = false
-      }
-
-      resolve(result)
-    })
-  }
-
-  const asyncCheckEmail = (email: string) => {
-    return new Promise<boolean>(async resolve => {
-      let result = true
-
-      try {
-        await checkEmail({ email })
-      } catch (err) {
-        result = false
-      }
-
-      resolve(result)
-    })
-  }
-
   return {
     formEl,
     user,
@@ -136,9 +83,7 @@ function useRegister() {
     handleChange,
     handleSubmit,
     handleKeyUp,
-    handleReset,
-    asyncCheckUsername,
-    asyncCheckEmail
+    handleReset
   }
 }
 

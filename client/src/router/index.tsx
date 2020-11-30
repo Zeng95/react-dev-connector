@@ -4,6 +4,7 @@ import { Forgot } from 'views/Auth/Forgot'
 import { Login } from 'views/Auth/Login'
 import { Logout } from 'views/Auth/Logout'
 import { Register } from 'views/Auth/Register'
+import { Reset } from 'views/Auth/Reset'
 import { Dashboard } from 'views/Dashboard'
 import { Landing } from 'views/Landing'
 import { NoMatch } from 'views/NoMatch'
@@ -51,6 +52,13 @@ const Router: React.FC = () => (
         path="/forgot"
         restricted={false}
         component={Forgot}
+      />
+      <PublicRoute
+        exact
+        sensitive
+        path="/reset/:token"
+        restricted={false}
+        component={Reset}
       />
       <PublicRoute
         exact

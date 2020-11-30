@@ -41,6 +41,7 @@ interface InitialState {
     userLoad: () => any
     userLogin: (formData: LoginProps) => any
     userRegister: (formData: RegisterProps) => any
+    userSendEmail: () => any
     userLogout: () => any
   }
 }
@@ -57,6 +58,7 @@ const initialState = {
     userLoad: () => {},
     userLogin: () => {},
     userRegister: () => {},
+    userSendEmail: () => {},
     userLogout: () => {}
   }
 }
@@ -195,6 +197,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       }
     })
   },
+  userSendEmail: () => {},
   userLogout: () => {
     dispatch({
       type: LOGOUT
