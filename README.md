@@ -7,15 +7,11 @@ A full-stack social network web app built with TypeScript, React Router, React C
 
 * React Suite + React Lazyload + React Markdown
 
-* TypeScript
+* Styled Components + Styled Icons
 
-* Axios
+* TypeScript + Axios
 
 * Tailwind CSS
-
-* Styled Components
-
-* Styled Icons
 
 ### 后端开发（Backend）
 * Node.js / Express.js
