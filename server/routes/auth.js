@@ -74,7 +74,7 @@ router.post('/forgot', async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        msg: `The email address ${email} is not associated with any account. Double-check your email address and try again`
+        msg: `The email address ${email} is not associated with any account. Double-check your email address and try again.`
       })
     }
 
@@ -85,10 +85,13 @@ router.post('/forgot', async (req, res) => {
     await user.save()
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: 'Gmail',
       auth: {
         user: config.get('emailAddress'),
         pass: config.get('emailPassword')
+      },
+      tls: {
+        rejectUnauthorized: false
       }
     })
     const message = {
@@ -108,8 +111,25 @@ router.post('/forgot', async (req, res) => {
 
     res.status(200).json({
       success: true,
-      msg: `A reset email has been sent to ${user.email}`
+      msg: `A reset email has been sent to ${user.email}.`
     })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      msg: `Server error: ${err.message}`
+    })
+  }
+})
+
+/**
+ * @route    POST api/auth/reset
+ * @desc     Reset Password - Validate password reset token and shows the password reset page
+ * @access   Public
+ */
+router.post('/reset', async () => {
+  try {
+    const { token } = req.params
+    console.log(token)
   } catch (err) {
     res.status(500).json({
       success: false,

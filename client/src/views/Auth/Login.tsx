@@ -20,6 +20,7 @@ import {
   FormControl,
   FormGroup,
   InputGroup,
+  Message,
   Schema
 } from 'rsuite'
 import styled from 'styled-components'
@@ -29,6 +30,9 @@ interface LocationState {
   from: { pathname: string }
 }
 
+const MessageContainer = styled.div.attrs({
+  className: 'mb-8'
+})``
 const ControlLabelStyled = styled(ControlLabel).attrs({
   className: 'relative font-semibold'
 })`
@@ -71,11 +75,15 @@ const Login: React.FC = () => {
     formEl,
     user,
     email,
+    message,
+    messageType,
+    showMessage,
     handleSubmit,
     handleKeyUp,
     handleReset,
     handleChange,
-    handleEmailChange
+    handleEmailChange,
+    handleMessageClose
   } = useLogin()
 
   const { StringType } = Schema.Types
@@ -100,12 +108,25 @@ const Login: React.FC = () => {
         <span>Log in to your account</span>
       </Description>
 
+      {showMessage && (
+        <MessageContainer>
+          <Message
+            closable
+            showIcon
+            type={messageType}
+            description={message}
+            onClose={handleMessageClose}
+          />
+        </MessageContainer>
+      )}
+
       <Form
         fluid
         model={model}
         ref={formEl}
         formValue={user}
         autoComplete="off"
+        checkTrigger="blur"
         onChange={formValue => handleChange(formValue)}
       >
         <FormGroup>

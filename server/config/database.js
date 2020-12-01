@@ -31,14 +31,16 @@ class Database {
       await mongoose.connect(mongoURI, dbOptions)
 
       success({
-        message: 'Database connection successful',
-        badge: true
+        badge: true,
+        message: 'Database connection successful'
       })
     } catch (err) {
       error({
-        message: `Database connection error: ${err}`,
-        badge: true
+        badge: true,
+        message: `Database connection error: ${err.message}`
       })
+
+      process.exit(1)
     }
   }
 }

@@ -2,13 +2,23 @@ import { checkEmail, checkUsername } from 'api/auth'
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { openAlert, openNotification } from 'utils'
+
+type FormValue = Record<
+  'email' | 'username' | 'password' | 'confirmPassword',
+  string
+>
 
 interface User {
   email: string
   username: string
   password: string
   confirmPassword: string
+}
+
+enum MessageType {
+  Info = 'info',
+  Success = 'success',
+  Error = 'error'
 }
 
 function useRegister() {
@@ -20,6 +30,9 @@ function useRegister() {
 
   const formEl = useRef<HTMLFormElement>(null)
 
+  const [showMessage, setShowMessage] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
+  const [messageType, setMessageType] = useState<MessageType>(MessageType.Info)
   const [email, setEmail] = useState<string[]>([])
   const [user, setUser] = useState<User>({
     email: '',
@@ -39,26 +52,35 @@ function useRegister() {
     '@163.com'
   ]
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (formEl.current !== null && !formEl.current.check()) {
       return false
     }
 
-    const { email, username, password } = user
+    try {
+      const { email, username, password } = user
 
-    userRegister({ email, username, password })
-      .then(() => {
-        history.push('/dashboard')
-      })
-      .catch((err: any) => {
-        const { errors, msg } = err.response.data
+      await userRegister({ email, username, password })
 
-        if (errors) {
-          errors.forEach((error: any) => openAlert('error', error.msg))
-        } else {
-          openNotification('error', msg)
-        }
-      })
+      // 请求成功
+      const successMsg = 'Signed up successfully'
+
+      setMessage(successMsg)
+      setMessageType(MessageType.Success)
+
+      history.push('/dashboard')
+    } catch (err) {
+      // 请求失败
+      const errorMsg = 'Signed up unsuccessfully'
+
+      setMessage(errorMsg)
+      setMessageType(MessageType.Error)
+    } finally {
+      // 显示消息框
+      setShowMessage(true)
+      // 清空表单
+      handleReset()
+    }
   }
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -78,7 +100,7 @@ function useRegister() {
     })
   }
 
-  const handleChange = (formValue: any) => {
+  const handleChange = (formValue: FormValue) => {
     setUser(formValue)
   }
 
@@ -97,6 +119,10 @@ function useRegister() {
     if (nextData.length === 1) {
       setUser({ ...user, email: nextData[0] })
     }
+  }
+
+  const handleMessageClose = () => {
+    setShowMessage(false)
   }
 
   const asyncCheckUsername = (username: string) => {
@@ -132,11 +158,15 @@ function useRegister() {
     user,
     email,
     emailSuggestions,
-    handleEmailChange,
-    handleChange,
+    message,
+    messageType,
+    showMessage,
     handleSubmit,
     handleKeyUp,
     handleReset,
+    handleChange,
+    handleEmailChange,
+    handleMessageClose,
     asyncCheckUsername,
     asyncCheckEmail
   }

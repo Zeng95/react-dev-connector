@@ -1,11 +1,18 @@
 import { AuthContext } from 'context/auth/AuthContext'
 import { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { openAlert, openNotification } from 'utils'
+
+type FormValue = Record<'email' | 'password', string>
 
 interface User {
   email: string
   password: string
+}
+
+enum MessageType {
+  Info = 'info',
+  Success = 'success',
+  Error = 'error'
 }
 
 function useLogin() {
@@ -17,11 +24,11 @@ function useLogin() {
 
   const formEl = useRef<HTMLFormElement>(null)
 
+  const [showMessage, setShowMessage] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
+  const [messageType, setMessageType] = useState<MessageType>(MessageType.Info)
   const [email, setEmail] = useState<string[]>([])
-  const [user, setUser] = useState<User>({
-    email: '',
-    password: ''
-  })
+  const [user, setUser] = useState<User>({ email: '', password: '' })
 
   const emailSuggestions = [
     '@gmail.com',
@@ -34,24 +41,33 @@ function useLogin() {
     '@163.com'
   ]
 
-  const handleSubmit = (from: { pathname: string }) => {
+  const handleSubmit = async (from: { pathname: string }) => {
     if (formEl.current !== null && !formEl.current.check()) {
       return false
     }
 
-    userLogin(user)
-      .then(() => {
-        history.replace(from)
-      })
-      .catch((err: any) => {
-        const { errors, msg } = err.response.data
+    try {
+      await userLogin(user)
 
-        if (errors) {
-          errors.forEach((error: any) => openAlert('error', error.msg))
-        } else {
-          openNotification('error', msg)
-        }
-      })
+      // 请求成功
+      const successMsg = 'Logged in successfully.'
+
+      setMessage(successMsg)
+      setMessageType(MessageType.Success)
+
+      history.replace(from)
+    } catch (err) {
+      // 请求失败
+      const errorMsg = 'Incorrect username or password.'
+
+      setMessage(errorMsg)
+      setMessageType(MessageType.Error)
+    } finally {
+      // 显示消息框
+      setShowMessage(true)
+      // 清空表单
+      handleReset()
+    }
   }
 
   const handleKeyUp = (
@@ -69,7 +85,7 @@ function useLogin() {
     setUser({ email: '', password: '' })
   }
 
-  const handleChange = (formValue: any) => {
+  const handleChange = (formValue: FormValue) => {
     setUser(formValue)
   }
 
@@ -90,16 +106,24 @@ function useLogin() {
     }
   }
 
+  const handleMessageClose = () => {
+    setShowMessage(false)
+  }
+
   return {
     formEl,
     user,
     email,
     emailSuggestions,
+    message,
+    messageType,
+    showMessage,
     handleSubmit,
     handleKeyUp,
     handleReset,
     handleChange,
-    handleEmailChange
+    handleEmailChange,
+    handleMessageClose
   }
 }
 

@@ -1,4 +1,4 @@
-import { login, register } from 'api/auth'
+import { login, register, sendEmail } from 'api/auth'
 import { getUser } from 'api/users'
 import {
   AUTH_ERROR,
@@ -18,12 +18,12 @@ interface User {
   username: string
 }
 
-interface LoginProps {
+interface LoginFormData {
   email: string
   password: string
 }
 
-interface RegisterProps {
+interface RegisterFormData {
   email: string
   username: string
   password: string
@@ -39,9 +39,9 @@ interface InitialState {
   }
   actions: {
     userLoad: () => any
-    userLogin: (formData: LoginProps) => any
-    userRegister: (formData: RegisterProps) => any
-    userSendEmail: () => any
+    userLogin: (formData: LoginFormData) => any
+    userRegister: (formData: RegisterFormData) => any
+    userSendEmail: (email: string) => any
     userLogout: () => any
   }
 }
@@ -147,7 +147,7 @@ const actions = (dispatch: React.Dispatch<any>) => ({
       })
     }
   },
-  userLogin: (formData: LoginProps) => {
+  userLogin: (formData: LoginFormData) => {
     return new Promise(async (resolve, reject) => {
       try {
         // 提交按钮显示加载中状态
@@ -163,17 +163,19 @@ const actions = (dispatch: React.Dispatch<any>) => ({
           payload: { token: res.data.token }
         })
 
-        resolve()
+        // 请求成功
+        resolve('success')
       } catch (err) {
         dispatch({
           type: AUTH_ERROR
         })
 
-        reject(err)
+        // 请求失败
+        reject('error')
       }
     })
   },
-  userRegister: async (formData: RegisterProps) => {
+  userRegister: (formData: RegisterFormData) => {
     return new Promise(async (resolve, reject) => {
       try {
         // 提交按钮显示加载中状态
@@ -188,16 +190,41 @@ const actions = (dispatch: React.Dispatch<any>) => ({
           payload: { token: res.data.token }
         })
 
-        resolve()
+        // 请求成功
+        resolve('success')
       } catch (err) {
         dispatch({
           type: AUTH_ERROR
         })
-        reject(err)
+
+        // 请求失败
+        reject('error')
       }
     })
   },
-  userSendEmail: () => {},
+  userSendEmail: (email: string) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 提交按钮显示加载中状态
+        dispatch({
+          type: SHOW_BTN_LOADING
+        })
+
+        // 发送请求
+        await sendEmail(email)
+
+        // 请求成功
+        resolve('success')
+      } catch (err) {
+        dispatch({
+          type: AUTH_ERROR
+        })
+
+        // 请求失败
+        reject('error')
+      }
+    })
+  },
   userLogout: () => {
     dispatch({
       type: LOGOUT

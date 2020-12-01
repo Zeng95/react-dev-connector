@@ -21,11 +21,15 @@ import {
   FormGroup,
   HelpBlock,
   InputGroup,
+  Message,
   Schema
 } from 'rsuite'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 
+const MessageContainer = styled.div.attrs({
+  className: 'mb-8'
+})``
 const ControlLabelStyled = styled(ControlLabel).attrs({
   className: 'relative font-semibold'
 })`
@@ -53,18 +57,22 @@ const Callout = styled.p.attrs({
 `
 
 const Register: React.FC = () => {
-  const { state } = useContext(AuthContext)
-  const { submitLoading } = state
+  const auth = useContext(AuthContext)
+  const { submitLoading } = auth.state
 
   const {
     formEl,
     user,
     email,
+    message,
+    messageType,
+    showMessage,
     handleSubmit,
     handleKeyUp,
     handleReset,
     handleChange,
     handleEmailChange,
+    handleMessageClose,
     asyncCheckUsername,
     asyncCheckEmail
   } = useRegister()
@@ -115,23 +123,31 @@ const Register: React.FC = () => {
         <span>Sign up for free and experience DevConnector today</span>
       </Description>
 
+      {showMessage && (
+        <MessageContainer>
+          <Message
+            closable
+            showIcon
+            type={messageType}
+            description={message}
+            onClose={handleMessageClose}
+          />
+        </MessageContainer>
+      )}
+
       <Form
         fluid
         model={model}
         ref={formEl}
         formValue={user}
         autoComplete="off"
+        checkTrigger="blur"
         onChange={formValue => handleChange(formValue)}
       >
         <FormGroup>
           <ControlLabelStyled>Username</ControlLabelStyled>
           <InputGroup inside style={{ width: '100%' }}>
-            <FormControl
-              name="username"
-              checkAsync
-              checkTrigger="blur"
-              onKeyPress={handleKeyUp}
-            />
+            <FormControl name="username" checkAsync onKeyPress={handleKeyUp} />
             <InputGroup.Addon>
               <UserCircle size="16" title="Username" />
             </InputGroup.Addon>
@@ -145,7 +161,6 @@ const Register: React.FC = () => {
               name="email"
               type="email"
               checkAsync
-              checkTrigger="blur"
               accepter={AutoComplete}
               data={email}
               onKeyPress={handleKeyUp}
